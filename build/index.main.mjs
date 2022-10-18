@@ -18,16 +18,15 @@ export function _getViews(s, viewlib) {
   const stdlib = s.reachStdlib;
   const ctc0 = stdlib.T_Address;
   const ctc1 = stdlib.T_UInt;
-  const ctc2 = stdlib.T_Digest;
   
   return {
     infos: {
       },
     views: {
-      1: [ctc0, ctc1, ctc1, ctc1],
-      5: [ctc0, ctc1, ctc1, ctc0, ctc1, ctc1],
-      7: [ctc0, ctc1, ctc1, ctc0, ctc1, ctc2, ctc1],
-      9: [ctc0, ctc1, ctc1, ctc0, ctc1, ctc2, ctc1, ctc1]
+      1: [ctc0, ctc1],
+      2: [ctc0],
+      3: [ctc0, ctc1],
+      4: [ctc0]
       }
     };
   
@@ -39,929 +38,462 @@ export function _getMaps(s) {
     mapDataTy: ctc0
     };
   };
-export async function Alice(ctcTop, interact) {
+export async function Collector(ctcTop, interact) {
   if (typeof(ctcTop) !== 'object' || ctcTop._initialize === undefined) {
-    return Promise.reject(new Error(`The backend for Alice expects to receive a contract as its first argument.`));}
+    return Promise.reject(new Error(`The backend for Collector expects to receive a contract as its first argument.`));}
   if (typeof(interact) !== 'object') {
-    return Promise.reject(new Error(`The backend for Alice expects to receive an interact object as its second argument.`));}
+    return Promise.reject(new Error(`The backend for Collector expects to receive an interact object as its second argument.`));}
   const ctc = ctcTop._initialize();
   const stdlib = ctc.stdlib;
   const ctc0 = stdlib.T_UInt;
-  const ctc1 = stdlib.T_Digest;
-  const ctc2 = stdlib.T_Null;
-  const ctc3 = stdlib.T_Address;
+  const ctc1 = stdlib.T_Bytes(stdlib.checkedBigNumberify('<builtin>', stdlib.UInt_max, '256'));
+  const ctc2 = stdlib.T_Object({
+    i: ctc0,
+    scale: ctc0
+    });
+  const ctc3 = stdlib.T_Bool;
+  const ctc4 = stdlib.T_Object({
+    i: ctc2,
+    sign: ctc3
+    });
+  const ctc5 = stdlib.T_Null;
+  const ctc6 = stdlib.T_Address;
   
   
-  const v300 = stdlib.protect(ctc0, interact.deadline, 'for Alice\'s interact field deadline');
-  const v301 = stdlib.protect(ctc0, interact.wager, 'for Alice\'s interact field wager');
-  
-  const txn1 = await (ctc.sendrecv({
-    args: [v301, v300],
-    evt_cnt: 2,
-    funcNum: 0,
-    lct: stdlib.checkedBigNumberify('./index.rsh:49:9:dot', stdlib.UInt_max, '0'),
-    onlyIf: true,
-    out_tys: [ctc0, ctc0],
-    pay: [v301, []],
-    sim_p: (async (txn1) => {
-      const sim_r = { txns: [], mapRefs: [], maps: [] };
-      let sim_txn_ctr = stdlib.UInt_max;
-      const getSimTokCtr = () => { sim_txn_ctr = sim_txn_ctr.sub(1); return sim_txn_ctr; };
-      
-      
-      const {data: [v305, v306], secs: v308, time: v307, didSend: v56, from: v304 } = txn1;
-      
-      sim_r.txns.push({
-        amt: v305,
-        kind: 'to',
-        tok: undefined /* Nothing */
-        });
-      const v317 = stdlib.safeAdd(v307, v306);
-      sim_r.isHalt = false;
-      
-      return sim_r;
-      }),
-    soloSend: true,
-    timeoutAt: undefined /* mto */,
-    tys: [ctc0, ctc0],
-    waitIfNotPresent: false
-    }));
-  const {data: [v305, v306], secs: v308, time: v307, didSend: v56, from: v304 } = txn1;
-  ;
-  const v317 = stdlib.safeAdd(v307, v306);
-  const txn2 = await (ctc.recv({
-    didSend: false,
-    evt_cnt: 0,
-    funcNum: 1,
-    out_tys: [],
-    timeoutAt: ['time', v317],
-    waitIfNotPresent: false
-    }));
-  if (txn2.didTimeout) {
-    const txn3 = await (ctc.sendrecv({
-      args: [v304, v305, v306, v317],
-      evt_cnt: 0,
-      funcNum: 2,
-      lct: v307,
-      onlyIf: true,
-      out_tys: [],
-      pay: [stdlib.checkedBigNumberify('reach standard library:197:11:decimal', stdlib.UInt_max, '0'), []],
-      sim_p: (async (txn3) => {
-        const sim_r = { txns: [], mapRefs: [], maps: [] };
-        let sim_txn_ctr = stdlib.UInt_max;
-        const getSimTokCtr = () => { sim_txn_ctr = sim_txn_ctr.sub(1); return sim_txn_ctr; };
-        
-        
-        const {data: [], secs: v471, time: v470, didSend: v253, from: v469 } = txn3;
-        
-        ;
-        sim_r.txns.push({
-          kind: 'from',
-          to: v304,
-          tok: undefined /* Nothing */
-          });
-        sim_r.txns.push({
-          kind: 'halt',
-          tok: undefined /* Nothing */
-          })
-        sim_r.isHalt = true;
-        
-        return sim_r;
-        }),
-      soloSend: false,
-      timeoutAt: undefined /* mto */,
-      tys: [ctc3, ctc0, ctc0, ctc0],
-      waitIfNotPresent: false
-      }));
-    const {data: [], secs: v471, time: v470, didSend: v253, from: v469 } = txn3;
-    ;
-    ;
-    stdlib.protect(ctc2, await interact.informTimeout(), {
-      at: './index.rsh:41:29:application',
-      fs: ['at ./index.rsh:40:9:application call to [unknown function] (defined at: ./index.rsh:40:27:function exp)', 'at reach standard library:200:8:application call to "after" (defined at: ./index.rsh:39:28:function exp)', 'at ./index.rsh:57:51:application call to "closeTo" (defined at: reach standard library:195:8:function exp)'],
-      msg: 'informTimeout',
-      who: 'Alice'
-      });
-    
-    return;
-    
-    }
-  else {
-    const {data: [], secs: v323, time: v322, didSend: v65, from: v321 } = txn2;
-    const v325 = stdlib.add(v305, v305);
-    ;
-    let v326 = stdlib.checkedBigNumberify('./index.rsh:makeEnum', stdlib.UInt_max, '1');
-    let v327 = v322;
-    let v334 = v325;
-    
-    let txn3 = txn2;
-    while (await (async () => {
-      const v342 = stdlib.eq(v326, stdlib.checkedBigNumberify('./index.rsh:makeEnum', stdlib.UInt_max, '1'));
-      
-      return v342;})()) {
-      const v349 = stdlib.safeAdd(v327, v306);
-      const v353 = stdlib.protect(ctc0, await interact.getHand(), {
-        at: './index.rsh:65:42:application',
-        fs: ['at ./index.rsh:64:15:application call to [unknown function] (defined at: ./index.rsh:64:19:function exp)'],
-        msg: 'getHand',
-        who: 'Alice'
-        });
-      const v354 = stdlib.protect(ctc0, await interact.random(), {
-        at: 'reach standard library:64:31:application',
-        fs: ['at ./index.rsh:66:56:application call to "makeCommitment" (defined at: reach standard library:63:8:function exp)', 'at ./index.rsh:64:15:application call to [unknown function] (defined at: ./index.rsh:64:19:function exp)'],
-        msg: 'random',
-        who: 'Alice'
-        });
-      const v355 = stdlib.digest([ctc0, ctc0], [v354, v353]);
-      
-      const txn4 = await (ctc.sendrecv({
-        args: [v304, v305, v306, v321, v334, v349, v355],
-        evt_cnt: 1,
-        funcNum: 4,
-        lct: v327,
-        onlyIf: true,
-        out_tys: [ctc1],
-        pay: [stdlib.checkedBigNumberify('./index.rsh:69:11:decimal', stdlib.UInt_max, '0'), []],
-        sim_p: (async (txn4) => {
-          const sim_r = { txns: [], mapRefs: [], maps: [] };
-          let sim_txn_ctr = stdlib.UInt_max;
-          const getSimTokCtr = () => { sim_txn_ctr = sim_txn_ctr.sub(1); return sim_txn_ctr; };
-          
-          
-          const {data: [v358], secs: v360, time: v359, didSend: v91, from: v357 } = txn4;
-          
-          ;
-          const v368 = stdlib.safeAdd(v359, v306);
-          sim_r.isHalt = false;
-          
-          return sim_r;
-          }),
-        soloSend: true,
-        timeoutAt: ['time', v349],
-        tys: [ctc3, ctc0, ctc0, ctc3, ctc0, ctc0, ctc1],
-        waitIfNotPresent: false
-        }));
-      if (txn4.didTimeout) {
-        const txn5 = await (ctc.sendrecv({
-          args: [v304, v305, v306, v321, v334, v349],
-          evt_cnt: 0,
-          funcNum: 5,
-          lct: v327,
-          onlyIf: true,
-          out_tys: [],
-          pay: [stdlib.checkedBigNumberify('reach standard library:197:11:decimal', stdlib.UInt_max, '0'), []],
-          sim_p: (async (txn5) => {
-            const sim_r = { txns: [], mapRefs: [], maps: [] };
-            let sim_txn_ctr = stdlib.UInt_max;
-            const getSimTokCtr = () => { sim_txn_ctr = sim_txn_ctr.sub(1); return sim_txn_ctr; };
-            
-            
-            const {data: [], secs: v437, time: v436, didSend: v206, from: v435 } = txn5;
-            
-            ;
-            sim_r.txns.push({
-              kind: 'from',
-              to: v321,
-              tok: undefined /* Nothing */
-              });
-            sim_r.txns.push({
-              kind: 'halt',
-              tok: undefined /* Nothing */
-              })
-            sim_r.isHalt = true;
-            
-            return sim_r;
-            }),
-          soloSend: false,
-          timeoutAt: undefined /* mto */,
-          tys: [ctc3, ctc0, ctc0, ctc3, ctc0, ctc0],
-          waitIfNotPresent: false
-          }));
-        const {data: [], secs: v437, time: v436, didSend: v206, from: v435 } = txn5;
-        ;
-        const v438 = stdlib.addressEq(v304, v435);
-        const v439 = stdlib.addressEq(v321, v435);
-        const v440 = v438 ? true : v439;
-        stdlib.assert(v440, {
-          at: 'reach standard library:197:11:dot',
-          fs: ['at ./index.rsh:70:53:application call to "closeTo" (defined at: reach standard library:195:8:function exp)'],
-          msg: 'sender correct',
-          who: 'Alice'
-          });
-        ;
-        stdlib.protect(ctc2, await interact.informTimeout(), {
-          at: './index.rsh:41:29:application',
-          fs: ['at ./index.rsh:40:9:application call to [unknown function] (defined at: ./index.rsh:40:27:function exp)', 'at reach standard library:200:8:application call to "after" (defined at: ./index.rsh:39:28:function exp)', 'at ./index.rsh:70:53:application call to "closeTo" (defined at: reach standard library:195:8:function exp)'],
-          msg: 'informTimeout',
-          who: 'Alice'
-          });
-        
-        return;
-        
-        }
-      else {
-        const {data: [v358], secs: v360, time: v359, didSend: v91, from: v357 } = txn4;
-        ;
-        const v361 = stdlib.addressEq(v304, v357);
-        stdlib.assert(v361, {
-          at: './index.rsh:69:11:dot',
-          fs: [],
-          msg: 'sender correct',
-          who: 'Alice'
-          });
-        const v368 = stdlib.safeAdd(v359, v306);
-        const txn5 = await (ctc.recv({
-          didSend: false,
-          evt_cnt: 1,
-          funcNum: 6,
-          out_tys: [ctc0],
-          timeoutAt: ['time', v368],
-          waitIfNotPresent: false
-          }));
-        if (txn5.didTimeout) {
-          const txn6 = await (ctc.sendrecv({
-            args: [v304, v305, v306, v321, v334, v358, v368],
-            evt_cnt: 0,
-            funcNum: 7,
-            lct: v359,
-            onlyIf: true,
-            out_tys: [],
-            pay: [stdlib.checkedBigNumberify('reach standard library:197:11:decimal', stdlib.UInt_max, '0'), []],
-            sim_p: (async (txn6) => {
-              const sim_r = { txns: [], mapRefs: [], maps: [] };
-              let sim_txn_ctr = stdlib.UInt_max;
-              const getSimTokCtr = () => { sim_txn_ctr = sim_txn_ctr.sub(1); return sim_txn_ctr; };
-              
-              
-              const {data: [], secs: v419, time: v418, didSend: v172, from: v417 } = txn6;
-              
-              ;
-              sim_r.txns.push({
-                kind: 'from',
-                to: v304,
-                tok: undefined /* Nothing */
-                });
-              sim_r.txns.push({
-                kind: 'halt',
-                tok: undefined /* Nothing */
-                })
-              sim_r.isHalt = true;
-              
-              return sim_r;
-              }),
-            soloSend: false,
-            timeoutAt: undefined /* mto */,
-            tys: [ctc3, ctc0, ctc0, ctc3, ctc0, ctc1, ctc0],
-            waitIfNotPresent: false
-            }));
-          const {data: [], secs: v419, time: v418, didSend: v172, from: v417 } = txn6;
-          ;
-          const v420 = stdlib.addressEq(v304, v417);
-          const v421 = stdlib.addressEq(v321, v417);
-          const v422 = v420 ? true : v421;
-          stdlib.assert(v422, {
-            at: 'reach standard library:197:11:dot',
-            fs: ['at ./index.rsh:78:53:application call to "closeTo" (defined at: reach standard library:195:8:function exp)'],
-            msg: 'sender correct',
-            who: 'Alice'
-            });
-          ;
-          stdlib.protect(ctc2, await interact.informTimeout(), {
-            at: './index.rsh:41:29:application',
-            fs: ['at ./index.rsh:40:9:application call to [unknown function] (defined at: ./index.rsh:40:27:function exp)', 'at reach standard library:200:8:application call to "after" (defined at: ./index.rsh:39:28:function exp)', 'at ./index.rsh:78:53:application call to "closeTo" (defined at: reach standard library:195:8:function exp)'],
-            msg: 'informTimeout',
-            who: 'Alice'
-            });
-          
-          return;
-          
-          }
-        else {
-          const {data: [v374], secs: v376, time: v375, didSend: v101, from: v373 } = txn5;
-          ;
-          const v377 = stdlib.addressEq(v321, v373);
-          stdlib.assert(v377, {
-            at: './index.rsh:77:9:dot',
-            fs: [],
-            msg: 'sender correct',
-            who: 'Alice'
-            });
-          const v384 = stdlib.safeAdd(v375, v306);
-          const txn6 = await (ctc.sendrecv({
-            args: [v304, v305, v306, v321, v334, v358, v374, v384, v354, v353],
-            evt_cnt: 2,
-            funcNum: 8,
-            lct: v375,
-            onlyIf: true,
-            out_tys: [ctc0, ctc0],
-            pay: [stdlib.checkedBigNumberify('./index.rsh:85:11:decimal', stdlib.UInt_max, '0'), []],
-            sim_p: (async (txn6) => {
-              const sim_r = { txns: [], mapRefs: [], maps: [] };
-              let sim_txn_ctr = stdlib.UInt_max;
-              const getSimTokCtr = () => { sim_txn_ctr = sim_txn_ctr.sub(1); return sim_txn_ctr; };
-              
-              
-              const {data: [v389, v390], secs: v392, time: v391, didSend: v111, from: v388 } = txn6;
-              
-              ;
-              const v396 = stdlib.safeSub(stdlib.checkedBigNumberify('./index.rsh:7:18:decimal', stdlib.UInt_max, '4'), v374);
-              const v397 = stdlib.safeAdd(v390, v396);
-              const v398 = stdlib.safeMod(v397, stdlib.checkedBigNumberify('./index.rsh:7:34:decimal', stdlib.UInt_max, '3'));
-              const cv326 = v398;
-              const cv327 = v391;
-              const cv334 = v334;
-              
-              await (async () => {
-                const v326 = cv326;
-                const v327 = cv327;
-                const v334 = cv334;
-                
-                if (await (async () => {
-                  const v342 = stdlib.eq(v326, stdlib.checkedBigNumberify('./index.rsh:makeEnum', stdlib.UInt_max, '1'));
-                  
-                  return v342;})()) {
-                  const v349 = stdlib.safeAdd(v327, v306);
-                  sim_r.isHalt = false;
-                  }
-                else {
-                  const v453 = stdlib.eq(v326, stdlib.checkedBigNumberify('./index.rsh:makeEnum', stdlib.UInt_max, '2'));
-                  const v456 = stdlib.safeMul(stdlib.checkedBigNumberify('./index.rsh:94:12:decimal', stdlib.UInt_max, '2'), v305);
-                  const v458 = v453 ? v304 : v321;
-                  sim_r.txns.push({
-                    kind: 'from',
-                    to: v458,
-                    tok: undefined /* Nothing */
-                    });
-                  sim_r.txns.push({
-                    kind: 'halt',
-                    tok: undefined /* Nothing */
-                    })
-                  sim_r.isHalt = true;
-                  }})();
-              return sim_r;
-              }),
-            soloSend: true,
-            timeoutAt: ['time', v384],
-            tys: [ctc3, ctc0, ctc0, ctc3, ctc0, ctc1, ctc0, ctc0, ctc0, ctc0],
-            waitIfNotPresent: false
-            }));
-          if (txn6.didTimeout) {
-            const txn7 = await (ctc.sendrecv({
-              args: [v304, v305, v306, v321, v334, v358, v374, v384],
-              evt_cnt: 0,
-              funcNum: 9,
-              lct: v375,
-              onlyIf: true,
-              out_tys: [],
-              pay: [stdlib.checkedBigNumberify('reach standard library:197:11:decimal', stdlib.UInt_max, '0'), []],
-              sim_p: (async (txn7) => {
-                const sim_r = { txns: [], mapRefs: [], maps: [] };
-                let sim_txn_ctr = stdlib.UInt_max;
-                const getSimTokCtr = () => { sim_txn_ctr = sim_txn_ctr.sub(1); return sim_txn_ctr; };
-                
-                
-                const {data: [], secs: v401, time: v400, didSend: v138, from: v399 } = txn7;
-                
-                ;
-                sim_r.txns.push({
-                  kind: 'from',
-                  to: v321,
-                  tok: undefined /* Nothing */
-                  });
-                sim_r.txns.push({
-                  kind: 'halt',
-                  tok: undefined /* Nothing */
-                  })
-                sim_r.isHalt = true;
-                
-                return sim_r;
-                }),
-              soloSend: false,
-              timeoutAt: undefined /* mto */,
-              tys: [ctc3, ctc0, ctc0, ctc3, ctc0, ctc1, ctc0, ctc0],
-              waitIfNotPresent: false
-              }));
-            const {data: [], secs: v401, time: v400, didSend: v138, from: v399 } = txn7;
-            ;
-            const v402 = stdlib.addressEq(v304, v399);
-            const v403 = stdlib.addressEq(v321, v399);
-            const v404 = v402 ? true : v403;
-            stdlib.assert(v404, {
-              at: 'reach standard library:197:11:dot',
-              fs: ['at ./index.rsh:86:53:application call to "closeTo" (defined at: reach standard library:195:8:function exp)'],
-              msg: 'sender correct',
-              who: 'Alice'
-              });
-            ;
-            stdlib.protect(ctc2, await interact.informTimeout(), {
-              at: './index.rsh:41:29:application',
-              fs: ['at ./index.rsh:40:9:application call to [unknown function] (defined at: ./index.rsh:40:27:function exp)', 'at reach standard library:200:8:application call to "after" (defined at: ./index.rsh:39:28:function exp)', 'at ./index.rsh:86:53:application call to "closeTo" (defined at: reach standard library:195:8:function exp)'],
-              msg: 'informTimeout',
-              who: 'Alice'
-              });
-            
-            return;
-            
-            }
-          else {
-            const {data: [v389, v390], secs: v392, time: v391, didSend: v111, from: v388 } = txn6;
-            ;
-            const v393 = stdlib.addressEq(v304, v388);
-            stdlib.assert(v393, {
-              at: './index.rsh:85:11:dot',
-              fs: [],
-              msg: 'sender correct',
-              who: 'Alice'
-              });
-            const v394 = stdlib.digest([ctc0, ctc0], [v389, v390]);
-            const v395 = stdlib.digestEq(v358, v394);
-            stdlib.assert(v395, {
-              at: 'reach standard library:69:17:application',
-              fs: ['at ./index.rsh:87:20:application call to "checkCommitment" (defined at: reach standard library:68:8:function exp)'],
-              msg: null,
-              who: 'Alice'
-              });
-            const v396 = stdlib.safeSub(stdlib.checkedBigNumberify('./index.rsh:7:18:decimal', stdlib.UInt_max, '4'), v374);
-            const v397 = stdlib.safeAdd(v390, v396);
-            const v398 = stdlib.safeMod(v397, stdlib.checkedBigNumberify('./index.rsh:7:34:decimal', stdlib.UInt_max, '3'));
-            const cv326 = v398;
-            const cv327 = v391;
-            const cv334 = v334;
-            
-            v326 = cv326;
-            v327 = cv327;
-            v334 = cv334;
-            
-            txn3 = txn6;
-            continue;}
-          
-          }
-        
-        }
-      
-      }
-    const v453 = stdlib.eq(v326, stdlib.checkedBigNumberify('./index.rsh:makeEnum', stdlib.UInt_max, '2'));
-    const v456 = stdlib.safeMul(stdlib.checkedBigNumberify('./index.rsh:94:12:decimal', stdlib.UInt_max, '2'), v305);
-    const v458 = v453 ? v304 : v321;
-    ;
-    stdlib.protect(ctc2, await interact.seeOutcome(v326), {
-      at: './index.rsh:98:24:application',
-      fs: ['at ./index.rsh:97:7:application call to [unknown function] (defined at: ./index.rsh:97:25:function exp)'],
-      msg: 'seeOutcome',
-      who: 'Alice'
-      });
-    
-    return;
-    }
-  
-  
-  
-  };
-export async function Bob(ctcTop, interact) {
-  if (typeof(ctcTop) !== 'object' || ctcTop._initialize === undefined) {
-    return Promise.reject(new Error(`The backend for Bob expects to receive a contract as its first argument.`));}
-  if (typeof(interact) !== 'object') {
-    return Promise.reject(new Error(`The backend for Bob expects to receive an interact object as its second argument.`));}
-  const ctc = ctcTop._initialize();
-  const stdlib = ctc.stdlib;
-  const ctc0 = stdlib.T_UInt;
-  const ctc1 = stdlib.T_Null;
-  const ctc2 = stdlib.T_Digest;
-  const ctc3 = stdlib.T_Address;
-  
+  const v124 = stdlib.protect(ctc0, interact.BidPriceCollector, 'for Collector\'s interact field BidPriceCollector');
+  const v126 = stdlib.protect(ctc1, interact.CollectorName, 'for Collector\'s interact field CollectorName');
+  const v127 = stdlib.protect(ctc1, interact.DestinationLocation, 'for Collector\'s interact field DestinationLocation');
   
   const txn1 = await (ctc.recv({
     didSend: false,
-    evt_cnt: 2,
+    evt_cnt: 4,
     funcNum: 0,
-    out_tys: [ctc0, ctc0],
+    out_tys: [ctc1, ctc1, ctc4, ctc0],
     timeoutAt: undefined /* mto */,
     waitIfNotPresent: false
     }));
-  const {data: [v305, v306], secs: v308, time: v307, didSend: v56, from: v304 } = txn1;
+  const {data: [v136, v137, v138, v139], secs: v141, time: v140, didSend: v46, from: v135 } = txn1;
   ;
-  const v317 = stdlib.safeAdd(v307, v306);
-  stdlib.protect(ctc1, await interact.acceptWager(v305), {
-    at: './index.rsh:54:25:application',
-    fs: ['at ./index.rsh:53:11:application call to [unknown function] (defined at: ./index.rsh:53:15:function exp)'],
-    msg: 'acceptWager',
-    who: 'Bob'
+  stdlib.protect(ctc5, await interact.acceptBidPrice(v139), {
+    at: './index.rsh:51:28:application',
+    fs: ['at ./index.rsh:50:17:application call to [unknown function] (defined at: ./index.rsh:50:20:function exp)'],
+    msg: 'acceptBidPrice',
+    who: 'Collector'
     });
   
   const txn2 = await (ctc.sendrecv({
-    args: [v304, v305, v306, v317],
+    args: [v135, v139],
     evt_cnt: 0,
     funcNum: 1,
-    lct: v307,
+    lct: v140,
     onlyIf: true,
     out_tys: [],
-    pay: [v305, []],
+    pay: [v139, []],
     sim_p: (async (txn2) => {
       const sim_r = { txns: [], mapRefs: [], maps: [] };
       let sim_txn_ctr = stdlib.UInt_max;
       const getSimTokCtr = () => { sim_txn_ctr = sim_txn_ctr.sub(1); return sim_txn_ctr; };
       
       
-      const {data: [], secs: v323, time: v322, didSend: v65, from: v321 } = txn2;
+      const {data: [], secs: v146, time: v145, didSend: v55, from: v144 } = txn2;
       
-      const v325 = stdlib.add(v305, v305);
       sim_r.txns.push({
-        amt: v305,
+        amt: v139,
         kind: 'to',
         tok: undefined /* Nothing */
         });
-      const v326 = stdlib.checkedBigNumberify('./index.rsh:makeEnum', stdlib.UInt_max, '1');
-      const v327 = v322;
-      const v334 = v325;
+      sim_r.txns.push({
+        kind: 'from',
+        to: v135,
+        tok: undefined /* Nothing */
+        });
+      sim_r.isHalt = false;
       
-      if (await (async () => {
-        const v342 = stdlib.eq(v326, stdlib.checkedBigNumberify('./index.rsh:makeEnum', stdlib.UInt_max, '1'));
-        
-        return v342;})()) {
-        const v349 = stdlib.safeAdd(v327, v306);
-        sim_r.isHalt = false;
-        }
-      else {
-        const v453 = stdlib.eq(v326, stdlib.checkedBigNumberify('./index.rsh:makeEnum', stdlib.UInt_max, '2'));
-        const v456 = stdlib.safeMul(stdlib.checkedBigNumberify('./index.rsh:94:12:decimal', stdlib.UInt_max, '2'), v305);
-        const v458 = v453 ? v304 : v321;
-        sim_r.txns.push({
-          kind: 'from',
-          to: v458,
-          tok: undefined /* Nothing */
-          });
-        sim_r.txns.push({
-          kind: 'halt',
-          tok: undefined /* Nothing */
-          })
-        sim_r.isHalt = true;
-        }
       return sim_r;
       }),
     soloSend: true,
-    timeoutAt: ['time', v317],
-    tys: [ctc3, ctc0, ctc0, ctc0],
+    timeoutAt: undefined /* mto */,
+    tys: [ctc6, ctc0],
     waitIfNotPresent: false
     }));
-  if (txn2.didTimeout) {
-    const txn3 = await (ctc.sendrecv({
-      args: [v304, v305, v306, v317],
-      evt_cnt: 0,
-      funcNum: 2,
-      lct: v307,
-      onlyIf: true,
-      out_tys: [],
-      pay: [stdlib.checkedBigNumberify('reach standard library:197:11:decimal', stdlib.UInt_max, '0'), []],
-      sim_p: (async (txn3) => {
-        const sim_r = { txns: [], mapRefs: [], maps: [] };
-        let sim_txn_ctr = stdlib.UInt_max;
-        const getSimTokCtr = () => { sim_txn_ctr = sim_txn_ctr.sub(1); return sim_txn_ctr; };
-        
-        
-        const {data: [], secs: v471, time: v470, didSend: v253, from: v469 } = txn3;
-        
-        ;
-        sim_r.txns.push({
-          kind: 'from',
-          to: v304,
-          tok: undefined /* Nothing */
-          });
-        sim_r.txns.push({
-          kind: 'halt',
-          tok: undefined /* Nothing */
-          })
-        sim_r.isHalt = true;
-        
-        return sim_r;
-        }),
-      soloSend: false,
-      timeoutAt: undefined /* mto */,
-      tys: [ctc3, ctc0, ctc0, ctc0],
-      waitIfNotPresent: false
-      }));
-    const {data: [], secs: v471, time: v470, didSend: v253, from: v469 } = txn3;
-    ;
-    ;
-    stdlib.protect(ctc1, await interact.informTimeout(), {
-      at: './index.rsh:41:29:application',
-      fs: ['at ./index.rsh:40:9:application call to [unknown function] (defined at: ./index.rsh:40:27:function exp)', 'at reach standard library:200:8:application call to "after" (defined at: ./index.rsh:39:28:function exp)', 'at ./index.rsh:57:51:application call to "closeTo" (defined at: reach standard library:195:8:function exp)'],
-      msg: 'informTimeout',
-      who: 'Bob'
-      });
-    
-    return;
-    
-    }
-  else {
-    const {data: [], secs: v323, time: v322, didSend: v65, from: v321 } = txn2;
-    const v325 = stdlib.add(v305, v305);
-    ;
-    let v326 = stdlib.checkedBigNumberify('./index.rsh:makeEnum', stdlib.UInt_max, '1');
-    let v327 = v322;
-    let v334 = v325;
-    
-    let txn3 = txn2;
-    while (await (async () => {
-      const v342 = stdlib.eq(v326, stdlib.checkedBigNumberify('./index.rsh:makeEnum', stdlib.UInt_max, '1'));
+  const {data: [], secs: v146, time: v145, didSend: v55, from: v144 } = txn2;
+  ;
+  ;
+  const txn3 = await (ctc.sendrecv({
+    args: [v144, v126, v126, v127, v124],
+    evt_cnt: 4,
+    funcNum: 2,
+    lct: v145,
+    onlyIf: true,
+    out_tys: [ctc1, ctc1, ctc1, ctc0],
+    pay: [stdlib.checkedBigNumberify('./index.rsh:62:13:decimal', stdlib.UInt_max, '0'), []],
+    sim_p: (async (txn3) => {
+      const sim_r = { txns: [], mapRefs: [], maps: [] };
+      let sim_txn_ctr = stdlib.UInt_max;
+      const getSimTokCtr = () => { sim_txn_ctr = sim_txn_ctr.sub(1); return sim_txn_ctr; };
       
-      return v342;})()) {
-      const v349 = stdlib.safeAdd(v327, v306);
-      const txn4 = await (ctc.recv({
-        didSend: false,
-        evt_cnt: 1,
-        funcNum: 4,
-        out_tys: [ctc2],
-        timeoutAt: ['time', v349],
-        waitIfNotPresent: false
-        }));
-      if (txn4.didTimeout) {
-        const txn5 = await (ctc.sendrecv({
-          args: [v304, v305, v306, v321, v334, v349],
-          evt_cnt: 0,
-          funcNum: 5,
-          lct: v327,
-          onlyIf: true,
-          out_tys: [],
-          pay: [stdlib.checkedBigNumberify('reach standard library:197:11:decimal', stdlib.UInt_max, '0'), []],
-          sim_p: (async (txn5) => {
-            const sim_r = { txns: [], mapRefs: [], maps: [] };
-            let sim_txn_ctr = stdlib.UInt_max;
-            const getSimTokCtr = () => { sim_txn_ctr = sim_txn_ctr.sub(1); return sim_txn_ctr; };
-            
-            
-            const {data: [], secs: v437, time: v436, didSend: v206, from: v435 } = txn5;
-            
-            ;
-            sim_r.txns.push({
-              kind: 'from',
-              to: v321,
-              tok: undefined /* Nothing */
-              });
-            sim_r.txns.push({
-              kind: 'halt',
-              tok: undefined /* Nothing */
-              })
-            sim_r.isHalt = true;
-            
-            return sim_r;
-            }),
-          soloSend: false,
-          timeoutAt: undefined /* mto */,
-          tys: [ctc3, ctc0, ctc0, ctc3, ctc0, ctc0],
-          waitIfNotPresent: false
-          }));
-        const {data: [], secs: v437, time: v436, didSend: v206, from: v435 } = txn5;
-        ;
-        const v438 = stdlib.addressEq(v304, v435);
-        const v439 = stdlib.addressEq(v321, v435);
-        const v440 = v438 ? true : v439;
-        stdlib.assert(v440, {
-          at: 'reach standard library:197:11:dot',
-          fs: ['at ./index.rsh:70:53:application call to "closeTo" (defined at: reach standard library:195:8:function exp)'],
-          msg: 'sender correct',
-          who: 'Bob'
-          });
-        ;
-        stdlib.protect(ctc1, await interact.informTimeout(), {
-          at: './index.rsh:41:29:application',
-          fs: ['at ./index.rsh:40:9:application call to [unknown function] (defined at: ./index.rsh:40:27:function exp)', 'at reach standard library:200:8:application call to "after" (defined at: ./index.rsh:39:28:function exp)', 'at ./index.rsh:70:53:application call to "closeTo" (defined at: reach standard library:195:8:function exp)'],
-          msg: 'informTimeout',
-          who: 'Bob'
-          });
-        
-        return;
-        
-        }
-      else {
-        const {data: [v358], secs: v360, time: v359, didSend: v91, from: v357 } = txn4;
-        ;
-        const v361 = stdlib.addressEq(v304, v357);
-        stdlib.assert(v361, {
-          at: './index.rsh:69:11:dot',
-          fs: [],
-          msg: 'sender correct',
-          who: 'Bob'
-          });
-        const v368 = stdlib.safeAdd(v359, v306);
-        const v372 = stdlib.protect(ctc0, await interact.getHand(), {
-          at: './index.rsh:75:50:application',
-          fs: ['at ./index.rsh:74:13:application call to [unknown function] (defined at: ./index.rsh:74:17:function exp)'],
-          msg: 'getHand',
-          who: 'Bob'
-          });
-        
-        const txn5 = await (ctc.sendrecv({
-          args: [v304, v305, v306, v321, v334, v358, v368, v372],
-          evt_cnt: 1,
-          funcNum: 6,
-          lct: v359,
-          onlyIf: true,
-          out_tys: [ctc0],
-          pay: [stdlib.checkedBigNumberify('./index.rsh:77:9:decimal', stdlib.UInt_max, '0'), []],
-          sim_p: (async (txn5) => {
-            const sim_r = { txns: [], mapRefs: [], maps: [] };
-            let sim_txn_ctr = stdlib.UInt_max;
-            const getSimTokCtr = () => { sim_txn_ctr = sim_txn_ctr.sub(1); return sim_txn_ctr; };
-            
-            
-            const {data: [v374], secs: v376, time: v375, didSend: v101, from: v373 } = txn5;
-            
-            ;
-            const v384 = stdlib.safeAdd(v375, v306);
-            sim_r.isHalt = false;
-            
-            return sim_r;
-            }),
-          soloSend: true,
-          timeoutAt: ['time', v368],
-          tys: [ctc3, ctc0, ctc0, ctc3, ctc0, ctc2, ctc0, ctc0],
-          waitIfNotPresent: false
-          }));
-        if (txn5.didTimeout) {
-          const txn6 = await (ctc.sendrecv({
-            args: [v304, v305, v306, v321, v334, v358, v368],
-            evt_cnt: 0,
-            funcNum: 7,
-            lct: v359,
-            onlyIf: true,
-            out_tys: [],
-            pay: [stdlib.checkedBigNumberify('reach standard library:197:11:decimal', stdlib.UInt_max, '0'), []],
-            sim_p: (async (txn6) => {
-              const sim_r = { txns: [], mapRefs: [], maps: [] };
-              let sim_txn_ctr = stdlib.UInt_max;
-              const getSimTokCtr = () => { sim_txn_ctr = sim_txn_ctr.sub(1); return sim_txn_ctr; };
-              
-              
-              const {data: [], secs: v419, time: v418, didSend: v172, from: v417 } = txn6;
-              
-              ;
-              sim_r.txns.push({
-                kind: 'from',
-                to: v304,
-                tok: undefined /* Nothing */
-                });
-              sim_r.txns.push({
-                kind: 'halt',
-                tok: undefined /* Nothing */
-                })
-              sim_r.isHalt = true;
-              
-              return sim_r;
-              }),
-            soloSend: false,
-            timeoutAt: undefined /* mto */,
-            tys: [ctc3, ctc0, ctc0, ctc3, ctc0, ctc2, ctc0],
-            waitIfNotPresent: false
-            }));
-          const {data: [], secs: v419, time: v418, didSend: v172, from: v417 } = txn6;
-          ;
-          const v420 = stdlib.addressEq(v304, v417);
-          const v421 = stdlib.addressEq(v321, v417);
-          const v422 = v420 ? true : v421;
-          stdlib.assert(v422, {
-            at: 'reach standard library:197:11:dot',
-            fs: ['at ./index.rsh:78:53:application call to "closeTo" (defined at: reach standard library:195:8:function exp)'],
-            msg: 'sender correct',
-            who: 'Bob'
-            });
-          ;
-          stdlib.protect(ctc1, await interact.informTimeout(), {
-            at: './index.rsh:41:29:application',
-            fs: ['at ./index.rsh:40:9:application call to [unknown function] (defined at: ./index.rsh:40:27:function exp)', 'at reach standard library:200:8:application call to "after" (defined at: ./index.rsh:39:28:function exp)', 'at ./index.rsh:78:53:application call to "closeTo" (defined at: reach standard library:195:8:function exp)'],
-            msg: 'informTimeout',
-            who: 'Bob'
-            });
-          
-          return;
-          
-          }
-        else {
-          const {data: [v374], secs: v376, time: v375, didSend: v101, from: v373 } = txn5;
-          ;
-          const v377 = stdlib.addressEq(v321, v373);
-          stdlib.assert(v377, {
-            at: './index.rsh:77:9:dot',
-            fs: [],
-            msg: 'sender correct',
-            who: 'Bob'
-            });
-          const v384 = stdlib.safeAdd(v375, v306);
-          const txn6 = await (ctc.recv({
-            didSend: false,
-            evt_cnt: 2,
-            funcNum: 8,
-            out_tys: [ctc0, ctc0],
-            timeoutAt: ['time', v384],
-            waitIfNotPresent: false
-            }));
-          if (txn6.didTimeout) {
-            const txn7 = await (ctc.sendrecv({
-              args: [v304, v305, v306, v321, v334, v358, v374, v384],
-              evt_cnt: 0,
-              funcNum: 9,
-              lct: v375,
-              onlyIf: true,
-              out_tys: [],
-              pay: [stdlib.checkedBigNumberify('reach standard library:197:11:decimal', stdlib.UInt_max, '0'), []],
-              sim_p: (async (txn7) => {
-                const sim_r = { txns: [], mapRefs: [], maps: [] };
-                let sim_txn_ctr = stdlib.UInt_max;
-                const getSimTokCtr = () => { sim_txn_ctr = sim_txn_ctr.sub(1); return sim_txn_ctr; };
-                
-                
-                const {data: [], secs: v401, time: v400, didSend: v138, from: v399 } = txn7;
-                
-                ;
-                sim_r.txns.push({
-                  kind: 'from',
-                  to: v321,
-                  tok: undefined /* Nothing */
-                  });
-                sim_r.txns.push({
-                  kind: 'halt',
-                  tok: undefined /* Nothing */
-                  })
-                sim_r.isHalt = true;
-                
-                return sim_r;
-                }),
-              soloSend: false,
-              timeoutAt: undefined /* mto */,
-              tys: [ctc3, ctc0, ctc0, ctc3, ctc0, ctc2, ctc0, ctc0],
-              waitIfNotPresent: false
-              }));
-            const {data: [], secs: v401, time: v400, didSend: v138, from: v399 } = txn7;
-            ;
-            const v402 = stdlib.addressEq(v304, v399);
-            const v403 = stdlib.addressEq(v321, v399);
-            const v404 = v402 ? true : v403;
-            stdlib.assert(v404, {
-              at: 'reach standard library:197:11:dot',
-              fs: ['at ./index.rsh:86:53:application call to "closeTo" (defined at: reach standard library:195:8:function exp)'],
-              msg: 'sender correct',
-              who: 'Bob'
-              });
-            ;
-            stdlib.protect(ctc1, await interact.informTimeout(), {
-              at: './index.rsh:41:29:application',
-              fs: ['at ./index.rsh:40:9:application call to [unknown function] (defined at: ./index.rsh:40:27:function exp)', 'at reach standard library:200:8:application call to "after" (defined at: ./index.rsh:39:28:function exp)', 'at ./index.rsh:86:53:application call to "closeTo" (defined at: reach standard library:195:8:function exp)'],
-              msg: 'informTimeout',
-              who: 'Bob'
-              });
-            
-            return;
-            
-            }
-          else {
-            const {data: [v389, v390], secs: v392, time: v391, didSend: v111, from: v388 } = txn6;
-            ;
-            const v393 = stdlib.addressEq(v304, v388);
-            stdlib.assert(v393, {
-              at: './index.rsh:85:11:dot',
-              fs: [],
-              msg: 'sender correct',
-              who: 'Bob'
-              });
-            const v394 = stdlib.digest([ctc0, ctc0], [v389, v390]);
-            const v395 = stdlib.digestEq(v358, v394);
-            stdlib.assert(v395, {
-              at: 'reach standard library:69:17:application',
-              fs: ['at ./index.rsh:87:20:application call to "checkCommitment" (defined at: reach standard library:68:8:function exp)'],
-              msg: null,
-              who: 'Bob'
-              });
-            const v396 = stdlib.safeSub(stdlib.checkedBigNumberify('./index.rsh:7:18:decimal', stdlib.UInt_max, '4'), v374);
-            const v397 = stdlib.safeAdd(v390, v396);
-            const v398 = stdlib.safeMod(v397, stdlib.checkedBigNumberify('./index.rsh:7:34:decimal', stdlib.UInt_max, '3'));
-            const cv326 = v398;
-            const cv327 = v391;
-            const cv334 = v334;
-            
-            v326 = cv326;
-            v327 = cv327;
-            v334 = cv334;
-            
-            txn3 = txn6;
-            continue;}
-          
-          }
-        
-        }
       
-      }
-    const v453 = stdlib.eq(v326, stdlib.checkedBigNumberify('./index.rsh:makeEnum', stdlib.UInt_max, '2'));
-    const v456 = stdlib.safeMul(stdlib.checkedBigNumberify('./index.rsh:94:12:decimal', stdlib.UInt_max, '2'), v305);
-    const v458 = v453 ? v304 : v321;
-    ;
-    stdlib.protect(ctc1, await interact.seeOutcome(v326), {
-      at: './index.rsh:98:24:application',
-      fs: ['at ./index.rsh:97:7:application call to [unknown function] (defined at: ./index.rsh:97:25:function exp)'],
-      msg: 'seeOutcome',
-      who: 'Bob'
-      });
-    
-    return;
-    }
+      const {data: [v156, v157, v158, v159], secs: v161, time: v160, didSend: v71, from: v155 } = txn3;
+      
+      ;
+      sim_r.isHalt = false;
+      
+      return sim_r;
+      }),
+    soloSend: true,
+    timeoutAt: undefined /* mto */,
+    tys: [ctc6, ctc1, ctc1, ctc1, ctc0],
+    waitIfNotPresent: false
+    }));
+  const {data: [v156, v157, v158, v159], secs: v161, time: v160, didSend: v71, from: v155 } = txn3;
+  ;
+  const v162 = stdlib.addressEq(v144, v155);
+  stdlib.assert(v162, {
+    at: './index.rsh:62:13:dot',
+    fs: [],
+    msg: 'sender correct',
+    who: 'Collector'
+    });
+  const txn4 = await (ctc.recv({
+    didSend: false,
+    evt_cnt: 0,
+    funcNum: 3,
+    out_tys: [],
+    timeoutAt: undefined /* mto */,
+    waitIfNotPresent: false
+    }));
+  const {data: [], secs: v167, time: v166, didSend: v80, from: v165 } = txn4;
+  ;
+  ;
+  const txn5 = await (ctc.recv({
+    didSend: false,
+    evt_cnt: 4,
+    funcNum: 4,
+    out_tys: [ctc1, ctc1, ctc1, ctc0],
+    timeoutAt: undefined /* mto */,
+    waitIfNotPresent: false
+    }));
+  const {data: [v177, v178, v179, v180], secs: v182, time: v181, didSend: v96, from: v176 } = txn5;
+  ;
+  const v183 = stdlib.addressEq(v165, v176);
+  stdlib.assert(v183, {
+    at: './index.rsh:76:10:dot',
+    fs: [],
+    msg: 'sender correct',
+    who: 'Collector'
+    });
+  stdlib.protect(ctc5, await interact.seeOutcome(stdlib.checkedBigNumberify('./index.rsh:80:25:decimal', stdlib.UInt_max, '5')), {
+    at: './index.rsh:80:24:application',
+    fs: ['at ./index.rsh:79:7:application call to [unknown function] (defined at: ./index.rsh:79:42:function exp)'],
+    msg: 'seeOutcome',
+    who: 'Collector'
+    });
+  
+  return;
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  };
+export async function Disposal(ctcTop, interact) {
+  if (typeof(ctcTop) !== 'object' || ctcTop._initialize === undefined) {
+    return Promise.reject(new Error(`The backend for Disposal expects to receive a contract as its first argument.`));}
+  if (typeof(interact) !== 'object') {
+    return Promise.reject(new Error(`The backend for Disposal expects to receive an interact object as its second argument.`));}
+  const ctc = ctcTop._initialize();
+  const stdlib = ctc.stdlib;
+  const ctc0 = stdlib.T_UInt;
+  const ctc1 = stdlib.T_Bytes(stdlib.checkedBigNumberify('<builtin>', stdlib.UInt_max, '256'));
+  const ctc2 = stdlib.T_Object({
+    i: ctc0,
+    scale: ctc0
+    });
+  const ctc3 = stdlib.T_Bool;
+  const ctc4 = stdlib.T_Object({
+    i: ctc2,
+    sign: ctc3
+    });
+  const ctc5 = stdlib.T_Null;
+  
+  
+  const v116 = stdlib.protect(ctc0, interact.BidPriceDisposal, 'for Disposal\'s interact field BidPriceDisposal');
+  const v117 = stdlib.protect(ctc1, interact.BoughtDay, 'for Disposal\'s interact field BoughtDay');
+  const v118 = stdlib.protect(ctc4, interact.BoughtPrice, 'for Disposal\'s interact field BoughtPrice');
+  const v123 = stdlib.protect(ctc1, interact.BundleName, 'for Disposal\'s interact field BundleName');
+  
+  const txn1 = await (ctc.sendrecv({
+    args: [v123, v117, v118, v116],
+    evt_cnt: 4,
+    funcNum: 0,
+    lct: stdlib.checkedBigNumberify('./index.rsh:48:12:dot', stdlib.UInt_max, '0'),
+    onlyIf: true,
+    out_tys: [ctc1, ctc1, ctc4, ctc0],
+    pay: [stdlib.checkedBigNumberify('./index.rsh:48:12:decimal', stdlib.UInt_max, '0'), []],
+    sim_p: (async (txn1) => {
+      const sim_r = { txns: [], mapRefs: [], maps: [] };
+      let sim_txn_ctr = stdlib.UInt_max;
+      const getSimTokCtr = () => { sim_txn_ctr = sim_txn_ctr.sub(1); return sim_txn_ctr; };
+      
+      
+      const {data: [v136, v137, v138, v139], secs: v141, time: v140, didSend: v46, from: v135 } = txn1;
+      
+      ;
+      sim_r.isHalt = false;
+      
+      return sim_r;
+      }),
+    soloSend: true,
+    timeoutAt: undefined /* mto */,
+    tys: [ctc1, ctc1, ctc4, ctc0],
+    waitIfNotPresent: false
+    }));
+  const {data: [v136, v137, v138, v139], secs: v141, time: v140, didSend: v46, from: v135 } = txn1;
+  ;
+  const txn2 = await (ctc.recv({
+    didSend: false,
+    evt_cnt: 0,
+    funcNum: 1,
+    out_tys: [],
+    timeoutAt: undefined /* mto */,
+    waitIfNotPresent: false
+    }));
+  const {data: [], secs: v146, time: v145, didSend: v55, from: v144 } = txn2;
+  ;
+  ;
+  const txn3 = await (ctc.recv({
+    didSend: false,
+    evt_cnt: 4,
+    funcNum: 2,
+    out_tys: [ctc1, ctc1, ctc1, ctc0],
+    timeoutAt: undefined /* mto */,
+    waitIfNotPresent: false
+    }));
+  const {data: [v156, v157, v158, v159], secs: v161, time: v160, didSend: v71, from: v155 } = txn3;
+  ;
+  const v162 = stdlib.addressEq(v144, v155);
+  stdlib.assert(v162, {
+    at: './index.rsh:62:13:dot',
+    fs: [],
+    msg: 'sender correct',
+    who: 'Disposal'
+    });
+  const txn4 = await (ctc.recv({
+    didSend: false,
+    evt_cnt: 0,
+    funcNum: 3,
+    out_tys: [],
+    timeoutAt: undefined /* mto */,
+    waitIfNotPresent: false
+    }));
+  const {data: [], secs: v167, time: v166, didSend: v80, from: v165 } = txn4;
+  ;
+  ;
+  const txn5 = await (ctc.recv({
+    didSend: false,
+    evt_cnt: 4,
+    funcNum: 4,
+    out_tys: [ctc1, ctc1, ctc1, ctc0],
+    timeoutAt: undefined /* mto */,
+    waitIfNotPresent: false
+    }));
+  const {data: [v177, v178, v179, v180], secs: v182, time: v181, didSend: v96, from: v176 } = txn5;
+  ;
+  const v183 = stdlib.addressEq(v165, v176);
+  stdlib.assert(v183, {
+    at: './index.rsh:76:10:dot',
+    fs: [],
+    msg: 'sender correct',
+    who: 'Disposal'
+    });
+  stdlib.protect(ctc5, await interact.seeOutcome(stdlib.checkedBigNumberify('./index.rsh:80:25:decimal', stdlib.UInt_max, '5')), {
+    at: './index.rsh:80:24:application',
+    fs: ['at ./index.rsh:79:7:application call to [unknown function] (defined at: ./index.rsh:79:42:function exp)'],
+    msg: 'seeOutcome',
+    who: 'Disposal'
+    });
+  
+  return;
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  };
+export async function Seller(ctcTop, interact) {
+  if (typeof(ctcTop) !== 'object' || ctcTop._initialize === undefined) {
+    return Promise.reject(new Error(`The backend for Seller expects to receive a contract as its first argument.`));}
+  if (typeof(interact) !== 'object') {
+    return Promise.reject(new Error(`The backend for Seller expects to receive an interact object as its second argument.`));}
+  const ctc = ctcTop._initialize();
+  const stdlib = ctc.stdlib;
+  const ctc0 = stdlib.T_UInt;
+  const ctc1 = stdlib.T_Bytes(stdlib.checkedBigNumberify('<builtin>', stdlib.UInt_max, '256'));
+  const ctc2 = stdlib.T_Object({
+    i: ctc0,
+    scale: ctc0
+    });
+  const ctc3 = stdlib.T_Bool;
+  const ctc4 = stdlib.T_Object({
+    i: ctc2,
+    sign: ctc3
+    });
+  const ctc5 = stdlib.T_Null;
+  const ctc6 = stdlib.T_Address;
+  
+  
+  const v128 = stdlib.protect(ctc0, interact.BidPriceSeller, 'for Seller\'s interact field BidPriceSeller');
+  const v130 = stdlib.protect(ctc1, interact.DateCollected, 'for Seller\'s interact field DateCollected');
+  const v131 = stdlib.protect(ctc1, interact.SellerLocation, 'for Seller\'s interact field SellerLocation');
+  const v132 = stdlib.protect(ctc1, interact.SellerName, 'for Seller\'s interact field SellerName');
+  
+  const txn1 = await (ctc.recv({
+    didSend: false,
+    evt_cnt: 4,
+    funcNum: 0,
+    out_tys: [ctc1, ctc1, ctc4, ctc0],
+    timeoutAt: undefined /* mto */,
+    waitIfNotPresent: false
+    }));
+  const {data: [v136, v137, v138, v139], secs: v141, time: v140, didSend: v46, from: v135 } = txn1;
+  ;
+  const txn2 = await (ctc.recv({
+    didSend: false,
+    evt_cnt: 0,
+    funcNum: 1,
+    out_tys: [],
+    timeoutAt: undefined /* mto */,
+    waitIfNotPresent: false
+    }));
+  const {data: [], secs: v146, time: v145, didSend: v55, from: v144 } = txn2;
+  ;
+  ;
+  const txn3 = await (ctc.recv({
+    didSend: false,
+    evt_cnt: 4,
+    funcNum: 2,
+    out_tys: [ctc1, ctc1, ctc1, ctc0],
+    timeoutAt: undefined /* mto */,
+    waitIfNotPresent: false
+    }));
+  const {data: [v156, v157, v158, v159], secs: v161, time: v160, didSend: v71, from: v155 } = txn3;
+  ;
+  const v162 = stdlib.addressEq(v144, v155);
+  stdlib.assert(v162, {
+    at: './index.rsh:62:13:dot',
+    fs: [],
+    msg: 'sender correct',
+    who: 'Seller'
+    });
+  stdlib.protect(ctc5, await interact.acceptBidPrice(v159), {
+    at: './index.rsh:65:28:application',
+    fs: ['at ./index.rsh:64:14:application call to [unknown function] (defined at: ./index.rsh:64:17:function exp)'],
+    msg: 'acceptBidPrice',
+    who: 'Seller'
+    });
+  
+  const txn4 = await (ctc.sendrecv({
+    args: [v144, v159],
+    evt_cnt: 0,
+    funcNum: 3,
+    lct: v160,
+    onlyIf: true,
+    out_tys: [],
+    pay: [v159, []],
+    sim_p: (async (txn4) => {
+      const sim_r = { txns: [], mapRefs: [], maps: [] };
+      let sim_txn_ctr = stdlib.UInt_max;
+      const getSimTokCtr = () => { sim_txn_ctr = sim_txn_ctr.sub(1); return sim_txn_ctr; };
+      
+      
+      const {data: [], secs: v167, time: v166, didSend: v80, from: v165 } = txn4;
+      
+      sim_r.txns.push({
+        amt: v159,
+        kind: 'to',
+        tok: undefined /* Nothing */
+        });
+      sim_r.txns.push({
+        kind: 'from',
+        to: v144,
+        tok: undefined /* Nothing */
+        });
+      sim_r.isHalt = false;
+      
+      return sim_r;
+      }),
+    soloSend: true,
+    timeoutAt: undefined /* mto */,
+    tys: [ctc6, ctc0],
+    waitIfNotPresent: false
+    }));
+  const {data: [], secs: v167, time: v166, didSend: v80, from: v165 } = txn4;
+  ;
+  ;
+  const txn5 = await (ctc.sendrecv({
+    args: [v165, v132, v131, v130, v128],
+    evt_cnt: 4,
+    funcNum: 4,
+    lct: v166,
+    onlyIf: true,
+    out_tys: [ctc1, ctc1, ctc1, ctc0],
+    pay: [stdlib.checkedBigNumberify('./index.rsh:76:10:decimal', stdlib.UInt_max, '0'), []],
+    sim_p: (async (txn5) => {
+      const sim_r = { txns: [], mapRefs: [], maps: [] };
+      let sim_txn_ctr = stdlib.UInt_max;
+      const getSimTokCtr = () => { sim_txn_ctr = sim_txn_ctr.sub(1); return sim_txn_ctr; };
+      
+      
+      const {data: [v177, v178, v179, v180], secs: v182, time: v181, didSend: v96, from: v176 } = txn5;
+      
+      ;
+      sim_r.txns.push({
+        kind: 'halt',
+        tok: undefined /* Nothing */
+        })
+      sim_r.isHalt = true;
+      
+      return sim_r;
+      }),
+    soloSend: true,
+    timeoutAt: undefined /* mto */,
+    tys: [ctc6, ctc1, ctc1, ctc1, ctc0],
+    waitIfNotPresent: false
+    }));
+  const {data: [v177, v178, v179, v180], secs: v182, time: v181, didSend: v96, from: v176 } = txn5;
+  ;
+  const v183 = stdlib.addressEq(v165, v176);
+  stdlib.assert(v183, {
+    at: './index.rsh:76:10:dot',
+    fs: [],
+    msg: 'sender correct',
+    who: 'Seller'
+    });
+  stdlib.protect(ctc5, await interact.seeOutcome(stdlib.checkedBigNumberify('./index.rsh:80:25:decimal', stdlib.UInt_max, '5')), {
+    at: './index.rsh:80:24:application',
+    fs: ['at ./index.rsh:79:7:application call to [unknown function] (defined at: ./index.rsh:79:42:function exp)'],
+    msg: 'seeOutcome',
+    who: 'Seller'
+    });
+  
+  return;
+  
+  
+  
+  
+  
+  
+  
   
   
   
@@ -972,14 +504,14 @@ const _ALGO = {
     pure: [],
     sigs: []
     },
-  appApproval: `ByAQAAFQBQkgCAcoAniAAQQDWDAmAwEAAQEAIjUAMRhBBI8qZEkiWzUBIQZbNQI2GgAXSUEAByI1BCM1BgA2GgIXNQQ2GgM2GgEXSSUMQAIsSSEHDEABOEkhBgxAAN5JIQQMQABWIQQSRCEENAESRDQESSISTDQCEhFEKGQpZFBJNQNXMCA1/4AEogVmjrAyBjQDIQtbD0Q0A1cAIDEAEjT/MQASEUSxIrIBNAMkW7III7IQNP+yB7NCA6dIIQQ0ARJENARJIhJMNAISEUQoZClkUEk1A1cAIDX/STUFSSJbNf4hBls1/YAENRoq0DT+FlA0/RZQsDIGNAMhC1sMRDT/MQASRDQDV1ggNP4WNP0WUAESRDT/NAMhBVs0AyEIWzQDVzAgNP0hDDQDIQpbCQghDRgyBjQDJFtCAsVIIQc0ARJENARJIhJMNAISEUQoZClkUEk1A1cAIDX/gATiG7OpsDIGNAMhClsPRDT/MQASNANXMCAxABIRRLEisgE0AyRbsggjshA0/7IHs0IC00mBBgxAAJdIIQc0ARJENARJIhJMNAISEUQoZClkUEk1A0lKSlcAIDX/IQVbNf4hCFs1/VcwIDX8JFs1+1dYIDX6STUFFzX5gARw7e96NPkWULAyBjQDIQpbDEQ0/DEAEkQyBjT9CDX4NP80/hZQNP0WUDT8UDT7FlA0+lA0+RZQNPgWUChLAVcAf2cpSwFXfwlnSCEENQEyBjUCQgJQSCU0ARJENARJIhJMNAISEUQoZEk1A1cwIDX/gATMmZJcsDIGNAMhDlsPRDQDVwAgMQASNP8xABIRRLEisgE0AyRbsggjshA0/7IHs0IB5kkhCQxAANBJIQwMQACISCU0ARJENARJIhJMNAISEUQoZEk1A0lKSVcAIDX/IQVbNf4hCFs1/VcwIDX8JFs1+0k1BTX6gAQ4sCMtNPpQsDIGNAMhDlsMRDT/MQASRDIGNP0INfk0/zT+FlA0/RZQNPxQNPsWUDT6UDT5FlAoSwFXAH9nKUsBV38BZ0ghBzUBMgY1AkIBayEJEkQjNAESRDQESSISTDQCEhFEKGQ1A4AEQbFATbAyBjQDIQ9bD0SxIrIBNAMhBVuyCCOyEDQDVwAgsgezQgEPSSMMQABISCM0ARJENARJIhJMNAISEUQoZEk1AyEFWzX/gASai5F0sDIGNAMhD1sMRDT/iAFGNANXACA0/zQDIQhbMQAjMgY0/0kIQgBgSIGgjQaIASYiNAESRDQESSISTDQCEhFESTUFSSJbNf8hBls1/oAErNEfwzT/FlA0/hZQsDT/iAD1MgY0/gg1/TEANP8WUDT+FlA0/RZQKEsBVwA4Z0gjNQEyBjUCQgB8Nf81/jX9Nfw1+zX6Nfk0/SMSQQAuNP40+wg1+DT5NPoWUDT7FlA0/FA0/xZQNPgWUChLAVcAYGdIJTUBMgY1AkIAObEisgEhCTT6C7III7IQNPw0+TT9IQkSTbIHs0IAADEZJRJEsSKyASKyCCOyEDIJsgkyCrIHs0IABTEZIhJEKjQBFjQCFlBnNAZBAAqABBUffHU0B1CwNABJIwgyBBJEMRYSRCNDMRkiEkRC/98iMTQSRCENMTUSRCIxNhJEIjE3EkQiNQEiNQJC/640AElKIwg1ADgHMgoSRDgQIxJEOAgSRIk=`,
+  appApproval: `ByAJAAGAAgIEA4AEgAYgJgIBAAAiNQAxGEECRSlkSSJbNQGBCFs1AjYaABdJQQAHIjUEIzUGADYaAhc1BDYaAzYaARdJJQxAARNJIQUMQACnSSEEDEAAUCEEEkQhBDQBEkQ0BEkiEkw0AhIRRChkNQNJNQVJSiIkWDX/JCRYNf4hBiRYNf0hB1s1/IAEIH+bFTT/UDT+UDT9UDT8FlCwNAMxABJEQgFpSCEFNAESRDQESSISTDQCEhFEKGRJNQMhCFs1/4AEp2XEtLA0/4gBrrEisgE0/7III7IQNANXACCyB7MxAChLAVcAIGdIIQQ1ATIGNQJCATVIJTQBEkQ0BEkiEkw0AhIRRChkSTUDNf9JNQVJSiIkWDX+JCRYNf0hBiRYNfwhB1s1+4AEk/FdcDT+UDT9UDT8UDT7FlCwNP8xABJENP80+xZQKEsBVwAoZ0ghBTUBMgY1AkIA0EkjDEAATkgjNAESRDQESSISTDQCEhFEKGRJNQMhCFs1/4AEmouRdLA0/4gA9LEisgE0/7III7IQNANXACCyB7MxAChLAVcAIGdIJTUBMgY1AkIAfEiBoI0GiADFIjQBEkQ0BEkiEkw0AhIRREk1BUlKIiRYNf8kJFg1/iEGgRFYNf2BkQRbNfyABJXP1x80/1A0/lA0/VA0/BZQsDEANPwWUChLAVcAKGdIIzUBMgY1AkIAHDEZgQUSRLEisgEisggjshAyCbIJMgqyB7NCAAUxGSISRCk0ARY0AhZQZzQGQQAKgAQVH3x1NAdQsDQASSMIMgQSRDEWEkQjQzEZIhJEQv/fIjE0EkQlMTUSRCIxNhJEIjE3EkQiNQEiNQJC/680AElKIwg1ADgHMgoSRDgQIxJEOAgSRIk=`,
   appClear: `Bw==`,
   companionInfo: null,
   extraPages: 0,
   mapDataKeys: 0,
   mapDataSize: 0,
-  stateKeys: 2,
-  stateSize: 136,
+  stateKeys: 1,
+  stateSize: 40,
   unsupported: [],
   version: 11,
   warnings: []
@@ -998,22 +530,140 @@ const _ETH = {
           {
             "components": [
               {
-                "internalType": "uint256",
-                "name": "v305",
-                "type": "uint256"
+                "components": [
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem0",
+                    "type": "bytes32"
+                  },
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem1",
+                    "type": "bytes32"
+                  },
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem2",
+                    "type": "bytes32"
+                  },
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem3",
+                    "type": "bytes32"
+                  },
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem4",
+                    "type": "bytes32"
+                  },
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem5",
+                    "type": "bytes32"
+                  },
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem6",
+                    "type": "bytes32"
+                  },
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem7",
+                    "type": "bytes32"
+                  }
+                ],
+                "internalType": "struct T1",
+                "name": "v136",
+                "type": "tuple"
+              },
+              {
+                "components": [
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem0",
+                    "type": "bytes32"
+                  },
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem1",
+                    "type": "bytes32"
+                  },
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem2",
+                    "type": "bytes32"
+                  },
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem3",
+                    "type": "bytes32"
+                  },
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem4",
+                    "type": "bytes32"
+                  },
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem5",
+                    "type": "bytes32"
+                  },
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem6",
+                    "type": "bytes32"
+                  },
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem7",
+                    "type": "bytes32"
+                  }
+                ],
+                "internalType": "struct T1",
+                "name": "v137",
+                "type": "tuple"
+              },
+              {
+                "components": [
+                  {
+                    "components": [
+                      {
+                        "internalType": "uint256",
+                        "name": "_i",
+                        "type": "uint256"
+                      },
+                      {
+                        "internalType": "uint256",
+                        "name": "_scale",
+                        "type": "uint256"
+                      }
+                    ],
+                    "internalType": "struct T2",
+                    "name": "_i",
+                    "type": "tuple"
+                  },
+                  {
+                    "internalType": "bool",
+                    "name": "_sign",
+                    "type": "bool"
+                  }
+                ],
+                "internalType": "struct T3",
+                "name": "v138",
+                "type": "tuple"
               },
               {
                 "internalType": "uint256",
-                "name": "v306",
+                "name": "v139",
                 "type": "uint256"
               }
             ],
-            "internalType": "struct T1",
+            "internalType": "struct T4",
             "name": "msg",
             "type": "tuple"
           }
         ],
-        "internalType": "struct T2",
+        "internalType": "struct T5",
         "name": "_a",
         "type": "tuple"
       }
@@ -1051,23 +701,141 @@ const _ETH = {
           {
             "components": [
               {
-                "internalType": "uint256",
-                "name": "v305",
-                "type": "uint256"
+                "components": [
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem0",
+                    "type": "bytes32"
+                  },
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem1",
+                    "type": "bytes32"
+                  },
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem2",
+                    "type": "bytes32"
+                  },
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem3",
+                    "type": "bytes32"
+                  },
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem4",
+                    "type": "bytes32"
+                  },
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem5",
+                    "type": "bytes32"
+                  },
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem6",
+                    "type": "bytes32"
+                  },
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem7",
+                    "type": "bytes32"
+                  }
+                ],
+                "internalType": "struct T1",
+                "name": "v136",
+                "type": "tuple"
+              },
+              {
+                "components": [
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem0",
+                    "type": "bytes32"
+                  },
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem1",
+                    "type": "bytes32"
+                  },
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem2",
+                    "type": "bytes32"
+                  },
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem3",
+                    "type": "bytes32"
+                  },
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem4",
+                    "type": "bytes32"
+                  },
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem5",
+                    "type": "bytes32"
+                  },
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem6",
+                    "type": "bytes32"
+                  },
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem7",
+                    "type": "bytes32"
+                  }
+                ],
+                "internalType": "struct T1",
+                "name": "v137",
+                "type": "tuple"
+              },
+              {
+                "components": [
+                  {
+                    "components": [
+                      {
+                        "internalType": "uint256",
+                        "name": "_i",
+                        "type": "uint256"
+                      },
+                      {
+                        "internalType": "uint256",
+                        "name": "_scale",
+                        "type": "uint256"
+                      }
+                    ],
+                    "internalType": "struct T2",
+                    "name": "_i",
+                    "type": "tuple"
+                  },
+                  {
+                    "internalType": "bool",
+                    "name": "_sign",
+                    "type": "bool"
+                  }
+                ],
+                "internalType": "struct T3",
+                "name": "v138",
+                "type": "tuple"
               },
               {
                 "internalType": "uint256",
-                "name": "v306",
+                "name": "v139",
                 "type": "uint256"
               }
             ],
-            "internalType": "struct T1",
+            "internalType": "struct T4",
             "name": "msg",
             "type": "tuple"
           }
         ],
         "indexed": false,
-        "internalType": "struct T2",
+        "internalType": "struct T5",
         "name": "_a",
         "type": "tuple"
       }
@@ -1098,7 +866,7 @@ const _ETH = {
           }
         ],
         "indexed": false,
-        "internalType": "struct T7",
+        "internalType": "struct T8",
         "name": "_a",
         "type": "tuple"
       }
@@ -1123,13 +891,161 @@ const _ETH = {
             "type": "uint256"
           },
           {
-            "internalType": "bool",
+            "components": [
+              {
+                "components": [
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem0",
+                    "type": "bytes32"
+                  },
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem1",
+                    "type": "bytes32"
+                  },
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem2",
+                    "type": "bytes32"
+                  },
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem3",
+                    "type": "bytes32"
+                  },
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem4",
+                    "type": "bytes32"
+                  },
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem5",
+                    "type": "bytes32"
+                  },
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem6",
+                    "type": "bytes32"
+                  },
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem7",
+                    "type": "bytes32"
+                  }
+                ],
+                "internalType": "struct T1",
+                "name": "v156",
+                "type": "tuple"
+              },
+              {
+                "components": [
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem0",
+                    "type": "bytes32"
+                  },
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem1",
+                    "type": "bytes32"
+                  },
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem2",
+                    "type": "bytes32"
+                  },
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem3",
+                    "type": "bytes32"
+                  },
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem4",
+                    "type": "bytes32"
+                  },
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem5",
+                    "type": "bytes32"
+                  },
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem6",
+                    "type": "bytes32"
+                  },
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem7",
+                    "type": "bytes32"
+                  }
+                ],
+                "internalType": "struct T1",
+                "name": "v157",
+                "type": "tuple"
+              },
+              {
+                "components": [
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem0",
+                    "type": "bytes32"
+                  },
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem1",
+                    "type": "bytes32"
+                  },
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem2",
+                    "type": "bytes32"
+                  },
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem3",
+                    "type": "bytes32"
+                  },
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem4",
+                    "type": "bytes32"
+                  },
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem5",
+                    "type": "bytes32"
+                  },
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem6",
+                    "type": "bytes32"
+                  },
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem7",
+                    "type": "bytes32"
+                  }
+                ],
+                "internalType": "struct T1",
+                "name": "v158",
+                "type": "tuple"
+              },
+              {
+                "internalType": "uint256",
+                "name": "v159",
+                "type": "uint256"
+              }
+            ],
+            "internalType": "struct T10",
             "name": "msg",
-            "type": "bool"
+            "type": "tuple"
           }
         ],
         "indexed": false,
-        "internalType": "struct T7",
+        "internalType": "struct T11",
         "name": "_a",
         "type": "tuple"
       }
@@ -1154,56 +1070,18 @@ const _ETH = {
             "type": "uint256"
           },
           {
-            "components": [
-              {
-                "internalType": "uint256",
-                "name": "v358",
-                "type": "uint256"
-              }
-            ],
-            "internalType": "struct T10",
-            "name": "msg",
-            "type": "tuple"
-          }
-        ],
-        "indexed": false,
-        "internalType": "struct T11",
-        "name": "_a",
-        "type": "tuple"
-      }
-    ],
-    "name": "_reach_e4",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "_who",
-        "type": "address"
-      },
-      {
-        "components": [
-          {
-            "internalType": "uint256",
-            "name": "time",
-            "type": "uint256"
-          },
-          {
             "internalType": "bool",
             "name": "msg",
             "type": "bool"
           }
         ],
         "indexed": false,
-        "internalType": "struct T7",
+        "internalType": "struct T8",
         "name": "_a",
         "type": "tuple"
       }
     ],
-    "name": "_reach_e5",
+    "name": "_reach_e3",
     "type": "event"
   },
   {
@@ -1225,8 +1103,149 @@ const _ETH = {
           {
             "components": [
               {
+                "components": [
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem0",
+                    "type": "bytes32"
+                  },
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem1",
+                    "type": "bytes32"
+                  },
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem2",
+                    "type": "bytes32"
+                  },
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem3",
+                    "type": "bytes32"
+                  },
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem4",
+                    "type": "bytes32"
+                  },
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem5",
+                    "type": "bytes32"
+                  },
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem6",
+                    "type": "bytes32"
+                  },
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem7",
+                    "type": "bytes32"
+                  }
+                ],
+                "internalType": "struct T1",
+                "name": "v177",
+                "type": "tuple"
+              },
+              {
+                "components": [
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem0",
+                    "type": "bytes32"
+                  },
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem1",
+                    "type": "bytes32"
+                  },
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem2",
+                    "type": "bytes32"
+                  },
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem3",
+                    "type": "bytes32"
+                  },
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem4",
+                    "type": "bytes32"
+                  },
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem5",
+                    "type": "bytes32"
+                  },
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem6",
+                    "type": "bytes32"
+                  },
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem7",
+                    "type": "bytes32"
+                  }
+                ],
+                "internalType": "struct T1",
+                "name": "v178",
+                "type": "tuple"
+              },
+              {
+                "components": [
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem0",
+                    "type": "bytes32"
+                  },
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem1",
+                    "type": "bytes32"
+                  },
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem2",
+                    "type": "bytes32"
+                  },
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem3",
+                    "type": "bytes32"
+                  },
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem4",
+                    "type": "bytes32"
+                  },
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem5",
+                    "type": "bytes32"
+                  },
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem6",
+                    "type": "bytes32"
+                  },
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem7",
+                    "type": "bytes32"
+                  }
+                ],
+                "internalType": "struct T1",
+                "name": "v179",
+                "type": "tuple"
+              },
+              {
                 "internalType": "uint256",
-                "name": "v374",
+                "name": "v180",
                 "type": "uint256"
               }
             ],
@@ -1241,112 +1260,7 @@ const _ETH = {
         "type": "tuple"
       }
     ],
-    "name": "_reach_e6",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "_who",
-        "type": "address"
-      },
-      {
-        "components": [
-          {
-            "internalType": "uint256",
-            "name": "time",
-            "type": "uint256"
-          },
-          {
-            "internalType": "bool",
-            "name": "msg",
-            "type": "bool"
-          }
-        ],
-        "indexed": false,
-        "internalType": "struct T7",
-        "name": "_a",
-        "type": "tuple"
-      }
-    ],
-    "name": "_reach_e7",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "_who",
-        "type": "address"
-      },
-      {
-        "components": [
-          {
-            "internalType": "uint256",
-            "name": "time",
-            "type": "uint256"
-          },
-          {
-            "components": [
-              {
-                "internalType": "uint256",
-                "name": "v389",
-                "type": "uint256"
-              },
-              {
-                "internalType": "uint256",
-                "name": "v390",
-                "type": "uint256"
-              }
-            ],
-            "internalType": "struct T15",
-            "name": "msg",
-            "type": "tuple"
-          }
-        ],
-        "indexed": false,
-        "internalType": "struct T16",
-        "name": "_a",
-        "type": "tuple"
-      }
-    ],
-    "name": "_reach_e8",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "_who",
-        "type": "address"
-      },
-      {
-        "components": [
-          {
-            "internalType": "uint256",
-            "name": "time",
-            "type": "uint256"
-          },
-          {
-            "internalType": "bool",
-            "name": "msg",
-            "type": "bool"
-          }
-        ],
-        "indexed": false,
-        "internalType": "struct T7",
-        "name": "_a",
-        "type": "tuple"
-      }
-    ],
-    "name": "_reach_e9",
+    "name": "_reach_e4",
     "type": "event"
   },
   {
@@ -1412,7 +1326,7 @@ const _ETH = {
             "type": "bool"
           }
         ],
-        "internalType": "struct T7",
+        "internalType": "struct T8",
         "name": "_a",
         "type": "tuple"
       }
@@ -1432,12 +1346,160 @@ const _ETH = {
             "type": "uint256"
           },
           {
-            "internalType": "bool",
+            "components": [
+              {
+                "components": [
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem0",
+                    "type": "bytes32"
+                  },
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem1",
+                    "type": "bytes32"
+                  },
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem2",
+                    "type": "bytes32"
+                  },
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem3",
+                    "type": "bytes32"
+                  },
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem4",
+                    "type": "bytes32"
+                  },
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem5",
+                    "type": "bytes32"
+                  },
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem6",
+                    "type": "bytes32"
+                  },
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem7",
+                    "type": "bytes32"
+                  }
+                ],
+                "internalType": "struct T1",
+                "name": "v156",
+                "type": "tuple"
+              },
+              {
+                "components": [
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem0",
+                    "type": "bytes32"
+                  },
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem1",
+                    "type": "bytes32"
+                  },
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem2",
+                    "type": "bytes32"
+                  },
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem3",
+                    "type": "bytes32"
+                  },
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem4",
+                    "type": "bytes32"
+                  },
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem5",
+                    "type": "bytes32"
+                  },
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem6",
+                    "type": "bytes32"
+                  },
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem7",
+                    "type": "bytes32"
+                  }
+                ],
+                "internalType": "struct T1",
+                "name": "v157",
+                "type": "tuple"
+              },
+              {
+                "components": [
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem0",
+                    "type": "bytes32"
+                  },
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem1",
+                    "type": "bytes32"
+                  },
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem2",
+                    "type": "bytes32"
+                  },
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem3",
+                    "type": "bytes32"
+                  },
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem4",
+                    "type": "bytes32"
+                  },
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem5",
+                    "type": "bytes32"
+                  },
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem6",
+                    "type": "bytes32"
+                  },
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem7",
+                    "type": "bytes32"
+                  }
+                ],
+                "internalType": "struct T1",
+                "name": "v158",
+                "type": "tuple"
+              },
+              {
+                "internalType": "uint256",
+                "name": "v159",
+                "type": "uint256"
+              }
+            ],
+            "internalType": "struct T10",
             "name": "msg",
-            "type": "bool"
+            "type": "tuple"
           }
         ],
-        "internalType": "struct T7",
+        "internalType": "struct T11",
         "name": "_a",
         "type": "tuple"
       }
@@ -1457,49 +1519,17 @@ const _ETH = {
             "type": "uint256"
           },
           {
-            "components": [
-              {
-                "internalType": "uint256",
-                "name": "v358",
-                "type": "uint256"
-              }
-            ],
-            "internalType": "struct T10",
-            "name": "msg",
-            "type": "tuple"
-          }
-        ],
-        "internalType": "struct T11",
-        "name": "_a",
-        "type": "tuple"
-      }
-    ],
-    "name": "_reach_m4",
-    "outputs": [],
-    "stateMutability": "payable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "components": [
-          {
-            "internalType": "uint256",
-            "name": "time",
-            "type": "uint256"
-          },
-          {
             "internalType": "bool",
             "name": "msg",
             "type": "bool"
           }
         ],
-        "internalType": "struct T7",
+        "internalType": "struct T8",
         "name": "_a",
         "type": "tuple"
       }
     ],
-    "name": "_reach_m5",
+    "name": "_reach_m3",
     "outputs": [],
     "stateMutability": "payable",
     "type": "function"
@@ -1516,8 +1546,149 @@ const _ETH = {
           {
             "components": [
               {
+                "components": [
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem0",
+                    "type": "bytes32"
+                  },
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem1",
+                    "type": "bytes32"
+                  },
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem2",
+                    "type": "bytes32"
+                  },
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem3",
+                    "type": "bytes32"
+                  },
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem4",
+                    "type": "bytes32"
+                  },
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem5",
+                    "type": "bytes32"
+                  },
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem6",
+                    "type": "bytes32"
+                  },
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem7",
+                    "type": "bytes32"
+                  }
+                ],
+                "internalType": "struct T1",
+                "name": "v177",
+                "type": "tuple"
+              },
+              {
+                "components": [
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem0",
+                    "type": "bytes32"
+                  },
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem1",
+                    "type": "bytes32"
+                  },
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem2",
+                    "type": "bytes32"
+                  },
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem3",
+                    "type": "bytes32"
+                  },
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem4",
+                    "type": "bytes32"
+                  },
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem5",
+                    "type": "bytes32"
+                  },
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem6",
+                    "type": "bytes32"
+                  },
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem7",
+                    "type": "bytes32"
+                  }
+                ],
+                "internalType": "struct T1",
+                "name": "v178",
+                "type": "tuple"
+              },
+              {
+                "components": [
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem0",
+                    "type": "bytes32"
+                  },
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem1",
+                    "type": "bytes32"
+                  },
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem2",
+                    "type": "bytes32"
+                  },
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem3",
+                    "type": "bytes32"
+                  },
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem4",
+                    "type": "bytes32"
+                  },
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem5",
+                    "type": "bytes32"
+                  },
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem6",
+                    "type": "bytes32"
+                  },
+                  {
+                    "internalType": "bytes32",
+                    "name": "elem7",
+                    "type": "bytes32"
+                  }
+                ],
+                "internalType": "struct T1",
+                "name": "v179",
+                "type": "tuple"
+              },
+              {
                 "internalType": "uint256",
-                "name": "v374",
+                "name": "v180",
                 "type": "uint256"
               }
             ],
@@ -1531,94 +1702,7 @@ const _ETH = {
         "type": "tuple"
       }
     ],
-    "name": "_reach_m6",
-    "outputs": [],
-    "stateMutability": "payable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "components": [
-          {
-            "internalType": "uint256",
-            "name": "time",
-            "type": "uint256"
-          },
-          {
-            "internalType": "bool",
-            "name": "msg",
-            "type": "bool"
-          }
-        ],
-        "internalType": "struct T7",
-        "name": "_a",
-        "type": "tuple"
-      }
-    ],
-    "name": "_reach_m7",
-    "outputs": [],
-    "stateMutability": "payable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "components": [
-          {
-            "internalType": "uint256",
-            "name": "time",
-            "type": "uint256"
-          },
-          {
-            "components": [
-              {
-                "internalType": "uint256",
-                "name": "v389",
-                "type": "uint256"
-              },
-              {
-                "internalType": "uint256",
-                "name": "v390",
-                "type": "uint256"
-              }
-            ],
-            "internalType": "struct T15",
-            "name": "msg",
-            "type": "tuple"
-          }
-        ],
-        "internalType": "struct T16",
-        "name": "_a",
-        "type": "tuple"
-      }
-    ],
-    "name": "_reach_m8",
-    "outputs": [],
-    "stateMutability": "payable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "components": [
-          {
-            "internalType": "uint256",
-            "name": "time",
-            "type": "uint256"
-          },
-          {
-            "internalType": "bool",
-            "name": "msg",
-            "type": "bool"
-          }
-        ],
-        "internalType": "struct T7",
-        "name": "_a",
-        "type": "tuple"
-      }
-    ],
-    "name": "_reach_m9",
+    "name": "_reach_m4",
     "outputs": [],
     "stateMutability": "payable",
     "type": "function"
@@ -1628,8 +1712,8 @@ const _ETH = {
     "type": "receive"
   }
 ]`,
-  Bytecode: `0x608060405260405162001d0f38038062001d0f8339810160408190526200002691620002a9565b6000808055436003556040805160208082018352928152815133815284518185015284840151805182850152909301516060840152905190917fa736757a943474ef5983bb0422ab3a1e64bcd39e99635f4430c7765118231f95919081900360800190a16020820151516200009f90341460076200014a565b620000b9438360200151602001516200017560201b60201c565b81526040805160808082018352600060208084018281528486018381526060808701858152338089528b860180515186525186015184528a5182526001968790554390965588518086019690965292518589015290519084015251828401528451808303909301835260a090910190935280519192620001409260029290910190620001cc565b505050506200036d565b81620001715760405163100960cb60e01b8152600481018290526024015b60405180910390fd5b5050565b60008262000184838262000309565b9150811015620001c65760405162461bcd60e51b815260206004820152600c60248201526b616464206f766572666c6f7760a01b604482015260640162000168565b92915050565b828054620001da9062000330565b90600052602060002090601f016020900481019282620001fe576000855562000249565b82601f106200021957805160ff191683800117855562000249565b8280016001018555821562000249579182015b82811115620002495782518255916020019190600101906200022c565b50620002579291506200025b565b5090565b5b808211156200025757600081556001016200025c565b604080519081016001600160401b0381118282101715620002a357634e487b7160e01b600052604160045260246000fd5b60405290565b60008183036060811215620002bd57600080fd5b620002c762000272565b835181526040601f1983011215620002de57600080fd5b620002e862000272565b60208581015182526040909501518582015293810193909352509092915050565b600082198211156200032b57634e487b7160e01b600052601160045260246000fd5b500190565b600181811c908216806200034557607f821691505b602082108114156200036757634e487b7160e01b600052602260045260246000fd5b50919050565b611992806200037d6000396000f3fe60806040526004361061009a5760003560e01c80638e314769116100615780638e31476914610115578063980b6eac14610128578063a209ad4e1461013b578063ab53f2c61461014e578063bf2c5b2414610171578063de7369981461018457005b80631e93b0f1146100a35780632c10a159146100c75780637eea518c146100da57806383230757146100ed5780638328d4c41461010257005b366100a157005b005b3480156100af57600080fd5b506003545b6040519081526020015b60405180910390f35b6100a16100d5366004611523565b610197565b6100a16100e8366004611523565b610326565b3480156100f957600080fd5b506001546100b4565b6100a161011036600461153f565b6104a4565b6100a1610123366004611523565b6106d2565b6100a1610136366004611523565b61086d565b6100a1610149366004611523565b610b0d565b34801561015a57600080fd5b50610163610d50565b6040516100be929190611551565b6100a161017f366004611523565b610ded565b6100a1610192366004611523565b610f84565b6101a760016000541460096110da565b6101c1813515806101ba57506001548235145b600a6110da565b6000808055600280546101d3906115ae565b80601f01602080910402602001604051908101604052809291908181526020018280546101ff906115ae565b801561024c5780601f106102215761010080835404028352916020019161024c565b820191906000526020600020905b81548152906001019060200180831161022f57829003601f168201915b505050505080602001905181019061026491906115ff565b905061027781606001514310600b6110da565b7f400d21ea4e4a5e28b4ae5f0f476c201fc8036473fcf7c8cd252f38698020b4f133836040516102a8929190611678565b60405180910390a16102c18160200151341460086110da565b6102c96113dc565b815181516001600160a01b039091169052602080830180518351830152604080850151845190910152825133606090910152818301805160019052514392019190915251800160208201516040015261032181611100565b505050565b610336600160005414600d6110da565b6103508135158061034957506001548235145b600e6110da565b600080805560028054610362906115ae565b80601f016020809104026020016040519081016040528092919081815260200182805461038e906115ae565b80156103db5780601f106103b0576101008083540402835291602001916103db565b820191906000526020600020905b8154815290600101906020018083116103be57829003601f168201915b50505050508060200190518101906103f391906115ff565b90506104078160600151431015600f6110da565b7f919263be6d51bec670ce110fb6a7df03fe323e3de4dade5355bccc6a4b06d9503383604051610438929190611678565b60405180910390a161044c3415600c6110da565b805160208201516040516001600160a01b039092169181156108fc0291906000818181858888f19350505050158015610489573d6000803e3d6000fd5b50600080805560018190556104a090600290611435565b5050565b6104b460096000541460276110da565b6104ce813515806104c757506001548235145b60286110da565b6000808055600280546104e0906115ae565b80601f016020809104026020016040519081016040528092919081815260200182805461050c906115ae565b80156105595780601f1061052e57610100808354040283529160200191610559565b820191906000526020600020905b81548152906001019060200180831161053c57829003601f168201915b505050505080602001905181019061057191906116b5565b90506105848160e00151431060296110da565b604080513381528335602080830191909152840135818301529083013560608201527f71b5093cb50f6a6c807d17b0994efe213c21a3f7fc6bd14bf50facf7ea99022e9060800160405180910390a16105df341560246110da565b80516105f7906001600160a01b0316331460256110da565b604080516106439161061d91602080870135928701359101918252602082015260400190565b6040516020818303038152906040528051906020012060001c8260a001511460266110da565b61064b6113dc565b815181516001600160a01b03918216905260208084015183519091015260408084015183518201526060808501518451931692019190915260c08301516106ad916106a69190860135906106a19060049061128d565b6112e2565b600361132f565b6020808301805192909252815143910152608083015190516040015261032181611100565b6106e260056000541460176110da565b6106fc813515806106f557506001548235145b60186110da565b60008080556002805461070e906115ae565b80601f016020809104026020016040519081016040528092919081815260200182805461073a906115ae565b80156107875780601f1061075c57610100808354040283529160200191610787565b820191906000526020600020905b81548152906001019060200180831161076a57829003601f168201915b505050505080602001905181019061079f9190611761565b90506107b38160a0015143101560196110da565b7fbe731e9f2a129299a212b8ec3ac324fa99671cd00a5a827cbd3d4fe6d7ad541d33836040516107e4929190611678565b60405180910390a16107f8341560156110da565b805161082c906001600160a01b031633146108225760608201516001600160a01b03163314610825565b60015b60166110da565b80606001516001600160a01b03166108fc82608001519081150290604051600060405180830381858888f19350505050158015610489573d6000803e3d6000fd5b61087d600760005414601c6110da565b6108978135158061089057506001548235145b601d6110da565b6000808055600280546108a9906115ae565b80601f01602080910402602001604051908101604052809291908181526020018280546108d5906115ae565b80156109225780601f106108f757610100808354040283529160200191610922565b820191906000526020600020905b81548152906001019060200180831161090557829003601f168201915b505050505080602001905181019061093a91906117f5565b90506109526040518060200160405280600081525090565b6109638260c001514310601e6110da565b7fa2ddd0bc62239facbd79cdab1df75ee0cb72af9166d4371e62852a98cb4ca19c3384604051610994929190611893565b60405180910390a16109a83415601a6110da565b60608201516109c3906001600160a01b03163314601b6110da565b6109d14383604001516112e2565b81526040805161010081018252600080825260208201819052918101829052606081018290526080810182905260a0810182905260c0810182905260e081019190915282516001600160a01b0390811682526020808501518184015260408086015181850152606080870151909316928401929092526080808601519084015260a080860151908401528581013560c0840152835160e08401526009600055436001559051610ae29183910160006101008201905060018060a01b038084511683526020840151602084015260408401516040840152806060850151166060840152506080830151608083015260a083015160a083015260c083015160c083015260e083015160e083015292915050565b60405160208183030381529060405260029080519060200190610b06929190611472565b5050505050565b610b1d60056000541460126110da565b610b3781351580610b3057506001548235145b60136110da565b600080805560028054610b49906115ae565b80601f0160208091040260200160405190810160405280929190818152602001828054610b75906115ae565b8015610bc25780601f10610b9757610100808354040283529160200191610bc2565b820191906000526020600020905b815481529060010190602001808311610ba557829003601f168201915b5050505050806020019051810190610bda9190611761565b9050610bf26040518060200160405280600081525090565b610c038260a00151431060146110da565b7f117ff0fc7909f539043dcba1a015e3c49852b86bcb1c87a6cfa653f771ccbdc03384604051610c34929190611893565b60405180910390a1610c48341560106110da565b8151610c60906001600160a01b0316331460116110da565b610c6e4383604001516112e2565b81526040805160e081018252600080825260208201819052918101829052606081018290526080810182905260a0810182905260c081019190915282516001600160a01b039081168083526020808601518185019081526040808801518187019081526060808a015187168189019081526080808c0151818b019081528d88013560a0808d019182528d5160c0808f0191825260076000554360015589519b8c019c909c529851978a0197909752945193880193909352905190971696850196909652945190830152925191810191909152905160e082015261010001610ae2565b600060606000546002808054610d65906115ae565b80601f0160208091040260200160405190810160405280929190818152602001828054610d91906115ae565b8015610dde5780601f10610db357610100808354040283529160200191610dde565b820191906000526020600020905b815481529060010190602001808311610dc157829003601f168201915b50505050509050915091509091565b610dfd60076000541460216110da565b610e1781351580610e1057506001548235145b60226110da565b600080805560028054610e29906115ae565b80601f0160208091040260200160405190810160405280929190818152602001828054610e55906115ae565b8015610ea25780601f10610e7757610100808354040283529160200191610ea2565b820191906000526020600020905b815481529060010190602001808311610e8557829003601f168201915b5050505050806020019051810190610eba91906117f5565b9050610ece8160c0015143101560236110da565b7f3a35e33c7cbe4475e726117e3691b4a75ad6c9b28c29c59a1ef792dd449861bb3383604051610eff929190611678565b60405180910390a1610f133415601f6110da565b8051610f47906001600160a01b03163314610f3d5760608201516001600160a01b03163314610f40565b60015b60206110da565b805160808201516040516001600160a01b039092169181156108fc0291906000818181858888f19350505050158015610489573d6000803e3d6000fd5b610f94600960005414602c6110da565b610fae81351580610fa757506001548235145b602d6110da565b600080805560028054610fc0906115ae565b80601f0160208091040260200160405190810160405280929190818152602001828054610fec906115ae565b80156110395780601f1061100e57610100808354040283529160200191611039565b820191906000526020600020905b81548152906001019060200180831161101c57829003601f168201915b505050505080602001905181019061105191906116b5565b90506110658160e00151431015602e6110da565b7f7533cfcbaea81c55f5c15df7ca9474738a32835ebe63ae177376e624bc7df0bd3383604051611096929190611678565b60405180910390a16110aa3415602a6110da565b805161082c906001600160a01b031633146110d45760608201516001600160a01b031633146110d7565b60015b602b5b816104a05760405163100960cb60e01b8152600481018290526024015b60405180910390fd5b6040805160208101909152600081526020820151516001141561122a576111378260200151602001518360000151604001516112e2565b81526040805160c081018252600080825260208201819052918101829052606081018290526080810182905260a08101919091528251516001600160a01b039081168083528451602090810151818501908152865160409081015181870190815288516060908101518716818901908152858b01518401516080808b019182528b5160a0808d019182526005600055436001558751998a019a909a529651958801959095529251918601919091525190951690830152925191810191909152905160c082015260e00160405160208183030381529060405260029080519060200190611224929190611472565b50505050565b60208201515160021461124257815160600151611246565b8151515b6001600160a01b03166108fc611265600285600001516020015161137d565b6040518115909202916000818181858888f19350505050158015610489573d6000803e3d6000fd5b60008261129a83826118d0565b91508111156112dc5760405162461bcd60e51b815260206004820152600e60248201526d1cdd58881ddc985c185c9bdd5b9960921b60448201526064016110f7565b92915050565b6000826112ef83826118e7565b91508110156112dc5760405162461bcd60e51b815260206004820152600c60248201526b616464206f766572666c6f7760a01b60448201526064016110f7565b60008161136c5760405162461bcd60e51b815260206004820152600b60248201526a646976206279207a65726f60a81b60448201526064016110f7565b6113768284611915565b9392505050565b60008115806113a1575082826113938183611929565b925061139f9083611948565b145b6112dc5760405162461bcd60e51b815260206004820152600c60248201526b6d756c206f766572666c6f7760a01b60448201526064016110f7565b6040805160c0810182526000918101828152606082018390526080820183905260a0820192909252908190815260200161143060405180606001604052806000815260200160008152602001600081525090565b905290565b508054611441906115ae565b6000825580601f10611451575050565b601f01602090049060005260206000209081019061146f91906114f6565b50565b82805461147e906115ae565b90600052602060002090601f0160209004810192826114a057600085556114e6565b82601f106114b957805160ff19168380011785556114e6565b828001600101855582156114e6579182015b828111156114e65782518255916020019190600101906114cb565b506114f29291506114f6565b5090565b5b808211156114f257600081556001016114f7565b60006040828403121561151d57600080fd5b50919050565b60006040828403121561153557600080fd5b611376838361150b565b60006060828403121561151d57600080fd5b82815260006020604081840152835180604085015260005b8181101561158557858101830151858201606001528201611569565b81811115611597576000606083870101525b50601f01601f191692909201606001949350505050565b600181811c908216806115c257607f821691505b6020821081141561151d57634e487b7160e01b600052602260045260246000fd5b80516001600160a01b03811681146115fa57600080fd5b919050565b60006080828403121561161157600080fd5b6040516080810181811067ffffffffffffffff8211171561164257634e487b7160e01b600052604160045260246000fd5b60405261164e836115e3565b81526020830151602082015260408301516040820152606083015160608201528091505092915050565b6001600160a01b0383168152813560208083019190915260608201908301358015158082146116a657600080fd5b80604085015250509392505050565b60006101008083850312156116c957600080fd5b6040519081019067ffffffffffffffff821181831017156116fa57634e487b7160e01b600052604160045260246000fd5b81604052611707846115e3565b81526020840151602082015260408401516040820152611729606085016115e3565b60608201526080840151608082015260a084015160a082015260c084015160c082015260e084015160e0820152809250505092915050565b600060c0828403121561177357600080fd5b60405160c0810181811067ffffffffffffffff821117156117a457634e487b7160e01b600052604160045260246000fd5b6040526117b0836115e3565b815260208301516020820152604083015160408201526117d2606084016115e3565b60608201526080830151608082015260a083015160a08201528091505092915050565b600060e0828403121561180757600080fd5b60405160e0810181811067ffffffffffffffff8211171561183857634e487b7160e01b600052604160045260246000fd5b604052611844836115e3565b81526020830151602082015260408301516040820152611866606084016115e3565b60608201526080830151608082015260a083015160a082015260c083015160c08201528091505092915050565b6001600160a01b038316815260608101611376602083018480358252602090810135910152565b634e487b7160e01b600052601160045260246000fd5b6000828210156118e2576118e26118ba565b500390565b600082198211156118fa576118fa6118ba565b500190565b634e487b7160e01b600052601260045260246000fd5b600082611924576119246118ff565b500690565b6000816000190483118215151615611943576119436118ba565b500290565b600082611957576119576118ff565b50049056fea264697066735822122094f81073de173ead6379e574b8b67c62eb6e4e75afab68041878ffbe07d9b6f764736f6c634300080c0033`,
-  BytecodeLen: 7439,
+  Bytecode: `0x6080604052604051620010b6380380620010b68339810160408190526200002691620002bc565b60008055436003556040517faea46870bb914f01e6786bf4231b63e1c45855a475f1f12940e7d923dfa44b2590620000629033908490620003ad565b60405180910390a16200007834156007620000e5565b604080518082018252600060208083018281523380855286830151606090810151835260019485905543909455855192830152519381019390935290910160405160208183030381529060405260029080519060200190620000dc9291906200010f565b505050620004f6565b816200010b5760405163100960cb60e01b81526004810182905260240160405180910390fd5b5050565b8280546200011d90620004b9565b90600052602060002090601f0160209004810192826200014157600085556200018c565b82601f106200015c57805160ff19168380011785556200018c565b828001600101855582156200018c579182015b828111156200018c5782518255916020019190600101906200016f565b506200019a9291506200019e565b5090565b5b808211156200019a57600081556001016200019f565b604080519081016001600160401b0381118282101715620001e657634e487b7160e01b600052604160045260246000fd5b60405290565b604051608081016001600160401b0381118282101715620001e657634e487b7160e01b600052604160045260246000fd5b60006101008083850312156200023257600080fd5b604051908101906001600160401b03821181831017156200026357634e487b7160e01b600052604160045260246000fd5b81604052809250835181526020840151602082015260408401516040820152606084015160608201526080840151608082015260a084015160a082015260c084015160c082015260e084015160e0820152505092915050565b60008183036102a0811215620002d157600080fd5b620002db620001b5565b8351815261028080601f1984011215620002f457600080fd5b620002fe620001ec565b6200030d87602088016200021d565b81526200031f8761012088016200021d565b602082015261021f198401935060608412156200033b57600080fd5b62000345620001b5565b60408512156200035457600080fd5b6200035e620001b5565b610220880151815261024088015160208201528152610260870151945084151585146200038a57600080fd5b602081810195909552604082015294015160608501529081019290925250919050565b60006102c08201905060018060a01b038416825282516020830152602083015162000425604084018251805182526020810151602083015260408101516040830152606081015160608301526080810151608083015260a081015160a083015260c081015160c083015260e081015160e08301525050565b602081810151805161014086015290810151610160850152604081015161018085015260608101516101a085015260808101516101c085015260a08101516101e085015260c081015161020085015260e08101516102208501525060408101518051805161024086015260209081015161026086015201511515610280840152606001516102a09092019190915292915050565b600181811c90821680620004ce57607f821691505b60208210811415620004f057634e487b7160e01b600052602260045260246000fd5b50919050565b610bb080620005066000396000f3fe60806040526004361061006e5760003560e01c8063832307571161004b57806383230757146100c15780639cdbe0d4146100d6578063a5c7fc71146100e9578063ab53f2c6146100fc57005b80631e93b0f1146100775780632c10a1591461009b57806373b4522c146100ae57005b3661007557005b005b34801561008357600080fd5b506003545b6040519081526020015b60405180910390f35b6100756100a9366004610899565b61011f565b6100756100bc366004610899565b6102c2565b3480156100cd57600080fd5b50600154610088565b6100756100e43660046108c4565b61043f565b6100756100f73660046108c4565b610585565b34801561010857600080fd5b50610111610701565b6040516100929291906108e8565b61012f600160005414600961079e565b6101498135158061014257506001548235145b600a61079e565b60008080556002805461015b90610945565b80601f016020809104026020016040519081016040528092919081815260200182805461018790610945565b80156101d45780601f106101a9576101008083540402835291602001916101d4565b820191906000526020600020905b8154815290600101906020018083116101b757829003601f168201915b50505050508060200190518101906101ec91906109fb565b90507f400d21ea4e4a5e28b4ae5f0f476c201fc8036473fcf7c8cd252f38698020b4f1338360405161021f929190610a17565b60405180910390a161023881602001513414600861079e565b805160208201516040516001600160a01b039092169181156108fc0291906000818181858888f19350505050158015610275573d6000803e3d6000fd5b506040805160208082018352338083526002600055436001558351918201529091015b604051602081830303815290604052600290805190602001906102bc9291906107c3565b50505050565b6102d2600360005414601061079e565b6102ec813515806102e557506001548235145b601161079e565b6000808055600280546102fe90610945565b80601f016020809104026020016040519081016040528092919081815260200182805461032a90610945565b80156103775780601f1061034c57610100808354040283529160200191610377565b820191906000526020600020905b81548152906001019060200180831161035a57829003601f168201915b505050505080602001905181019061038f91906109fb565b90507f9e33038d0c0154a5ab4cf9e5859ab906867e950883262ffe58911dc6195288c633836040516103c2929190610a17565b60405180910390a16103db81602001513414600f61079e565b805160208201516040516001600160a01b039092169181156108fc0291906000818181858888f19350505050158015610418573d6000803e3d6000fd5b50604080516020808201835233808352600460005543600155835191820152909101610298565b61044f600460005414601461079e565b6104698135158061046257506001548235145b601561079e565b60008080556002805461047b90610945565b80601f01602080910402602001604051908101604052809291908181526020018280546104a790610945565b80156104f45780601f106104c9576101008083540402835291602001916104f4565b820191906000526020600020905b8154815290600101906020018083116104d757829003601f168201915b505050505080602001905181019061050c9190610aae565b90507fd8b1c8886da3e12389da6f068c5a09668f5894f7f92810a82e8dde8d432e1981338360405161053f929190610b5c565b60405180910390a16105533415601261079e565b805161056b906001600160a01b03163314601361079e565b6000808055600181905561058190600290610847565b5050565b610595600260005414600d61079e565b6105af813515806105a857506001548235145b600e61079e565b6000808055600280546105c190610945565b80601f01602080910402602001604051908101604052809291908181526020018280546105ed90610945565b801561063a5780601f1061060f5761010080835404028352916020019161063a565b820191906000526020600020905b81548152906001019060200180831161061d57829003601f168201915b50505050508060200190518101906106529190610aae565b90507fc320279e5d731e911714b6cd63bcab6757a80358d275077b76fbd1a01ba3475e3383604051610685929190610b5c565b60405180910390a16106993415600b61079e565b80516106b1906001600160a01b03163314600c61079e565b6040805180820182526000808252602080830182815285516001600160a01b0316808552610320880135825260039093554360015584519182019290925290519281019290925290606001610298565b60006060600054600280805461071690610945565b80601f016020809104026020016040519081016040528092919081815260200182805461074290610945565b801561078f5780601f106107645761010080835404028352916020019161078f565b820191906000526020600020905b81548152906001019060200180831161077257829003601f168201915b50505050509050915091509091565b816105815760405163100960cb60e01b81526004810182905260240160405180910390fd5b8280546107cf90610945565b90600052602060002090601f0160209004810192826107f15760008555610837565b82601f1061080a57805160ff1916838001178555610837565b82800160010185558215610837579182015b8281111561083757825182559160200191906001019061081c565b50610843929150610884565b5090565b50805461085390610945565b6000825580601f10610863575050565b601f0160209004906000526020600020908101906108819190610884565b50565b5b808211156108435760008155600101610885565b6000604082840312156108ab57600080fd5b50919050565b600061034082840312156108ab57600080fd5b600061034082840312156108d757600080fd5b6108e183836108b1565b9392505050565b82815260006020604081840152835180604085015260005b8181101561091c57858101830151858201606001528201610900565b8181111561092e576000606083870101525b50601f01601f191692909201606001949350505050565b600181811c9082168061095957607f821691505b602082108114156108ab57634e487b7160e01b600052602260045260246000fd5b80516001600160a01b038116811461099157600080fd5b919050565b6000604082840312156109a857600080fd5b6040516040810181811067ffffffffffffffff821117156109d957634e487b7160e01b600052604160045260246000fd5b6040529050806109e88361097a565b8152602083015160208201525092915050565b600060408284031215610a0d57600080fd5b6108e18383610996565b6001600160a01b038316815281356020808301919091526060820190830135801515808214610a4557600080fd5b80604085015250509392505050565b600060208284031215610a6657600080fd5b6040516020810181811067ffffffffffffffff82111715610a9757634e487b7160e01b600052604160045260246000fd5b604052905080610aa68361097a565b905292915050565b600060208284031215610ac057600080fd5b6108e18383610a54565b803582526020810135602083015260408101356040830152606081013560608301526080810135608083015260a081013560a083015260c081013560c083015260e081013560e08301525050565b80358252610b2c6020830160208301610aca565b610120610b3d818401828401610aca565b50610220610b4f818401828401610aca565b5061032090810135910152565b6001600160a01b038316815261036081016108e16020830184610b1856fea2646970667358221220675b5a97478c255e7ad363b78f507a37408d7d14a138a8097ee379e7fbc798c364736f6c634300080c0033`,
+  BytecodeLen: 4278,
   Which: `oD`,
   version: 8,
   views: {
@@ -1637,56 +1721,32 @@ const _ETH = {
   };
 export const _stateSourceMap = {
   1: {
-    at: './index.rsh:51:11:after expr stmt semicolon',
+    at: './index.rsh:49:11:after expr stmt semicolon',
     fs: [],
     msg: null,
     who: 'Module'
     },
   2: {
-    at: 'reach standard library:199:11:after expr stmt semicolon',
-    fs: ['at ./index.rsh:57:51:application call to "closeTo" (defined at: reach standard library:195:8:function exp)'],
+    at: './index.rsh:55:11:after expr stmt semicolon',
+    fs: [],
+    msg: null,
+    who: 'Module'
+    },
+  3: {
+    at: './index.rsh:63:11:after expr stmt semicolon',
+    fs: [],
     msg: null,
     who: 'Module'
     },
   4: {
-    at: './index.rsh:95:11:after expr stmt semicolon',
+    at: './index.rsh:69:11:after expr stmt semicolon',
     fs: [],
     msg: null,
     who: 'Module'
     },
   5: {
-    at: './index.rsh:62:13:after expr stmt semicolon',
+    at: './index.rsh:77:11:after expr stmt semicolon',
     fs: [],
-    msg: null,
-    who: 'Module'
-    },
-  6: {
-    at: 'reach standard library:199:11:after expr stmt semicolon',
-    fs: ['at ./index.rsh:70:53:application call to "closeTo" (defined at: reach standard library:195:8:function exp)'],
-    msg: null,
-    who: 'Module'
-    },
-  7: {
-    at: './index.rsh:71:13:after expr stmt semicolon',
-    fs: [],
-    msg: null,
-    who: 'Module'
-    },
-  8: {
-    at: 'reach standard library:199:11:after expr stmt semicolon',
-    fs: ['at ./index.rsh:78:53:application call to "closeTo" (defined at: reach standard library:195:8:function exp)'],
-    msg: null,
-    who: 'Module'
-    },
-  9: {
-    at: './index.rsh:79:13:after expr stmt semicolon',
-    fs: [],
-    msg: null,
-    who: 'Module'
-    },
-  10: {
-    at: 'reach standard library:199:11:after expr stmt semicolon',
-    fs: ['at ./index.rsh:86:53:application call to "closeTo" (defined at: reach standard library:195:8:function exp)'],
     msg: null,
     who: 'Module'
     }
@@ -1696,8 +1756,9 @@ export const _Connectors = {
   ETH: _ETH
   };
 export const _Participants = {
-  "Alice": Alice,
-  "Bob": Bob
+  "Collector": Collector,
+  "Disposal": Disposal,
+  "Seller": Seller
   };
 export const _APIs = {
   };

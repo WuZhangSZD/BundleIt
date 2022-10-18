@@ -13,24 +13,24 @@ export const main = Reach.App(() => {
     BundleName: Bytes(256), // String storage for the name of the bundle
     BoughtDay: Bytes(256), // String storage for the bought day ofbundle
     BoughtPrice: FixedPoint, // Float storage for the roughly boughtPrice  
-    BidPrice: UInt // UINt for the bid price by disposal for the bundle
+    BidPriceDisposal: UInt // UINt for the bid price by disposal for the bundle
   });
   const Collector = Participant('Collector', {
     ...Player,
-    acceptWager: Fun([UInt], Null),
+    acceptBidPrice: Fun([UInt], Null),
     CollectorName: Bytes(256), //String storage for the name of collector (maybe company name)
     CollectorLocation: Bytes(256), //String storage for the current location the collect ocfurred
     DestinationLocation: Bytes(256), //String storagte for the destionation bundle will arrive
-    BidPrice: UInt // UINt for the bid price by collector
+    BidPriceCollector: UInt // UINt for the bid price by collector
   });
   const Seller  = Participant('Seller',{
     ...Player,
-    acceptWager: Fun([UInt], Null),
+    acceptBidPrice: Fun([UInt], Null),
     SellerName: Bytes(256), //String storage for the name of seller
     SellerLocation: Bytes(256), //String storage for seller location
     DateCollected: Bytes(256), //String storage for the date
     BundleCondition: Bytes(256), //String storage for bundle condition description
-    BidPrice: UInt // UINt for the bid price by seller
+    BidPriceSeller: UInt // UINt for the bid price by seller
   })
   init();
 
@@ -43,40 +43,40 @@ export const main = Reach.App(() => {
     const BuddleName = declassify(interact.BundleName);
     const BoughtDay = declassify(interact.BoughtDay);
     const BoughtPrice = declassify(interact.BoughtPrice);
-    const BidPrice = declassify(interact.Bidprice);
+    const BidPriceDisposal = declassify(interact.BidPriceDisposal);
   })
-  Disposal.publish(BunddleName, BoughtDay, BoughtPrice, BidPrice);
+  Disposal.publish(BuddleName, BoughtDay, BoughtPrice, BidPriceDisposal);
   commit();
   Collector.only(()=>{
-    interact.acceptBidPrice(BidPrice);
+    interact.acceptBidPrice(BidPriceDisposal);
   })
-  Collector.pay(BidPrice)
-  transfer(BidPrice).to(Diposal);
+  Collector.pay(BidPriceDisposal)
+  transfer(BidPriceDisposal).to(Disposal);
   commit();
   Collector.only(()=>{
     const CollectorName = declassify(interact.CollectorName);
     const CollectorLocation = declassify(interact.CollectorName);
     const DestinationLocation = declassify(interact.DestinationLocation);
-    const BidPrice = declassify(interact.BidPrice);
+    const BidPriceCollector = declassify(interact.BidPriceCollector);
   })
-  Collector.publish(CollectorName, CollectorLocation, DestinationLocation, BidPrice);
+  Collector.publish(CollectorName, CollectorLocation, DestinationLocation, BidPriceCollector);
   commit();
   Seller.only(()=>{
-    interact.acceptBidPrice(BidPrice);
+    interact.acceptBidPrice(BidPriceCollector);
   })
-  Seller.pay(BidPrice);
-  transfer(BidPrice).to(Collector);
+  Seller.pay(BidPriceCollector);
+  transfer(BidPriceCollector).to(Collector);
   commit();
   Seller.only(()=>{
     const SellerName = declassify(interact.SellerName);
     const SellerLocation = declassify(interact.SellerLocation);
     const DateCollected = declassify(interact.DateCollected);
-    const BidPrice = declassify(interact.BidPrice);
+    const BidPriceSeller = declassify(interact.BidPriceSeller);
   })
-  Seller.publish(SellerName, SellerLocation, DateCollected, BidPrice);
+  Seller.publish(SellerName, SellerLocation, DateCollected, BidPriceSeller);
   commit();
 
   each([Disposal, Collector, Seller], () => {
-    interact.seeOutcome(outcome);
+    interact.seeOutcome(5);
   });
 });
