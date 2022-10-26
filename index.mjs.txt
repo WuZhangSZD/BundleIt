@@ -26,6 +26,7 @@ if (createAcc) {
 }
 
 let ctc = null;
+
 if (isDisposal) {
   ctc = acc.contract(backend);
   ctc.getInfo().then((info) => {

@@ -50,6 +50,37 @@ exports.FundAccount = class extends React.Component {
         <button onClick={() => parent.skipFundAccount()}>Skip</button>
       </div>
     );
+    //Above funaAccount and skipFundAccount will call function in index.js
+  }
+}
+
+exports.DisposalOrCollectorOrSeller = class extends React.Component {
+  render() {
+    const {parent} = this.props;
+    return (
+      <div>
+        Please select a role:
+        <br />
+        <p>
+          <button
+            onClick={() => parent.selectDisposal()}
+          >Disposal</button>
+          <br /> Set the wager, deploy the contract.
+        </p>
+        <p>
+          <button
+            onClick={() => parent.selectCollector()}
+          >Collector</button>
+          <br /> Attach to the Disposal's contract.
+        </p>
+        <p>
+          <button
+            onClick={() => parent.selectSeller()}
+          >Seller</button>
+          <br /> Attach to the Disposal's contract.
+        </p>
+      </div>
+    );
   }
 }
 
