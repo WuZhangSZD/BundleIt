@@ -1,5 +1,4 @@
 import ReactDOM from 'react-dom';
-import {Helmet} from "react-helmet";
 import React from 'react';
 
 export function renderDOM(app) {

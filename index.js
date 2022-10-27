@@ -7,6 +7,7 @@ import React from 'react';
 import MainPageViews from './views/MainPageViews';
 import ProductViews from './views/ProductViews';
 import DetailViews from './views/DetailViews';
+import {ALGO_MyAlgoConnect as MyAlgoConnect} from '@reach-sh/stdlib';
 
 //Below are the testing page that nich showed
 import AppViews from './views/AppViews';
@@ -19,6 +20,7 @@ import './index.css';
 import * as backend from './build/index.main.mjs';
 import { loadStdlib } from '@reach-sh/stdlib';
 const reach = loadStdlib(process.env);
+reach.setWalletFallback(reach.walletFallback({providerEnv: 'TestNet', MyAlgoConnect}));
 
 //This is variable defining session
 const handToInt = {'ROCK': 0, 'PAPER': 1, 'SCISSORS': 2};
@@ -31,7 +33,8 @@ class App extends React.Component {
     constructor(props) {
       super(props);
       //set default display to simple connecting account state
-      this.state = {view: 'ConnectAccount', ...defaults};
+    console.log("Comming to here")
+    this.state = {view: 'ConnectAccount', ...defaults};
     }
     async componentDidMount() {
       const acc = await reach.getDefaultAccount();
@@ -47,7 +50,7 @@ class App extends React.Component {
         //this is the code that we going to use
         // this.setState({view: 'DisposalOrCollector'});
 
-        this.setState({view: 'DeployerOrAttacher'});
+        this.setState({view: 'DisposalOrCollectorOrSeller'});
       }
     }
     //refered by appView in FundAccount
@@ -56,16 +59,14 @@ class App extends React.Component {
         //this is the code to choose the user stype
         //this is the code that we going to use
         // this.setState({view: 'DisposalOrCollectorOrSeller'});
-      this.setState({view: 'DeployerOrAttacher'});
+      this.setState({view: 'DisposalOrCollectorOrSeller'});
     }
     //refered by appView in FundAccount
-    async skipFundAccount() { this.setState({view: 'DeployerOrAttacher'}); }
-    selectDiposal() { this.setState({view: 'Wrapper', ContentView: Disposal}); }
+    async skipFundAccount() { this.setState({view: 'DisposalOrCollectorOrSeller'}); }
+    selectDisposal() { this.setState({view: 'Wrapper', ContentView: Disposal}); }
     selectCollector() { this.setState({view: 'Wrapper', ContentView: Collector}); }
     selectSeller() { this.setState({view: 'Wrapper', ContentView: Seller}); }
-    selectAttacher() { this.setState({view: 'Wrapper', ContentView: Attacher}); }
-    selectDeployer() { this.setState({view: 'Wrapper', ContentView: Deployer}); }
-    render() { return renderView(this, MainPageViews); }
+    render() { return renderView(this, AppViews); }
 }
   
 class BundleFunction extends React.Component {
@@ -78,37 +79,45 @@ class BundleFunction extends React.Component {
   
   }
   informTimeout() {this.setState({view: 'Timeout'});}
+  setBundleName(bundleName) { this.state.resolveBundleName(bundleName); }
   // random() { return reach.hasRandom.random(); }
-  // async getHand() { // Fun([], UInt)
-  //   const hand = await new Promise(resolveHandP => {
-  //     this.setState({view: 'GetHand', playable: true, resolveHandP});
-  //   });
-  //   this.setState({view: 'WaitingForResults', hand});
-  //   return handToInt[hand];
-  // }
+  async getBundleName() { // Fun([], UInt)
+    const hand = await new Promise(resolveBundleName => {
+      this.setState({view: 'GetBundle', playable: true, resolveBundleName});
+    });
+    this.setState({view: 'WaitingForResults', hand});
+    return bundleName;
+  }
 
   // seeOutcome(i) { this.setState({view: 'Done', outcome: intToOutcome[i]}); }
   // informTimeout() { this.setState({view: 'Timeout'}); }
-  // playHand(hand) { this.state.resolveHandP(hand); }
 }
 class Disposal extends BundleFunction {
   constructor(props) {
     super(props);
-    this.state = {view: 'SetWager'};
+    this.state = {view: 'SetBundleInfo'};
+    console.log("Comming to diposal")
   }
-  setWager(wager) { this.setState({view: 'Disposal', wager}); }
-  async deploy() {
+  setBundle(bundleName, disposalName, disposalLocation, price) { this.setState({view: 'Dispose', bundleName, disposalName, disposalLocation, price}); }
+  async dispose() {
+    console.log("Comming to dispose")
+
     const ctc = this.props.acc.contract(backend);
-    this.setState({view: 'Deploying', ctc});
-    this.wager = reach.parseCurrency(this.state.wager); // UInt
+    
+    this.setState({view: 'Disposing', ctc});
+    this.bundleID = 2
+    this.bundleName = this.state.bundleName;
+    this.disposalName = this.state.disposalName;
+    this.disposalLocation = this.state.disposalLocation;
     this.deadline = {ETH: 10, ALGO: 100, CFX: 1000}[reach.connector]; // UInt
+    this.price = this.state.price;
     backend.Disposal(ctc, this);
     const ctcInfoStr = JSON.stringify(await ctc.getInfo(), null, 2);
     this.setState({view: 'WaitingForCollector', ctcInfoStr});
   }
   render() { return renderView(this, DisposalViews); }
 }
-class Collecor extends BundleFunction {
+class Collector extends BundleFunction {
   constructor(props) {
     super(props);
     this.state = {view: 'Attach'};
@@ -116,7 +125,7 @@ class Collecor extends BundleFunction {
   attach(ctcInfoStr) {
     const ctc = this.props.acc.contract(backend, JSON.parse(ctcInfoStr));
     this.setState({view: 'Attaching'});
-    backend.Bob(ctc, this);
+    backend.Collector(ctc, this);
   }
   async acceptWager(wagerAtomic) { // Fun([UInt], Null)
     const wager = reach.formatCurrency(wagerAtomic, 4);
@@ -131,44 +140,7 @@ class Collecor extends BundleFunction {
   render() { return renderView(this, CollectorViews); }
 }
 
-
-
-
-
-
-
-class Player extends React.Component {
-  random() { return reach.hasRandom.random(); }
-  async getHand() { // Fun([], UInt)
-    const hand = await new Promise(resolveHandP => {
-      this.setState({view: 'GetHand', playable: true, resolveHandP});
-    });
-    this.setState({view: 'WaitingForResults', hand});
-    return handToInt[hand];
-  }
-  seeOutcome(i) { this.setState({view: 'Done', outcome: intToOutcome[i]}); }
-  informTimeout() { this.setState({view: 'Timeout'}); }
-  playHand(hand) { this.state.resolveHandP(hand); }
-}
-
-class Deployer extends Player {
-  constructor(props) {
-    super(props);
-    this.state = {view: 'SetWager'};
-  }
-  setWager(wager) { this.setState({view: 'Deploy', wager}); }
-  async deploy() {
-    const ctc = this.props.acc.contract(backend);
-    this.setState({view: 'Deploying', ctc});
-    this.wager = reach.parseCurrency(this.state.wager); // UInt
-    this.deadline = {ETH: 10, ALGO: 100, CFX: 1000}[reach.connector]; // UInt
-    backend.Alice(ctc, this);
-    const ctcInfoStr = JSON.stringify(await ctc.getInfo(), null, 2);
-    this.setState({view: 'WaitingForAttacher', ctcInfoStr});
-  }
-  render() { return renderView(this, DeployerViews); }
-}
-class Attacher extends Player {
+class Seller extends BundleFunction {
   constructor(props) {
     super(props);
     this.state = {view: 'Attach'};
@@ -176,7 +148,7 @@ class Attacher extends Player {
   attach(ctcInfoStr) {
     const ctc = this.props.acc.contract(backend, JSON.parse(ctcInfoStr));
     this.setState({view: 'Attaching'});
-    backend.Bob(ctc, this);
+    backend.Collector(ctc, this);
   }
   async acceptWager(wagerAtomic) { // Fun([UInt], Null)
     const wager = reach.formatCurrency(wagerAtomic, 4);
@@ -188,8 +160,9 @@ class Attacher extends Player {
     this.state.resolveAcceptedP();
     this.setState({view: 'WaitingForTurn'});
   }
-  render() { return renderView(this, AttacherViews); }
+  render() { return renderView(this, CollectorViews); }
 }
+
 
 renderDOM(<App />);
 

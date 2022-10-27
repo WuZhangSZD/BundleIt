@@ -17,45 +17,65 @@ exports.Wrapper = class extends React.Component {
   }
 }
 
-exports.SetWager = class extends React.Component {
+exports.SetBundleInfo = class extends React.Component {
   render() {
     const {parent, defaultWager, standardUnit} = this.props;
-    const wager = (this.state || {}).wager || defaultWager;
+    const bundleName = (this.state || {}).bundleName || "Unknown";
+    const disposalName = (this.state || {}).disposalName || "Unknown";
+    const disposalLocation = (this.state || {}).disposalLocation || "Unknown";
+    const price = (this.state || {}).price || 0;
     return (
       <div>
         <input
+          type='text'
+          placeholder= "BundleName"
+          onChange={(e) => this.setState({bundleName: e.currentTarget.value})}
+        />
+        <input
+          type='text'
+          placeholder= "disposalName"
+          onChange={(e) => this.setState({disposalName: e.currentTarget.value})}
+        />
+        <input
+          type='text'
+          placeholder= "disposalLocation"
+          onChange={(e) => this.setState({disposalLocation: e.currentTarget.value})}
+        />
+        <input
           type='number'
-          placeholder={defaultWager}
-          onChange={(e) => this.setState({wager: e.currentTarget.value})}
-        /> {standardUnit}
+          placeholder= "price"
+          onChange={(e) => this.setState({price: e.currentTarget.value})}
+        />
         <br />
         <button
-          onClick={() => parent.setWager(wager)}
+          onClick={() => parent.setBundle(bundleName,disposalName,disposalLocation,price)}
         >Set wager</button>
       </div>
     );
   }
 }
 
-exports.Deploy = class extends React.Component {
+exports.Dispose = class extends React.Component {
   render() {
-    const {parent, wager, standardUnit} = this.props;
+    const {parent, bundleName, bundleLocation, standardUnit} = this.props;
     return (
       <div>
-        Wager (pay to deploy): <strong>{wager}</strong> {standardUnit}
+        bundleName: {bundleName}
+        <br />
+        bundleLocation: {bundleLocation}
         <br />
         <button
-          onClick={() => parent.deploy()}
+          onClick={() => parent.dispose()}
         >Deploy</button>
       </div>
     );
   }
 }
 
-exports.Deploying = class extends React.Component {
+exports.Disposing = class extends React.Component {
   render() {
     return (
-      <div>Deploying... please wait.</div>
+      <div>Disposing... please wait.</div>
     );
   }
 }
