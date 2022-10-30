@@ -17,13 +17,21 @@ export function _getEvents(s) {
 export function _getViews(s, viewlib) {
   const stdlib = s.reachStdlib;
   const ctc0 = stdlib.T_Address;
-  const ctc1 = stdlib.T_UInt;
+  const ctc1 = stdlib.T_Bytes(stdlib.checkedBigNumberify('<builtin>', stdlib.UInt_max, '256'));
+  const ctc2 = stdlib.T_UInt;
+  const ctc3 = stdlib.T_Object({
+    boughtDate: ctc1,
+    boughtPrice: ctc2,
+    bundleName: ctc1,
+    disposePrice: ctc2
+    });
   
   return {
     infos: {
       },
     views: {
-      1: [ctc0, ctc1]
+      1: [ctc0, ctc3],
+      2: [ctc0]
       }
     };
   
@@ -42,54 +50,106 @@ export async function Collector(ctcTop, interact) {
     return Promise.reject(new Error(`The backend for Collector expects to receive an interact object as its second argument.`));}
   const ctc = ctcTop._initialize();
   const stdlib = ctc.stdlib;
-  const ctc0 = stdlib.T_Null;
+  const ctc0 = stdlib.T_Bytes(stdlib.checkedBigNumberify('<builtin>', stdlib.UInt_max, '256'));
   const ctc1 = stdlib.T_UInt;
-  const ctc2 = stdlib.T_Address;
+  const ctc2 = stdlib.T_Object({
+    boughtDate: ctc0,
+    boughtPrice: ctc1,
+    bundleName: ctc0,
+    disposePrice: ctc1
+    });
+  const ctc3 = stdlib.T_Null;
+  const ctc4 = stdlib.T_Object({
+    collectorLocation: ctc0,
+    collectorName: ctc1,
+    collectorPrice: ctc1,
+    destinationLocation: ctc0
+    });
+  const ctc5 = stdlib.T_Address;
   
   
   const txn1 = await (ctc.recv({
     didSend: false,
-    evt_cnt: 3,
+    evt_cnt: 2,
     funcNum: 0,
-    out_tys: [ctc0, ctc1, ctc1],
+    out_tys: [ctc2, ctc1],
     timeoutAt: undefined /* mto */,
     waitIfNotPresent: false
     }));
-  const {data: [v83, v84, v85], secs: v87, time: v86, didSend: v39, from: v82 } = txn1;
+  const {data: [v103, v104], secs: v106, time: v105, didSend: v33, from: v102 } = txn1;
   ;
-  stdlib.protect(ctc0, await interact.acceptPrice(v84), {
-    at: './index.rsh:70:25:application',
-    fs: ['at ./index.rsh:69:17:application call to [unknown function] (defined at: ./index.rsh:69:21:function exp)'],
+  const v114 = v103.disposePrice;
+  stdlib.protect(ctc3, await interact.acceptPrice(v114), {
+    at: './index.rsh:65:25:application',
+    fs: ['at ./index.rsh:64:17:application call to [unknown function] (defined at: ./index.rsh:64:21:function exp)'],
     msg: 'acceptPrice',
     who: 'Collector'
     });
   
   const txn2 = await (ctc.sendrecv({
-    args: [v82, v84],
+    args: [v102, v103],
     evt_cnt: 0,
     funcNum: 1,
-    lct: v86,
+    lct: v105,
     onlyIf: true,
     out_tys: [],
-    pay: [v84, []],
+    pay: [v114, []],
     sim_p: (async (txn2) => {
       const sim_r = { txns: [], mapRefs: [], maps: [] };
       let sim_txn_ctr = stdlib.UInt_max;
       const getSimTokCtr = () => { sim_txn_ctr = sim_txn_ctr.sub(1); return sim_txn_ctr; };
       
       
-      const {data: [], secs: v92, time: v91, didSend: v48, from: v90 } = txn2;
+      const {data: [], secs: v118, time: v117, didSend: v51, from: v116 } = txn2;
       
+      const v119 = v103.disposePrice;
       sim_r.txns.push({
-        amt: v84,
+        amt: v119,
         kind: 'to',
         tok: undefined /* Nothing */
         });
       sim_r.txns.push({
         kind: 'from',
-        to: v82,
+        to: v102,
         tok: undefined /* Nothing */
         });
+      sim_r.isHalt = false;
+      
+      return sim_r;
+      }),
+    soloSend: true,
+    timeoutAt: undefined /* mto */,
+    tys: [ctc5, ctc2],
+    waitIfNotPresent: false
+    }));
+  const {data: [], secs: v118, time: v117, didSend: v51, from: v116 } = txn2;
+  const v119 = v103.disposePrice;
+  ;
+  ;
+  const v133 = stdlib.protect(ctc4, await interact.collectBundle(), {
+    at: './index.rsh:76:62:application',
+    fs: ['at ./index.rsh:75:17:application call to [unknown function] (defined at: ./index.rsh:75:20:function exp)'],
+    msg: 'collectBundle',
+    who: 'Collector'
+    });
+  
+  const txn3 = await (ctc.sendrecv({
+    args: [v116, v133],
+    evt_cnt: 1,
+    funcNum: 2,
+    lct: v117,
+    onlyIf: true,
+    out_tys: [ctc4],
+    pay: [stdlib.checkedBigNumberify('./index.rsh:78:13:decimal', stdlib.UInt_max, '0'), []],
+    sim_p: (async (txn3) => {
+      const sim_r = { txns: [], mapRefs: [], maps: [] };
+      let sim_txn_ctr = stdlib.UInt_max;
+      const getSimTokCtr = () => { sim_txn_ctr = sim_txn_ctr.sub(1); return sim_txn_ctr; };
+      
+      
+      const {data: [v139], secs: v141, time: v140, didSend: v76, from: v138 } = txn3;
+      
+      ;
       sim_r.txns.push({
         kind: 'halt',
         tok: undefined /* Nothing */
@@ -100,13 +160,32 @@ export async function Collector(ctcTop, interact) {
       }),
     soloSend: true,
     timeoutAt: undefined /* mto */,
-    tys: [ctc2, ctc1],
+    tys: [ctc5, ctc4],
     waitIfNotPresent: false
     }));
-  const {data: [], secs: v92, time: v91, didSend: v48, from: v90 } = txn2;
+  const {data: [v139], secs: v141, time: v140, didSend: v76, from: v138 } = txn3;
   ;
-  ;
+  const v142 = stdlib.addressEq(v116, v138);
+  stdlib.assert(v142, {
+    at: './index.rsh:78:13:dot',
+    fs: [],
+    msg: 'sender correct',
+    who: 'Collector'
+    });
+  const v147 = v139.collectorName;
+  const v148 = v139.collectorLocation;
+  const v149 = v139.destinationLocation;
+  const v150 = v139.collectorPrice;
+  stdlib.protect(ctc3, await interact.showCollector(v147, v148, v149, v150), {
+    at: './index.rsh:81:27:application',
+    fs: ['at ./index.rsh:80:7:application call to [unknown function] (defined at: ./index.rsh:80:22:function exp)'],
+    msg: 'showCollector',
+    who: 'Collector'
+    });
+  
   return;
+  
+  
   
   
   
@@ -121,38 +200,45 @@ export async function Disposal(ctcTop, interact) {
   const stdlib = ctc.stdlib;
   const ctc0 = stdlib.T_UInt;
   const ctc1 = stdlib.T_Bytes(stdlib.checkedBigNumberify('<builtin>', stdlib.UInt_max, '256'));
-  const ctc2 = stdlib.T_Null;
+  const ctc2 = stdlib.T_Object({
+    boughtDate: ctc1,
+    boughtPrice: ctc0,
+    bundleName: ctc1,
+    disposePrice: ctc0
+    });
+  const ctc3 = stdlib.T_Null;
+  const ctc4 = stdlib.T_Object({
+    collectorLocation: ctc1,
+    collectorName: ctc0,
+    collectorPrice: ctc0,
+    destinationLocation: ctc1
+    });
   
   
-  const v69 = stdlib.protect(ctc0, interact.bundleID, 'for Disposal\'s interact field bundleID');
-  const v70 = stdlib.protect(ctc1, interact.bundleName, 'for Disposal\'s interact field bundleName');
-  const v71 = stdlib.protect(ctc0, interact.deadline, 'for Disposal\'s interact field deadline');
-  const v72 = stdlib.protect(ctc1, interact.disposalLocation, 'for Disposal\'s interact field disposalLocation');
-  const v73 = stdlib.protect(ctc1, interact.disposalName, 'for Disposal\'s interact field disposalName');
-  const v74 = stdlib.protect(ctc0, interact.price, 'for Disposal\'s interact field price');
+  const v94 = stdlib.protect(ctc0, interact.deadline, 'for Disposal\'s interact field deadline');
   
-  stdlib.protect(ctc2, await interact.registerBundle(v69, v73, v72, v70), {
-    at: './index.rsh:62:53:application',
-    fs: ['at ./index.rsh:54:16:application call to [unknown function] (defined at: ./index.rsh:54:20:function exp)'],
+  const v97 = stdlib.protect(ctc2, await interact.registerBundle(), {
+    at: './index.rsh:54:60:application',
+    fs: ['at ./index.rsh:53:16:application call to [unknown function] (defined at: ./index.rsh:53:20:function exp)'],
     msg: 'registerBundle',
     who: 'Disposal'
     });
   
   const txn1 = await (ctc.sendrecv({
-    args: [null, v74, v71],
-    evt_cnt: 3,
+    args: [v97, v94],
+    evt_cnt: 2,
     funcNum: 0,
-    lct: stdlib.checkedBigNumberify('./index.rsh:65:12:dot', stdlib.UInt_max, '0'),
+    lct: stdlib.checkedBigNumberify('./index.rsh:57:12:dot', stdlib.UInt_max, '0'),
     onlyIf: true,
-    out_tys: [ctc2, ctc0, ctc0],
-    pay: [stdlib.checkedBigNumberify('./index.rsh:65:12:decimal', stdlib.UInt_max, '0'), []],
+    out_tys: [ctc2, ctc0],
+    pay: [stdlib.checkedBigNumberify('./index.rsh:57:12:decimal', stdlib.UInt_max, '0'), []],
     sim_p: (async (txn1) => {
       const sim_r = { txns: [], mapRefs: [], maps: [] };
       let sim_txn_ctr = stdlib.UInt_max;
       const getSimTokCtr = () => { sim_txn_ctr = sim_txn_ctr.sub(1); return sim_txn_ctr; };
       
       
-      const {data: [v83, v84, v85], secs: v87, time: v86, didSend: v39, from: v82 } = txn1;
+      const {data: [v103, v104], secs: v106, time: v105, didSend: v33, from: v102 } = txn1;
       
       ;
       sim_r.isHalt = false;
@@ -161,10 +247,90 @@ export async function Disposal(ctcTop, interact) {
       }),
     soloSend: true,
     timeoutAt: undefined /* mto */,
-    tys: [ctc2, ctc0, ctc0],
+    tys: [ctc2, ctc0],
     waitIfNotPresent: false
     }));
-  const {data: [v83, v84, v85], secs: v87, time: v86, didSend: v39, from: v82 } = txn1;
+  const {data: [v103, v104], secs: v106, time: v105, didSend: v33, from: v102 } = txn1;
+  ;
+  const v109 = v103.bundleName;
+  const v110 = v103.boughtDate;
+  const v111 = v103.boughtPrice;
+  stdlib.protect(ctc3, await interact.showDisposal(v109, v110, v111), {
+    at: './index.rsh:61:26:application',
+    fs: ['at ./index.rsh:60:7:application call to [unknown function] (defined at: ./index.rsh:60:21:function exp)'],
+    msg: 'showDisposal',
+    who: 'Disposal'
+    });
+  
+  const txn2 = await (ctc.recv({
+    didSend: false,
+    evt_cnt: 0,
+    funcNum: 1,
+    out_tys: [],
+    timeoutAt: undefined /* mto */,
+    waitIfNotPresent: false
+    }));
+  const {data: [], secs: v118, time: v117, didSend: v51, from: v116 } = txn2;
+  const v119 = v103.disposePrice;
+  ;
+  ;
+  const txn3 = await (ctc.recv({
+    didSend: false,
+    evt_cnt: 1,
+    funcNum: 2,
+    out_tys: [ctc4],
+    timeoutAt: undefined /* mto */,
+    waitIfNotPresent: false
+    }));
+  const {data: [v139], secs: v141, time: v140, didSend: v76, from: v138 } = txn3;
+  ;
+  const v142 = stdlib.addressEq(v116, v138);
+  stdlib.assert(v142, {
+    at: './index.rsh:78:13:dot',
+    fs: [],
+    msg: 'sender correct',
+    who: 'Disposal'
+    });
+  return;
+  
+  
+  
+  
+  
+  
+  };
+export async function Seller(ctcTop, interact) {
+  if (typeof(ctcTop) !== 'object' || ctcTop._initialize === undefined) {
+    return Promise.reject(new Error(`The backend for Seller expects to receive a contract as its first argument.`));}
+  if (typeof(interact) !== 'object') {
+    return Promise.reject(new Error(`The backend for Seller expects to receive an interact object as its second argument.`));}
+  const ctc = ctcTop._initialize();
+  const stdlib = ctc.stdlib;
+  const ctc0 = stdlib.T_Bytes(stdlib.checkedBigNumberify('<builtin>', stdlib.UInt_max, '256'));
+  const ctc1 = stdlib.T_UInt;
+  const ctc2 = stdlib.T_Object({
+    boughtDate: ctc0,
+    boughtPrice: ctc1,
+    bundleName: ctc0,
+    disposePrice: ctc1
+    });
+  const ctc3 = stdlib.T_Object({
+    collectorLocation: ctc0,
+    collectorName: ctc1,
+    collectorPrice: ctc1,
+    destinationLocation: ctc0
+    });
+  
+  
+  const txn1 = await (ctc.recv({
+    didSend: false,
+    evt_cnt: 2,
+    funcNum: 0,
+    out_tys: [ctc2, ctc1],
+    timeoutAt: undefined /* mto */,
+    waitIfNotPresent: false
+    }));
+  const {data: [v103, v104], secs: v106, time: v105, didSend: v33, from: v102 } = txn1;
   ;
   const txn2 = await (ctc.recv({
     didSend: false,
@@ -174,10 +340,30 @@ export async function Disposal(ctcTop, interact) {
     timeoutAt: undefined /* mto */,
     waitIfNotPresent: false
     }));
-  const {data: [], secs: v92, time: v91, didSend: v48, from: v90 } = txn2;
+  const {data: [], secs: v118, time: v117, didSend: v51, from: v116 } = txn2;
+  const v119 = v103.disposePrice;
   ;
   ;
+  const txn3 = await (ctc.recv({
+    didSend: false,
+    evt_cnt: 1,
+    funcNum: 2,
+    out_tys: [ctc3],
+    timeoutAt: undefined /* mto */,
+    waitIfNotPresent: false
+    }));
+  const {data: [v139], secs: v141, time: v140, didSend: v76, from: v138 } = txn3;
+  ;
+  const v142 = stdlib.addressEq(v116, v138);
+  stdlib.assert(v142, {
+    at: './index.rsh:78:13:dot',
+    fs: [],
+    msg: 'sender correct',
+    who: 'Seller'
+    });
   return;
+  
+  
   
   
   
@@ -189,14 +375,14 @@ const _ALGO = {
     pure: [],
     sigs: []
     },
-  appApproval: `ByADAAEIJgIAAQAiNQAxGEEBDyhkSSJbNQEkWzUCNhoAF0lBAAciNQQjNQYANhoCFzUENhoDNhoBF0kjDEAAPyMSRCM0ARJENARJIhJMNAISEUQpZEk1A4EgWzX/gASai5F0sDT/iADXsSKyATT/sggjshA0A1cAILIHs0IAU0iBoI0GiAC5IjQBEkQ0BEkiEkw0AhIRREk1BUlJSCg1/yJbNf4kWzX9gATQpk0tNP9QNP4WUDT9FlCwMQA0/hZQKUsBVwAoZ0gjNQEyBjUCQgAcMRmBBRJEsSKyASKyCCOyEDIJsgkyCrIHs0IABTEZIhJEKDQBFjQCFlBnNAZBAAqABBUffHU0B1CwNABJIwgyBBJEMRYSRCNDMRkiEkRC/98iMTQSRIECMTUSRCIxNhJEIjE3EkQiNQEiNQJC/640AElKIwg1ADgHMgoSRDgQIxJEOAgSRIk=`,
+  appApproval: `ByAEAAECkAQmBgEAAAEBAQIBAwEEIjUAMRhBAYMpZEkiWzUBgQhbNQI2GgAXSUEAByI1BCM1BgA2GgIXNQQ2GgM2GgEXSSMMQACXSSQMQAAvJBJEJDQBEkQ0BEkiEkw0AhIRRChkNQNJNQU1/4AEMbFOFDT/ULA0AzEAEkRCANBIIzQBEkQ0BEkiEkw0AhIRRChkKmRQK2RQJwRkUCcFZFA1A4AEmouRdLA0A4EgJViBiARbNf80/4gBA7EisgE0/7III7IQNANXACCyB7MxAChLAVcAIGdIJDUBMgY1AkIAikiBoI0GiADUIjQBEkQ0BEkiEkw0AhIRREk1BUkiJVg1/yVbNf6ABK9Q0M80/1A0/hZQsDEANP9QKEsBVwB/ZypLAVd/f2crSwFX/n9nJwRLAYH9AoF/WGcnBUsBgfwDgTRYZ0gjNQEyBjUCQgAcMRmBBRJEsSKyASKyCCOyEDIJsgkyCrIHs0IABTEZIhJEKTQBFjQCFlBnNAZBAAqABBUffHU0B1CwNABJIwgyBBJEMRYSRCNDMRkiEkRC/98iMTQSRIEGMTUSRCIxNhJEIjE3EkQiNQEiNQJC/640AElKIwg1ADgHMgoSRDgQIxJEOAgSRIk=`,
   appClear: `Bw==`,
   companionInfo: null,
   extraPages: 0,
   mapDataKeys: 0,
   mapDataSize: 0,
-  stateKeys: 1,
-  stateSize: 40,
+  stateKeys: 5,
+  stateSize: 560,
   unsupported: [],
   version: 11,
   warnings: []
@@ -215,27 +401,128 @@ const _ETH = {
           {
             "components": [
               {
-                "internalType": "bool",
-                "name": "v83",
-                "type": "bool"
+                "components": [
+                  {
+                    "components": [
+                      {
+                        "internalType": "bytes32",
+                        "name": "elem0",
+                        "type": "bytes32"
+                      },
+                      {
+                        "internalType": "bytes32",
+                        "name": "elem1",
+                        "type": "bytes32"
+                      },
+                      {
+                        "internalType": "bytes32",
+                        "name": "elem2",
+                        "type": "bytes32"
+                      },
+                      {
+                        "internalType": "bytes32",
+                        "name": "elem3",
+                        "type": "bytes32"
+                      },
+                      {
+                        "internalType": "bytes32",
+                        "name": "elem4",
+                        "type": "bytes32"
+                      },
+                      {
+                        "internalType": "bytes32",
+                        "name": "elem5",
+                        "type": "bytes32"
+                      },
+                      {
+                        "internalType": "bytes32",
+                        "name": "elem6",
+                        "type": "bytes32"
+                      },
+                      {
+                        "internalType": "bytes32",
+                        "name": "elem7",
+                        "type": "bytes32"
+                      }
+                    ],
+                    "internalType": "struct T0",
+                    "name": "_boughtDate",
+                    "type": "tuple"
+                  },
+                  {
+                    "internalType": "uint256",
+                    "name": "_boughtPrice",
+                    "type": "uint256"
+                  },
+                  {
+                    "components": [
+                      {
+                        "internalType": "bytes32",
+                        "name": "elem0",
+                        "type": "bytes32"
+                      },
+                      {
+                        "internalType": "bytes32",
+                        "name": "elem1",
+                        "type": "bytes32"
+                      },
+                      {
+                        "internalType": "bytes32",
+                        "name": "elem2",
+                        "type": "bytes32"
+                      },
+                      {
+                        "internalType": "bytes32",
+                        "name": "elem3",
+                        "type": "bytes32"
+                      },
+                      {
+                        "internalType": "bytes32",
+                        "name": "elem4",
+                        "type": "bytes32"
+                      },
+                      {
+                        "internalType": "bytes32",
+                        "name": "elem5",
+                        "type": "bytes32"
+                      },
+                      {
+                        "internalType": "bytes32",
+                        "name": "elem6",
+                        "type": "bytes32"
+                      },
+                      {
+                        "internalType": "bytes32",
+                        "name": "elem7",
+                        "type": "bytes32"
+                      }
+                    ],
+                    "internalType": "struct T0",
+                    "name": "_bundleName",
+                    "type": "tuple"
+                  },
+                  {
+                    "internalType": "uint256",
+                    "name": "_disposePrice",
+                    "type": "uint256"
+                  }
+                ],
+                "internalType": "struct T1",
+                "name": "v103",
+                "type": "tuple"
               },
               {
                 "internalType": "uint256",
-                "name": "v84",
-                "type": "uint256"
-              },
-              {
-                "internalType": "uint256",
-                "name": "v85",
+                "name": "v104",
                 "type": "uint256"
               }
             ],
-            "internalType": "struct T1",
+            "internalType": "struct T3",
             "name": "msg",
             "type": "tuple"
           }
         ],
-        "internalType": "struct T2",
+        "internalType": "struct T4",
         "name": "_a",
         "type": "tuple"
       }
@@ -273,28 +560,129 @@ const _ETH = {
           {
             "components": [
               {
-                "internalType": "bool",
-                "name": "v83",
-                "type": "bool"
+                "components": [
+                  {
+                    "components": [
+                      {
+                        "internalType": "bytes32",
+                        "name": "elem0",
+                        "type": "bytes32"
+                      },
+                      {
+                        "internalType": "bytes32",
+                        "name": "elem1",
+                        "type": "bytes32"
+                      },
+                      {
+                        "internalType": "bytes32",
+                        "name": "elem2",
+                        "type": "bytes32"
+                      },
+                      {
+                        "internalType": "bytes32",
+                        "name": "elem3",
+                        "type": "bytes32"
+                      },
+                      {
+                        "internalType": "bytes32",
+                        "name": "elem4",
+                        "type": "bytes32"
+                      },
+                      {
+                        "internalType": "bytes32",
+                        "name": "elem5",
+                        "type": "bytes32"
+                      },
+                      {
+                        "internalType": "bytes32",
+                        "name": "elem6",
+                        "type": "bytes32"
+                      },
+                      {
+                        "internalType": "bytes32",
+                        "name": "elem7",
+                        "type": "bytes32"
+                      }
+                    ],
+                    "internalType": "struct T0",
+                    "name": "_boughtDate",
+                    "type": "tuple"
+                  },
+                  {
+                    "internalType": "uint256",
+                    "name": "_boughtPrice",
+                    "type": "uint256"
+                  },
+                  {
+                    "components": [
+                      {
+                        "internalType": "bytes32",
+                        "name": "elem0",
+                        "type": "bytes32"
+                      },
+                      {
+                        "internalType": "bytes32",
+                        "name": "elem1",
+                        "type": "bytes32"
+                      },
+                      {
+                        "internalType": "bytes32",
+                        "name": "elem2",
+                        "type": "bytes32"
+                      },
+                      {
+                        "internalType": "bytes32",
+                        "name": "elem3",
+                        "type": "bytes32"
+                      },
+                      {
+                        "internalType": "bytes32",
+                        "name": "elem4",
+                        "type": "bytes32"
+                      },
+                      {
+                        "internalType": "bytes32",
+                        "name": "elem5",
+                        "type": "bytes32"
+                      },
+                      {
+                        "internalType": "bytes32",
+                        "name": "elem6",
+                        "type": "bytes32"
+                      },
+                      {
+                        "internalType": "bytes32",
+                        "name": "elem7",
+                        "type": "bytes32"
+                      }
+                    ],
+                    "internalType": "struct T0",
+                    "name": "_bundleName",
+                    "type": "tuple"
+                  },
+                  {
+                    "internalType": "uint256",
+                    "name": "_disposePrice",
+                    "type": "uint256"
+                  }
+                ],
+                "internalType": "struct T1",
+                "name": "v103",
+                "type": "tuple"
               },
               {
                 "internalType": "uint256",
-                "name": "v84",
-                "type": "uint256"
-              },
-              {
-                "internalType": "uint256",
-                "name": "v85",
+                "name": "v104",
                 "type": "uint256"
               }
             ],
-            "internalType": "struct T1",
+            "internalType": "struct T3",
             "name": "msg",
             "type": "tuple"
           }
         ],
         "indexed": false,
-        "internalType": "struct T2",
+        "internalType": "struct T4",
         "name": "_a",
         "type": "tuple"
       }
@@ -325,12 +713,156 @@ const _ETH = {
           }
         ],
         "indexed": false,
-        "internalType": "struct T4",
+        "internalType": "struct T7",
         "name": "_a",
         "type": "tuple"
       }
     ],
     "name": "_reach_e1",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "_who",
+        "type": "address"
+      },
+      {
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "time",
+            "type": "uint256"
+          },
+          {
+            "components": [
+              {
+                "components": [
+                  {
+                    "components": [
+                      {
+                        "internalType": "bytes32",
+                        "name": "elem0",
+                        "type": "bytes32"
+                      },
+                      {
+                        "internalType": "bytes32",
+                        "name": "elem1",
+                        "type": "bytes32"
+                      },
+                      {
+                        "internalType": "bytes32",
+                        "name": "elem2",
+                        "type": "bytes32"
+                      },
+                      {
+                        "internalType": "bytes32",
+                        "name": "elem3",
+                        "type": "bytes32"
+                      },
+                      {
+                        "internalType": "bytes32",
+                        "name": "elem4",
+                        "type": "bytes32"
+                      },
+                      {
+                        "internalType": "bytes32",
+                        "name": "elem5",
+                        "type": "bytes32"
+                      },
+                      {
+                        "internalType": "bytes32",
+                        "name": "elem6",
+                        "type": "bytes32"
+                      },
+                      {
+                        "internalType": "bytes32",
+                        "name": "elem7",
+                        "type": "bytes32"
+                      }
+                    ],
+                    "internalType": "struct T0",
+                    "name": "_collectorLocation",
+                    "type": "tuple"
+                  },
+                  {
+                    "internalType": "uint256",
+                    "name": "_collectorName",
+                    "type": "uint256"
+                  },
+                  {
+                    "internalType": "uint256",
+                    "name": "_collectorPrice",
+                    "type": "uint256"
+                  },
+                  {
+                    "components": [
+                      {
+                        "internalType": "bytes32",
+                        "name": "elem0",
+                        "type": "bytes32"
+                      },
+                      {
+                        "internalType": "bytes32",
+                        "name": "elem1",
+                        "type": "bytes32"
+                      },
+                      {
+                        "internalType": "bytes32",
+                        "name": "elem2",
+                        "type": "bytes32"
+                      },
+                      {
+                        "internalType": "bytes32",
+                        "name": "elem3",
+                        "type": "bytes32"
+                      },
+                      {
+                        "internalType": "bytes32",
+                        "name": "elem4",
+                        "type": "bytes32"
+                      },
+                      {
+                        "internalType": "bytes32",
+                        "name": "elem5",
+                        "type": "bytes32"
+                      },
+                      {
+                        "internalType": "bytes32",
+                        "name": "elem6",
+                        "type": "bytes32"
+                      },
+                      {
+                        "internalType": "bytes32",
+                        "name": "elem7",
+                        "type": "bytes32"
+                      }
+                    ],
+                    "internalType": "struct T0",
+                    "name": "_destinationLocation",
+                    "type": "tuple"
+                  }
+                ],
+                "internalType": "struct T8",
+                "name": "v139",
+                "type": "tuple"
+              }
+            ],
+            "internalType": "struct T9",
+            "name": "msg",
+            "type": "tuple"
+          }
+        ],
+        "indexed": false,
+        "internalType": "struct T10",
+        "name": "_a",
+        "type": "tuple"
+      }
+    ],
+    "name": "_reach_e2",
     "type": "event"
   },
   {
@@ -396,7 +928,7 @@ const _ETH = {
             "type": "bool"
           }
         ],
-        "internalType": "struct T4",
+        "internalType": "struct T7",
         "name": "_a",
         "type": "tuple"
       }
@@ -407,12 +939,150 @@ const _ETH = {
     "type": "function"
   },
   {
+    "inputs": [
+      {
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "time",
+            "type": "uint256"
+          },
+          {
+            "components": [
+              {
+                "components": [
+                  {
+                    "components": [
+                      {
+                        "internalType": "bytes32",
+                        "name": "elem0",
+                        "type": "bytes32"
+                      },
+                      {
+                        "internalType": "bytes32",
+                        "name": "elem1",
+                        "type": "bytes32"
+                      },
+                      {
+                        "internalType": "bytes32",
+                        "name": "elem2",
+                        "type": "bytes32"
+                      },
+                      {
+                        "internalType": "bytes32",
+                        "name": "elem3",
+                        "type": "bytes32"
+                      },
+                      {
+                        "internalType": "bytes32",
+                        "name": "elem4",
+                        "type": "bytes32"
+                      },
+                      {
+                        "internalType": "bytes32",
+                        "name": "elem5",
+                        "type": "bytes32"
+                      },
+                      {
+                        "internalType": "bytes32",
+                        "name": "elem6",
+                        "type": "bytes32"
+                      },
+                      {
+                        "internalType": "bytes32",
+                        "name": "elem7",
+                        "type": "bytes32"
+                      }
+                    ],
+                    "internalType": "struct T0",
+                    "name": "_collectorLocation",
+                    "type": "tuple"
+                  },
+                  {
+                    "internalType": "uint256",
+                    "name": "_collectorName",
+                    "type": "uint256"
+                  },
+                  {
+                    "internalType": "uint256",
+                    "name": "_collectorPrice",
+                    "type": "uint256"
+                  },
+                  {
+                    "components": [
+                      {
+                        "internalType": "bytes32",
+                        "name": "elem0",
+                        "type": "bytes32"
+                      },
+                      {
+                        "internalType": "bytes32",
+                        "name": "elem1",
+                        "type": "bytes32"
+                      },
+                      {
+                        "internalType": "bytes32",
+                        "name": "elem2",
+                        "type": "bytes32"
+                      },
+                      {
+                        "internalType": "bytes32",
+                        "name": "elem3",
+                        "type": "bytes32"
+                      },
+                      {
+                        "internalType": "bytes32",
+                        "name": "elem4",
+                        "type": "bytes32"
+                      },
+                      {
+                        "internalType": "bytes32",
+                        "name": "elem5",
+                        "type": "bytes32"
+                      },
+                      {
+                        "internalType": "bytes32",
+                        "name": "elem6",
+                        "type": "bytes32"
+                      },
+                      {
+                        "internalType": "bytes32",
+                        "name": "elem7",
+                        "type": "bytes32"
+                      }
+                    ],
+                    "internalType": "struct T0",
+                    "name": "_destinationLocation",
+                    "type": "tuple"
+                  }
+                ],
+                "internalType": "struct T8",
+                "name": "v139",
+                "type": "tuple"
+              }
+            ],
+            "internalType": "struct T9",
+            "name": "msg",
+            "type": "tuple"
+          }
+        ],
+        "internalType": "struct T10",
+        "name": "_a",
+        "type": "tuple"
+      }
+    ],
+    "name": "_reach_m2",
+    "outputs": [],
+    "stateMutability": "payable",
+    "type": "function"
+  },
+  {
     "stateMutability": "payable",
     "type": "receive"
   }
 ]`,
-  Bytecode: `0x60806040526040516107a63803806107a6833981016040819052610022916101ee565b6000805543600355604080513381528251602080830191909152808401518051151583850152908101516060830152820151608082015290517f97a494553b8bd1c1c176bf0f80cfd33476231c5752ebf034f4cca56079a7affe9181900360a00190a1610091341560076100f6565b60408051808201825260006020808301828152338085528683015183015182526001938490554390935584518083019390935251828501528351808303850181526060909201909352805191926100ee926002929091019061011f565b5050506102c7565b8161011b5760405163100960cb60e01b81526004810182905260240160405180910390fd5b5050565b82805461012b9061028c565b90600052602060002090601f01602090048101928261014d5760008555610193565b82601f1061016657805160ff1916838001178555610193565b82800160010185558215610193579182015b82811115610193578251825591602001919060010190610178565b5061019f9291506101a3565b5090565b5b8082111561019f57600081556001016101a4565b604051606081016001600160401b03811182821017156101e857634e487b7160e01b600052604160045260246000fd5b60405290565b6000818303608081121561020157600080fd5b604080519081016001600160401b038111828210171561023157634e487b7160e01b600052604160045260246000fd5b604052835181526060601f198301121561024a57600080fd5b6102526101b8565b91506020840151801515811461026757600080fd5b8252604084810151602080850191909152606090950151908301529283015250919050565b600181811c908216806102a057607f821691505b602082108114156102c157634e487b7160e01b600052602260045260246000fd5b50919050565b6104d0806102d66000396000f3fe6080604052600436106100405760003560e01c80631e93b0f1146100495780632c10a1591461006d5780638323075714610080578063ab53f2c61461009557005b3661004757005b005b34801561005557600080fd5b506003545b6040519081526020015b60405180910390f35b61004761007b366004610341565b6100b8565b34801561008c57600080fd5b5060015461005a565b3480156100a157600080fd5b506100aa610229565b604051610064929190610359565b6100c860016000541460096102c6565b6100e2813515806100db57506001548235145b600a6102c6565b6000808055600280546100f4906103b6565b80601f0160208091040260200160405190810160405280929190818152602001828054610120906103b6565b801561016d5780601f106101425761010080835404028352916020019161016d565b820191906000526020600020905b81548152906001019060200180831161015057829003601f168201915b505050505080602001905181019061018591906103eb565b90507f400d21ea4e4a5e28b4ae5f0f476c201fc8036473fcf7c8cd252f38698020b4f133836040516101b892919061045d565b60405180910390a16101d18160200151341460086102c6565b805160208201516040516001600160a01b039092169181156108fc0291906000818181858888f1935050505015801561020e573d6000803e3d6000fd5b5060008080556001819055610225906002906102eb565b5050565b60006060600054600280805461023e906103b6565b80601f016020809104026020016040519081016040528092919081815260200182805461026a906103b6565b80156102b75780601f1061028c576101008083540402835291602001916102b7565b820191906000526020600020905b81548152906001019060200180831161029a57829003601f168201915b50505050509050915091509091565b816102255760405163100960cb60e01b81526004810182905260240160405180910390fd5b5080546102f7906103b6565b6000825580601f10610307575050565b601f0160209004906000526020600020908101906103259190610328565b50565b5b8082111561033d5760008155600101610329565b5090565b60006040828403121561035357600080fd5b50919050565b82815260006020604081840152835180604085015260005b8181101561038d57858101830151858201606001528201610371565b8181111561039f576000606083870101525b50601f01601f191692909201606001949350505050565b600181811c908216806103ca57607f821691505b6020821081141561035357634e487b7160e01b600052602260045260246000fd5b6000604082840312156103fd57600080fd5b6040516040810181811067ffffffffffffffff8211171561042e57634e487b7160e01b600052604160045260246000fd5b60405282516001600160a01b038116811461044857600080fd5b81526020928301519281019290925250919050565b6001600160a01b03831681528135602080830191909152606082019083013580151580821461048b57600080fd5b8060408501525050939250505056fea2646970667358221220598b5b33ca8ee1277574b64b5bdbc66667e9aa94b6b5d22ad6968fb12e221a7164736f6c634300080c0033`,
-  BytecodeLen: 1958,
+  Bytecode: `0x608060405260405162000ec338038062000ec3833981016040819052620000269162000355565b60008055436003556040517f149f14fbb028f43e7da13409f94f6709a1cc6e9db21419945de5e6742fdce6ab90620000629033908490620004cf565b60405180910390a162000078341560076200017e565b620001266040805180820182526000808252825161018081018452608080820183815260a080840185905260c080850186905260e0808601879052610100808701889052610120870188905261014087018890526101608701889052938652602086810188905289519485018a52878552848101889052848a018890526060858101899052958501889052928401879052908301869052820185905295830152810191909152909182015290565b3381526020808301515181830152600160008190554390556040516200014f9183910162000512565b6040516020818303038152906040526002908051906020019062000175929190620001a8565b5050506200057d565b81620001a45760405163100960cb60e01b81526004810182905260240160405180910390fd5b5050565b828054620001b69062000540565b90600052602060002090601f016020900481019282620001da576000855562000225565b82601f10620001f557805160ff191683800117855562000225565b8280016001018555821562000225579182015b828111156200022557825182559160200191906001019062000208565b506200023392915062000237565b5090565b5b8082111562000233576000815560010162000238565b604080519081016001600160401b03811182821017156200027f57634e487b7160e01b600052604160045260246000fd5b60405290565b604051608081016001600160401b03811182821017156200027f57634e487b7160e01b600052604160045260246000fd5b6000610100808385031215620002cb57600080fd5b604051908101906001600160401b0382118183101715620002fc57634e487b7160e01b600052604160045260246000fd5b81604052809250835181526020840151602082015260408401516040820152606084015160608201526080840151608082015260a084015160a082015260c084015160c082015260e084015160e0820152505092915050565b60008183036102808112156200036a57600080fd5b620003746200024e565b83518152601f1982019150610260808312156200039057600080fd5b6200039a6200024e565b61024080851215620003ab57600080fd5b620003b562000285565b9450620003c68860208901620002b6565b85526101208701516020860152620003e3886101408901620002b6565b604086015286015160608501529283529093015160208083019190915283015250919050565b6200045e828251805182526020810151602083015260408101516040830152606081015160608301526080810151608083015260a081015160a083015260c081015160c083015260e081015160e08301525050565b60208181015161010084015260408083015180516101208601529182015161014085015281015161016084015260608082015161018085015260808201516101a085015260a08201516101c085015260c08201516101e085015260e090910151610200840152015161022090910152565b60006102a08201905060018060a01b0384168252825160208301526020830151620004ff60408401825162000409565b6020810151610280840152509392505050565b81516001600160a01b03168152602080830151610260830191620005399084018262000409565b5092915050565b600181811c908216806200055557607f821691505b602082108114156200057757634e487b7160e01b600052602260045260246000fd5b50919050565b610936806200058d6000396000f3fe60806040526004361061004b5760003560e01c80631e93b0f1146100545780632c10a15914610078578063736157101461008b578063832307571461009e578063ab53f2c6146100b357005b3661005257005b005b34801561006057600080fd5b506003545b6040519081526020015b60405180910390f35b61005261008636600461055e565b6100d6565b610052610099366004610576565b610280565b3480156100aa57600080fd5b50600154610065565b3480156100bf57600080fd5b506100c86103c6565b60405161006f929190610589565b6100e66001600054146009610463565b610100813515806100f957506001548235145b600a610463565b600080805560028054610112906105e6565b80601f016020809104026020016040519081016040528092919081815260200182805461013e906105e6565b801561018b5780601f106101605761010080835404028352916020019161018b565b820191906000526020600020905b81548152906001019060200180831161016e57829003601f168201915b50505050508060200190518101906101a3919061070c565b90507f400d21ea4e4a5e28b4ae5f0f476c201fc8036473fcf7c8cd252f38698020b4f133836040516101d69291906107bf565b60405180910390a16101f381602001516060015134146008610463565b80516020820151606001516040516001600160a01b039092169181156108fc0291906000818181858888f19350505050158015610234573d6000803e3d6000fd5b506040805160208082018352338083526002600055436001558351918201529091016040516020818303038152906040526002908051906020019061027a929190610488565b50505050565b610290600260005414600d610463565b6102aa813515806102a357506001548235145b600e610463565b6000808055600280546102bc906105e6565b80601f01602080910402602001604051908101604052809291908181526020018280546102e8906105e6565b80156103355780601f1061030a57610100808354040283529160200191610335565b820191906000526020600020905b81548152906001019060200180831161031857829003601f168201915b505050505080602001905181019061034d91906107fc565b90507fa450bccc0860e98a022826d2440062678cad56819b9c9e5642293870815cd1cc33836040516103809291906108a2565b60405180910390a16103943415600b610463565b80516103ac906001600160a01b03163314600c610463565b600080805560018190556103c29060029061050c565b5050565b6000606060005460028080546103db906105e6565b80601f0160208091040260200160405190810160405280929190818152602001828054610407906105e6565b80156104545780601f1061042957610100808354040283529160200191610454565b820191906000526020600020905b81548152906001019060200180831161043757829003601f168201915b50505050509050915091509091565b816103c25760405163100960cb60e01b81526004810182905260240160405180910390fd5b828054610494906105e6565b90600052602060002090601f0160209004810192826104b657600085556104fc565b82601f106104cf57805160ff19168380011785556104fc565b828001600101855582156104fc579182015b828111156104fc5782518255916020019190600101906104e1565b50610508929150610549565b5090565b508054610518906105e6565b6000825580601f10610528575050565b601f0160209004906000526020600020908101906105469190610549565b50565b5b80821115610508576000815560010161054a565b60006040828403121561057057600080fd5b50919050565b6000610260828403121561057057600080fd5b82815260006020604081840152835180604085015260005b818110156105bd578581018301518582016060015282016105a1565b818111156105cf576000606083870101525b50601f01601f191692909201606001949350505050565b600181811c908216806105fa57607f821691505b6020821081141561057057634e487b7160e01b600052602260045260246000fd5b6040516080810167ffffffffffffffff8111828210171561064c57634e487b7160e01b600052604160045260246000fd5b60405290565b80516001600160a01b038116811461066957600080fd5b919050565b600061010080838503121561068257600080fd5b6040519081019067ffffffffffffffff821181831017156106b357634e487b7160e01b600052604160045260246000fd5b81604052809250835181526020840151602082015260408401516040820152606084015160608201526080840151608082015260a084015160a082015260c084015160c082015260e084015160e0820152505092915050565b600081830361026081121561072057600080fd5b6040516040810181811067ffffffffffffffff8211171561075157634e487b7160e01b600052604160045260246000fd5b60405261075d84610652565b815261024080601f198401121561077357600080fd5b61077b61061b565b925061078a866020870161066e565b835261012085015160208401526107a586610140870161066e565b604084015293909301516060820152602083015250919050565b6001600160a01b0383168152813560208083019190915260608201908301358015158082146107ed57600080fd5b80604085015250509392505050565b60006020828403121561080e57600080fd5b6040516020810181811067ffffffffffffffff8211171561083f57634e487b7160e01b600052604160045260246000fd5b60405261084b83610652565b81529392505050565b803582526020810135602083015260408101356040830152606081013560608301526080810135608083015260a081013560a083015260c081013560c083015260e081013560e08301525050565b6001600160a01b038316815281356020808301919091526102808201906108cf9060408401908501610854565b6101406101208401358184015261016081850135818501526108f76101808501828701610854565b5050939250505056fea26469706673582212206bd9e0159f31c2683d6229510576cbacb3837cfc5efc216c34c2872decf4325764736f6c634300080c0033`,
+  BytecodeLen: 3779,
   Which: `oD`,
   version: 8,
   views: {
@@ -420,13 +1090,19 @@ const _ETH = {
   };
 export const _stateSourceMap = {
   1: {
-    at: './index.rsh:66:11:after expr stmt semicolon',
+    at: './index.rsh:59:11:after expr stmt semicolon',
     fs: [],
     msg: null,
     who: 'Module'
     },
   2: {
-    at: './index.rsh:83:11:after expr stmt semicolon',
+    at: './index.rsh:74:11:after expr stmt semicolon',
+    fs: [],
+    msg: null,
+    who: 'Module'
+    },
+  3: {
+    at: './index.rsh:79:11:after expr stmt semicolon',
     fs: [],
     msg: null,
     who: 'Module'
@@ -438,7 +1114,8 @@ export const _Connectors = {
   };
 export const _Participants = {
   "Collector": Collector,
-  "Disposal": Disposal
+  "Disposal": Disposal,
+  "Seller": Seller
   };
 export const _APIs = {
   };

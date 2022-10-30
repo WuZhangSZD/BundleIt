@@ -33,23 +33,23 @@ exports.SetBundleInfo = class extends React.Component {
         />
         <input
           type='text'
-          placeholder= "disposalName"
-          onChange={(e) => this.setState({disposalName: e.currentTarget.value})}
-        />
-        <input
-          type='text'
-          placeholder= "disposalLocation"
-          onChange={(e) => this.setState({disposalLocation: e.currentTarget.value})}
+          placeholder= "boughtDate"
+          onChange={(e) => this.setState({boughtDate: e.currentTarget.value})}
         />
         <input
           type='number'
-          placeholder= "price"
-          onChange={(e) => this.setState({price: e.currentTarget.value})}
+          placeholder= "boughtPrice"
+          onChange={(e) => this.setState({boughtPrice: e.currentTarget.value})}
+        />
+        <input
+          type='number'
+          placeholder= "disposePrice"
+          onChange={(e) => this.setState({disposePrice: e.currentTarget.value})}
         />
         <br />
         <button
-          onClick={() => parent.setBundle(bundleName,disposalName,disposalLocation,price)}
-        >Set wager</button>
+          onClick={() => parent.setBundle({bundleName:bundleName,boughtDate: boughtDate,boughtPrice: boughtPrice,disposePrice: disposePrice})}
+        >Set bundle</button>
       </div>
     );
   }
@@ -80,7 +80,7 @@ exports.Disposing = class extends React.Component {
   }
 }
 
-exports.WaitingForCollector = class extends React.Component {
+exports.DisposeDone = class extends React.Component {
   async copyToClipboard(button) {
     const {ctcInfoStr} = this.props;
     navigator.clipboard.writeText(ctcInfoStr);
@@ -93,17 +93,45 @@ exports.WaitingForCollector = class extends React.Component {
   }
 
   render() {
-    const {ctcInfoStr} = this.props;
+    const {bundleName} = this.props.bundleName;
+    const {bundleLocation} = this.props.bundleLocation;
+    const {disposalName} = this.props.dispsoalName;
+    const {disposePrice} = this.props.disposePrice;
+    const {price} = this.props;
     return (
       <div>
-        Waiting for Collector to join...
-        <br /> Please give them this contract info:
+        Your pre-loved have been registered
+        <h2>
+          Pre-loved Name 
+        </h2>
+        <br/>
+        <h2>
+          {bundleName}
+        </h2>
+        <h2>
+          Pre-loved Bought-day 
+        </h2>
+        <br/>
+        <h2>
+          {bundleLocation}
+        </h2>
+        <h2>
+          Pre-loved Description 
+        </h2>
+        <br/>
+        <h2>
+          {price}
+        </h2>
+        <h2>
+          ContractNumber (please record) 
+        </h2>
+        <br/>
         <pre className='ContractInfo'>
           {ctcInfoStr}
         </pre>
-        <button
+        {/* <button
           onClick={(e) => this.copyToClipboard(e.currentTarget)}
-        >Copy to clipboard</button>
+        >Copy to clipboard</button> */}
       </div>
     )
   }
