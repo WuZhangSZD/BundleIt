@@ -2,22 +2,22 @@
 
 const BundleDisposal = Object({//Immutable attributes under object
   bundleName: Bytes(256), // String storage for the name of the bundle
-  boughtDate: Bytes(256), // String storage for the bought day of bundle
+  boughtDate: Bytes(100), // String storage for the bought day of bundle
   boughtPrice: UInt,
   disposePrice: UInt
 });
 
 const BundleCollector = Object({//Immutable attributes under object
-  collectorName: Bytes(256),
+  collectorName: Bytes(100),
   collectorLocation: Bytes(256),
   destinationLocation: Bytes(256),
   collectorPrice: UInt,
 });
 
 const BundleSeller = Object({//Immutable attributes under object
-  sellerName: Bytes(256), // String storage for the name of the bundle
+  sellerName: Bytes(100), // String storage for the name of the bundle
   sellerLocation: Bytes(256), // String storage for the name of the bundle
-  collectDate: Bytes(256), // String storage for the name of the bundle
+  collectDate: Bytes(100), // String storage for the name of the bundle
   bundleCondition: Bytes(256), // String storage for the name of the bundle
   sellerPrice: UInt,
 });
@@ -29,28 +29,28 @@ const BundleSeller = Object({//Immutable attributes under object
 export const main = Reach.App(() => {//This is one contract
   const Disposal = Participant('Disposal', {
     registerBundle: Fun([],BundleDisposal),
-    showDisposal: Fun([Bytes(256),Bytes(256),UInt,UInt],Null),
+    showDisposal: Fun([Bytes(256),Bytes(100),UInt,UInt],Null),
     deadline : UInt,
   });
   const Collector = Participant('Collector', {
     collectBundle: Fun([],BundleCollector),
-    showCollector: Fun([Bytes(256),Bytes(256),Bytes(256),UInt],Null),
+    showCollector: Fun([Bytes(100),Bytes(256),Bytes(256),UInt],Null),
     acceptPrice: Fun([UInt], Null),
   });
   const Seller = Participant('Seller', {
     sellBundle: Fun([],BundleSeller),
-    showSeller: Fun([Bytes(256),Bytes(256),Bytes(256),Bytes(256),UInt],Null),
+    showSeller: Fun([Bytes(100),Bytes(256),Bytes(100),Bytes(256),UInt],Null),
     acceptPrice: Fun([UInt], Null),
   });
   const Viewer = Participant('Viewer', {
-    showViewer: Fun([Bytes(256),Bytes(256),Bytes(256),Bytes(256),UInt],Null),
+    showViewer: Fun([Bytes(256),Bytes(100),Bytes(100),Bytes(256),UInt],Null),
     acceptPrice: Fun([UInt], Null),
   });
   
   init();
 
   const informTimeout = () =>{
-    each ([Disposal,Collector,Seller],() => {
+    each ([Disposal,Collector,Seller,Viewer],() => {
       interact.informTimeout();
     })
   }

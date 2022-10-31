@@ -148,7 +148,6 @@ class Seller extends BundleFunction {
   
   async acceptPrice(priceAtomic) { // Fun([UInt], Null)
     const priceCollect= reach.formatCurrency(priceAtomic, 4);
-    console.log(priceDispose)
     console.log(priceAtomic)
     return await new Promise(resolveAcceptedP => {
       this.setState({view: 'AcceptTerms', priceCollect, resolveAcceptedP});
