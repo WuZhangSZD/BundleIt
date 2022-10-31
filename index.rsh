@@ -102,9 +102,11 @@ export const main = Reach.App(() => {//This is one contract
   Viewer.only(() => {
     interact.showViewer(bundleDisposal.bundleName,bundleCollector.collectorName,bundleSeller.sellerName,bundleSeller.bundleCondition,bundleSeller.sellerPrice);
   });
-  
-  Seller.pay(bundleSeller.sellerPrice);  
-  transfer(bundleSeller.sellerPrice).to(Disposal);
+  Viewer.only(() => {
+    interact.acceptPrice(bundleSeller.sellerPrice);
+  });
+  Viewer.pay(bundleSeller.sellerPrice);  
+  transfer(bundleSeller.sellerPrice).to(Seller);
   commit();
 
   exit();

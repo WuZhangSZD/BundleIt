@@ -179,23 +179,22 @@ class Viewer extends BundleFunction {
   view(ctcInfoStr) {
     const ctc = this.props.acc.contract(backend, JSON.parse(ctcInfoStr));
     this.setState({view: 'Attaching',ctcInfoStr});
-    backend.Seller(ctc, this);
+    backend.Viewer(ctc, this);
   }
   
   async acceptPrice(priceAtomic) { // Fun([UInt], Null)
-    const priceCollect= reach.formatCurrency(priceAtomic, 4);
-    console.log(priceDispose)
+    const priceSeller= reach.formatCurrency(priceAtomic, 4);
     console.log(priceAtomic)
     return await new Promise(resolveAcceptedP => {
-      this.setState({view: 'AcceptTerms', priceCollect, resolveAcceptedP});
+      this.setState({view: 'AcceptTerms', priceSeller, resolveAcceptedP});
     });
   }
   termsAccepted() {
     this.state.resolveAcceptedP();
     this.setState({view: 'WaitingForTurn'});
   }
-  showCollector(collectorName,collectorLocation,destinationLocation,collectorPrice) {
-    this.setState({view: 'CollectDone', collectorName: collectorName.replace(/\0/g, ''),collectorLocation:collectorLocation.replace(/\0/g, ''),destinationLocation:destinationLocation.replace(/\0/g, ''),collectorPrice:reach.formatCurrency(JSON.parse(collectorPrice))});
+  showViewer(bundleName,collectorName,sellerName,bundleCondition,sellerPrice) {
+    this.setState({view: 'ViewDone', bundleName: bundleName.replace(/\0/g, ''),collectorName:collectorName.replace(/\0/g, ''),sellerName:sellerName.replace(/\0/g, ''),bundleCondition:bundleCondition.replace(/\0/g, ''),sellerPrice:reach.formatCurrency(JSON.parse(sellerPrice))});
   }
   render() { return renderView(this, ViewerViews); }
 }
