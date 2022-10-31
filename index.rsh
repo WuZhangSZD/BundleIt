@@ -8,7 +8,7 @@ const BundleDisposal = Object({//Immutable attributes under object
 });
 
 const BundleCollector = Object({//Immutable attributes under object
-  collectorName: UInt,
+  collectorName: Bytes(256),
   collectorLocation: Bytes(256),
   destinationLocation: Bytes(256),
   collectorPrice: UInt,
@@ -29,12 +29,12 @@ const BundleSeller = Object({//Immutable attributes under object
 export const main = Reach.App(() => {//This is one contract
   const Disposal = Participant('Disposal', {
     registerBundle: Fun([],BundleDisposal),
-    showDisposal: Fun([Bytes(256),Bytes(256),UInt],Null),
+    showDisposal: Fun([Bytes(256),Bytes(256),UInt,UInt],Null),
     deadline : UInt,
   });
   const Collector = Participant('Collector', {
     collectBundle: Fun([],BundleCollector),
-    showCollector: Fun([UInt,Bytes(256),Bytes(256),UInt],Null),
+    showCollector: Fun([Bytes(256),Bytes(256),Bytes(256),UInt],Null),
     acceptPrice: Fun([UInt], Null),
   });
   const Seller = Participant('Seller', {
@@ -42,6 +42,11 @@ export const main = Reach.App(() => {//This is one contract
     showSeller: Fun([Bytes(256),Bytes(256),Bytes(256),Bytes(256),UInt],Null),
     acceptPrice: Fun([UInt], Null),
   });
+  const Viewer = Participant('Viewer', {
+    showViewer: Fun([Bytes(256),Bytes(256),Bytes(256),Bytes(256),UInt],Null),
+    acceptPrice: Fun([UInt], Null),
+  });
+  
   init();
 
   const informTimeout = () =>{
@@ -58,19 +63,15 @@ export const main = Reach.App(() => {//This is one contract
 
   commit();
   each([Disposal],()=>{
-    interact.showDisposal(bundleDisposal.bundleName,bundleDisposal.boughtDate,bundleDisposal.boughtPrice )
+    interact.showDisposal(bundleDisposal.bundleName,bundleDisposal.boughtDate,bundleDisposal.boughtPrice,bundleDisposal.disposePrice )
   })
   
   Collector.only(() => {
     interact.acceptPrice(bundleDisposal.disposePrice);
   });
   
-  // Collector.publish(collectorName, collectorLocation,collectorBidPrice).pay(collectorBidPrice);  //Bidding part
   Collector.pay(bundleDisposal.disposePrice);  
   transfer(bundleDisposal.disposePrice).to(Disposal);
-  each([Disposal, Collector], () => {
-    // interact.sendBundle(bundle);
-  });
   commit();
   Collector.only(()=> {
     const bundleCollector = declassify(interact.collectBundle())
@@ -80,8 +81,32 @@ export const main = Reach.App(() => {//This is one contract
   each([Collector],()=>{
     interact.showCollector(bundleCollector.collectorName,bundleCollector.collectorLocation,bundleCollector.destinationLocation,bundleCollector.collectorPrice)
   })
-  // write your program here
+
+  Seller.only(() => {
+    interact.acceptPrice(bundleCollector.collectorPrice);
+  });
+  
+  Seller.pay(bundleCollector.collectorPrice);  
+  transfer(bundleCollector.collectorPrice).to(Disposal);
+  commit();
+  Seller.only(()=> {
+    const bundleSeller = declassify(interact.sellBundle())
+  })
+  Seller.publish(bundleSeller)
+  commit();
+  each([Seller],()=>{
+    interact.showSeller(bundleSeller.sellerName,bundleSeller.sellerLocation,bundleSeller.collectDate,bundleSeller.bundleCondition,bundleSeller.sellerPrice)
+  })
+
+
+  Viewer.only(() => {
+    interact.showViewer(bundleDisposal.bundleName,bundleCollector.collectorName,bundleSeller.sellerName,bundleSeller.bundleCondition,bundleSeller.sellerPrice);
+  });
+  
+  Seller.pay(bundleSeller.sellerPrice);  
+  transfer(bundleSeller.sellerPrice).to(Disposal);
+  commit();
+
   exit();
 });
 
-//}

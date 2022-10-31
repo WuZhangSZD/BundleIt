@@ -7,8 +7,8 @@ exports.Wrapper = class extends React.Component {
   render() {
     const {content} = this.props;
     return (
-      <div className="Collector">
-        <h2>Collector (Collector)</h2>
+      <div className="Seller">
+        <h2>Seller (Seller)</h2>
         {content}
       </div>
     );
@@ -31,64 +31,14 @@ exports.Attach = class extends React.Component {
         <br />
         <button
           disabled={!ctcInfoStr}
-          onClick={() => parent.collect(ctcInfoStr)}
+          onClick={() => parent.sell(ctcInfoStr)}
         >Attach</button>
       </div>
     );
   }
 }
 
-exports.CollectBundleInfo = class extends React.Component {
-  render() {
-    const {parent, defaultWager, standardUnit} = this.props;
-    const collectorName = (this.state || {}).collectorName || "Unknown";
-    const collectorLocation = (this.state || {}).collectorLocation || "Unknown";
-    const destinationLocation= (this.state || {}).destinationLocation || "Unknown";
-    const collectorPrice = (this.state || {}).collectorPrice || 1;
-    return (
-      <div>
-        <input
-          type='text'
-          placeholder= "Collector Name"
-          onChange={(e) => this.setState({collectorName: e.currentTarget.value})}
-        />
-        <input
-          type='text'
-          placeholder= "Collector Location"
-          onChange={(e) => this.setState({collectorLocation: e.currentTarget.value})}
-        />
-        <input
-          type='text'
-          placeholder= "destinationLocation"
-          onChange={(e) => this.setState({destinationLocation: e.currentTarget.value})}
-        />
-        <input
-          type='number'
-          placeholder= "collecor price"
-          onChange={(e) => this.setState({collectorPrice: e.currentTarget.value})}
-        />
-        <br />
-        <button
-          onClick={() => parent.setBundle({collectorName:collectorName,collectorLocation: collectorLocation,destinationLocation:destinationLocation,collectorPrice: reach.parseCurrency(collectorPrice)})}
-        >Set bundle</button>
-      </div>
-    );
-  }
-}
-
-exports.StartCollect = class extends React.Component {
-  render() {
-    const {parent, bundleName, bundleLocation, standardUnit} = this.props;
-    return (
-      <div>
-        <button
-          onClick={() => parent.collect()}
-        >Start collect</button>
-      </div>
-    );
-  }
-}
-exports.CollectDone = class extends React.Component {
+exports.SellDone = class extends React.Component {
   async copyToClipboard(button) {
     const {ctcInfoStr} = this.props;
     navigator.clipboard.writeText(ctcInfoStr);
@@ -101,37 +51,44 @@ exports.CollectDone = class extends React.Component {
   }
 
   render() {
-    const {collectorName,collectorLocation,destinationLocation,collectorPrice,ctcInfoStr} = this.props;
+    const {sellerName,sellerLocation,collectDate,bundleCondition,sellerPrice,ctcInfoStr} = this.props;
     return (
       <div>
-        Your pre-loved have been collected
+        Your pre-loved have been registerd for selling
         <h2>
-          Pre-loved Name 
+          Seller Name
         </h2>
         <br/>
         <h2>
-          {collectorName}
+          {sellerName}
         </h2>
         <h2>
-          Pre-loved Bought-day 
-        </h2>
-        <br/>
-        <h2>
-          {collectorLocation}
-        </h2>
-        <h2>
-          Pre-loved bought price 
+          Seller Location 
         </h2>
         <br/>
         <h2>
-          {destinationLocation}
+          {sellerLocation}
         </h2>
         <h2>
-          Pre-loved dispose price 
+          Collect Date 
         </h2>
         <br/>
         <h2>
-          {collectorPrice}
+          {collectDate}
+        </h2>
+        <h2>
+          Bundle Condition 
+        </h2>
+        <br/>
+        <h2>
+          {bundleCondition}
+        </h2>
+        <h2>
+          Seller Price 
+        </h2>
+        <br/>
+        <h2>
+          {sellerPrice}
         </h2>
         <h2>
           ContractNumber (please record) 
@@ -157,12 +114,12 @@ exports.Attaching = class extends React.Component {
 
 exports.AcceptTerms = class extends React.Component {
   render() {
-    const {priceDispose, standardUnit, parent} = this.props;
+    const {priceCollect, standardUnit, parent} = this.props;
     const {disabled} = this.state || {};
     return (
       <div>
         The terms of the game are:
-        <br /> Wager: {priceDispose} {standardUnit}
+        <br /> Wager: {priceCollect} {standardUnit}
         <br />
         <button
           // disabled={disabled}

@@ -77,7 +77,13 @@ exports.DisposalOrCollectorOrSeller = class extends React.Component {
           <button
             onClick={() => parent.selectSeller()}
           >Seller</button>
-          <br /> Attach to the Disposal's contract.
+          <br /> Attach to the Collector's contract.
+        </p>
+        <p>
+          <button
+            onClick={() => parent.selectViewer()}
+          >Viewer</button>
+          <br />View the bundle information.
         </p>
       </div>
     );

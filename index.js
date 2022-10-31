@@ -3,16 +3,14 @@
 //For brandon maybe start from rsh and mjs, try to define the input by user and we will look how to pass variable into rsh from react
 
 import React from 'react';
-//Below are the page that we are really going to implement
-import MainPageViews from './views/MainPageViews';
-import ProductViews from './views/ProductViews';
-import DetailViews from './views/DetailViews';
 import {ALGO_MyAlgoConnect as MyAlgoConnect} from '@reach-sh/stdlib';
 
 //Below are the testing page that nich showed
 import AppViews from './views/AppViews';
 import DisposalViews from './views/DisposalViews';
 import CollectorViews from './views/CollectorViews';
+import SellerViews from './views/SellerViews';
+import ViewerViews from './views/ViewerViews';
 import {renderDOM, renderView} from './views/render';
 import './index.css';
 import * as backend from './build/index.main.mjs';
@@ -64,6 +62,7 @@ class App extends React.Component {
     selectDisposal() { this.setState({view: 'Wrapper', ContentView: Disposal}); }
     selectCollector() { this.setState({view: 'Wrapper', ContentView: Collector}); }
     selectSeller() { this.setState({view: 'Wrapper', ContentView: Seller}); }
+    selectViewer() { this.setState({view: 'Wrapper', ContentView: Viewer}); }
     render() { return renderView(this, AppViews); }
 }
   
@@ -73,10 +72,9 @@ class BundleFunction extends React.Component {
 class Disposal extends BundleFunction {
   constructor(props) {
     super(props);
-    this.state = {view: 'Disposing'};
+    this.state = {view: 'StartDispose'};
     console.log("Comming to diposal")
   }
-  setBundle(bundle) { this.state.resolveBundleDisposal(bundle); }
   async dispose() {
     const ctc = this.props.acc.contract(backend);
     this.setState({view: 'Disposing', ctc});
@@ -87,20 +85,17 @@ class Disposal extends BundleFunction {
     console.log("after ctcinfo")
     this.setState({view: 'Disposing', ctcInfoStr});
   }
+  setBundle(bundle) { this.state.resolveBundleDisposal(bundle); }
   async registerBundle() { //Fun([UInt,Bytes(256),Bytes(256),Bytes(256)],Null)
     const bundleInfo = await new Promise(resolveBundleDisposal => {
       this.setState({view: 'SetBundleInfo', playable:true, resolveBundleDisposal});
     });
+    console.log(bundleInfo);
     return bundleInfo;
   }
-  showDispose(bundleName,bundleLocation,disposalName) {this.setState({view: 'DisposeDone', bundleName: JSON.parse(bundleName), bundleLocation: JSON.parse(bundleLocation), disposalName: JOSN.parse(disposalName)});}
-  // async getBundleName() { // Fun([], UInt)
-  //   const hand = await new Promise(resolveBundleName => {
-  //     this.setState({view: 'GetBundle', playable: true, resolveBundleName});
-  //   });
-  //   this.setState({view: 'WaitingForResults', hand});
-  //   return bundleName;
-  // }
+  showDisposal(bundleName,boughtDate,boughtPrice,disposePrice) {
+    this.setState({view: 'DisposeDone', bundleName: bundleName.replace(/\0/g, ''),boughtDate:boughtDate.replace(/\0/g, ''),boughtPrice:JSON.parse(boughtPrice),disposePrice:reach.formatCurrency(JSON.parse(disposePrice))});
+  }
   render() { return renderView(this, DisposalViews); }
 }
 class Collector extends BundleFunction {
@@ -108,36 +103,34 @@ class Collector extends BundleFunction {
     super(props);
     this.state = {view: 'Attach'};
   }
-  attach(ctcInfoStr) {
+  collect(ctcInfoStr) {
     const ctc = this.props.acc.contract(backend, JSON.parse(ctcInfoStr));
-    this.setState({view: 'Attaching'});
+    this.setState({view: 'Attaching',ctcInfoStr});
     backend.Collector(ctc, this);
   }
-  async registerCollector() { //Fun([UInt,Bytes(256),Bytes(256),Bytes(256)],Null)
-    const FirstPara = await new Promise(resolveHandP => {
-      this.setState({view: 'GetBundle', playable:true, resolveHandP});
-    });
-    this.setState({view: 'WaitingForResults', FirstPara});
-    return "";
-  }
-  bundleInfo(bundleID,bundleName,bundleLocation,disposalName) {this.setState({view: 'DisposeDone', bundleID: bundleID, bundleName:bundleName, bundleLocation: bundleLocation, disposalName: disposalName});}
-  // random() { return reach.hasRandom.random(); }
-  async getBundleName() { // Fun([], UInt)
-    const hand = await new Promise(resolveBundleName => {
-      this.setState({view: 'GetBundle', playable: true, resolveBundleName});
-    });
-    this.setState({view: 'WaitingForResults', hand});
-    return bundleName;
-  }
-  async acceptWager(wagerAtomic) { // Fun([UInt], Null)
-    const wager = reach.formatCurrency(wagerAtomic, 4);
+  
+  async acceptPrice(priceAtomic) { // Fun([UInt], Null)
+    const priceDispose= reach.formatCurrency(priceAtomic, 4);
+    console.log(priceDispose)
+    console.log(priceAtomic)
     return await new Promise(resolveAcceptedP => {
-      this.setState({view: 'AcceptTerms', wager, resolveAcceptedP});
+      this.setState({view: 'AcceptTerms', priceDispose, resolveAcceptedP});
     });
   }
   termsAccepted() {
     this.state.resolveAcceptedP();
     this.setState({view: 'WaitingForTurn'});
+  }
+  setBundle(bundle) { this.state.resolveBundleCollector(bundle); }
+  async collectBundle() { //Fun([UInt,Bytes(256),Bytes(256),Bytes(256)],Null)
+    const bundleInfo = await new Promise(resolveBundleCollector => {
+      this.setState({view: 'CollectBundleInfo', playable:true, resolveBundleCollector});
+    });
+    console.log(bundleInfo);
+    return bundleInfo;
+  }
+  showCollector(collectorName,collectorLocation,destinationLocation,collectorPrice) {
+    this.setState({view: 'CollectDone', collectorName: collectorName.replace(/\0/g, ''),collectorLocation:collectorLocation.replace(/\0/g, ''),destinationLocation:destinationLocation.replace(/\0/g, ''),collectorPrice:reach.formatCurrency(JSON.parse(collectorPrice))});
   }
   render() { return renderView(this, CollectorViews); }
 }
@@ -147,23 +140,65 @@ class Seller extends BundleFunction {
     super(props);
     this.state = {view: 'Attach'};
   }
-  attach(ctcInfoStr) {
+  sell(ctcInfoStr) {
     const ctc = this.props.acc.contract(backend, JSON.parse(ctcInfoStr));
-    this.setState({view: 'Attaching'});
-    backend.Collector(ctc, this);
+    this.setState({view: 'Attaching',ctcInfoStr});
+    backend.Seller(ctc, this);
   }
-  async acceptWager(wagerAtomic) { // Fun([UInt], Null)
-    const wager = reach.formatCurrency(wagerAtomic, 4);
+  
+  async acceptPrice(priceAtomic) { // Fun([UInt], Null)
+    const priceCollect= reach.formatCurrency(priceAtomic, 4);
+    console.log(priceDispose)
+    console.log(priceAtomic)
     return await new Promise(resolveAcceptedP => {
-      this.setState({view: 'AcceptTerms', wager, resolveAcceptedP});
+      this.setState({view: 'AcceptTerms', priceCollect, resolveAcceptedP});
     });
   }
   termsAccepted() {
     this.state.resolveAcceptedP();
     this.setState({view: 'WaitingForTurn'});
   }
-  render() { return renderView(this, CollectorViews); }
+  setBundle(bundle) { this.state.resolveBundleSeller(bundle); }
+  async sellBundle() { //Fun([UInt,Bytes(256),Bytes(256),Bytes(256)],Null)
+    const bundleInfo = await new Promise(resolveBundleSeller => {
+      this.setState({view: 'SellBundleInfo', playable:true, resolveBundleSeller});
+    });
+    console.log(bundleInfo);
+    return bundleInfo;
+  }
+  showSeller(sellerName,sellerLocation,collectDate,bundleCondition,sellerPrice) {
+    this.setState({view: 'SellDone', sellerName: sellerName.replace(/\0/g, ''),sellerLocation:sellerLocation.replace(/\0/g, ''),collectDate:collectDate.replace(/\0/g, ''),bundleCondition:bundleCondition.replace(/\0/g, ''),sellerPrice:reach.formatCurrency(JSON.parse(sellerPrice))});
+  }
+  render() { return renderView(this, SellerViews); }
 }
 
+class Viewer extends BundleFunction {
+  constructor(props) {
+    super(props);
+    this.state = {view: 'Attach'};
+  }
+  view(ctcInfoStr) {
+    const ctc = this.props.acc.contract(backend, JSON.parse(ctcInfoStr));
+    this.setState({view: 'Attaching',ctcInfoStr});
+    backend.Seller(ctc, this);
+  }
+  
+  async acceptPrice(priceAtomic) { // Fun([UInt], Null)
+    const priceCollect= reach.formatCurrency(priceAtomic, 4);
+    console.log(priceDispose)
+    console.log(priceAtomic)
+    return await new Promise(resolveAcceptedP => {
+      this.setState({view: 'AcceptTerms', priceCollect, resolveAcceptedP});
+    });
+  }
+  termsAccepted() {
+    this.state.resolveAcceptedP();
+    this.setState({view: 'WaitingForTurn'});
+  }
+  showCollector(collectorName,collectorLocation,destinationLocation,collectorPrice) {
+    this.setState({view: 'CollectDone', collectorName: collectorName.replace(/\0/g, ''),collectorLocation:collectorLocation.replace(/\0/g, ''),destinationLocation:destinationLocation.replace(/\0/g, ''),collectorPrice:reach.formatCurrency(JSON.parse(collectorPrice))});
+  }
+  render() { return renderView(this, ViewerViews); }
+}
 
 renderDOM(<App />);
