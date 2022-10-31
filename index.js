@@ -10,7 +10,7 @@ import AppViews from './views/AppViews';
 import DisposalViews from './views/DisposalViews';
 import CollectorViews from './views/CollectorViews';
 import SellerViews from './views/SellerViews';
-import ViewerViews from './views/ViewerViews';
+import ViewerViews from './views/ViewerView';
 import {renderDOM, renderView} from './views/render';
 import './index.css';
 import * as backend from './build/index.main.mjs';
@@ -182,11 +182,12 @@ class Viewer extends BundleFunction {
     backend.Viewer(ctc, this);
   }
   
-  async acceptPrice(priceAtomic) { // Fun([UInt], Null)
+  async acceptPrice(bundleName,collectorName,sellerName,bundleCondition,priceAtomic) { // Fun([UInt], Null)
+    console.log("Shown viewer");
     const priceSeller= reach.formatCurrency(priceAtomic, 4);
     console.log(priceAtomic)
     return await new Promise(resolveAcceptedP => {
-      this.setState({view: 'AcceptTerms', priceSeller, resolveAcceptedP});
+      this.setState({view: 'ViewDone', bundleName: bundleName.replace(/\0/g, ''),collectorName:collectorName.replace(/\0/g, ''),sellerName:sellerName.replace(/\0/g, ''),bundleCondition:bundleCondition.replace(/\0/g, ''),sellerPrice:priceSeller, resolveAcceptedP});
     });
   }
   termsAccepted() {
@@ -194,7 +195,6 @@ class Viewer extends BundleFunction {
     this.setState({view: 'WaitingForTurn'});
   }
   showViewer(bundleName,collectorName,sellerName,bundleCondition,sellerPrice) {
-    this.setState({view: 'ViewDone', bundleName: bundleName.replace(/\0/g, ''),collectorName:collectorName.replace(/\0/g, ''),sellerName:sellerName.replace(/\0/g, ''),bundleCondition:bundleCondition.replace(/\0/g, ''),sellerPrice:reach.formatCurrency(JSON.parse(sellerPrice))});
   }
   render() { return renderView(this, ViewerViews); }
 }

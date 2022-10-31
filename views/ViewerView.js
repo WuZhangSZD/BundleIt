@@ -41,7 +41,7 @@ exports.Attach = class extends React.Component {
 exports.ViewDone = class extends React.Component {
 
   render() {
-    const {bundleName,collectorName,sellerName,bundleCondition,sellerPrice,ctcInfoStr} = this.props;
+    const {priceCollect, standardUnit, parent,bundleName,collectorName,sellerName,bundleCondition,sellerPrice,ctcInfoStr} = this.props;
     return (
       <div>
         This is the information of bundle
