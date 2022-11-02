@@ -40,11 +40,8 @@ textarea {
 .ContractInfo {
   font-size: calc(10px + 1vmin);
   text-align: left;
-  width: 90vw;
   height: 7em;
   padding: 2vw;
-  overflow-x: scroll;
-  white-space: pre;
 }
 
 .role-holder
@@ -70,7 +67,8 @@ textarea {
   top: -35px;
 }
 
-.Disposal{
+.Disposal,.Viewer{
+  margin-top: 100px;
   border-radius: 32px;
   width: 85%;
   background: #e6a715;
@@ -81,3 +79,6 @@ textarea {
 
 }
 
+button{
+  margin: 10px;
+}
