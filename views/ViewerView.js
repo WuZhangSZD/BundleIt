@@ -7,8 +7,8 @@ exports.Wrapper = class extends React.Component {
   render() {
     const {content} = this.props;
     return (
-      <div className="Seller">
-        <h2>Seller (Seller)</h2>
+      <div className="Viewer">
+        <h2>Viewer (Viewer)</h2>
         {content}
       </div>
     );
@@ -20,7 +20,7 @@ exports.Attach = class extends React.Component {
     const {parent} = this.props;
     const {ctcInfoStr} = this.state || {};
     return (
-      <div>
+      <div className='attach'>
         Please paste the contract info to attach to:
         <br />
         <textarea spellCheck="false"
@@ -48,38 +48,25 @@ exports.ViewDone = class extends React.Component {
         <h2>
           Bundle Name
         </h2>
-        <br/>
-        <h2>
           {bundleName}
-        </h2>
         <h2>
           CollectorName 
         </h2>
-        <br/>
-        <h2>
           {collectorName}
-        </h2>
         <h2>
           SellerName
         </h2>
-        <br/>
-        <h2>
           {sellerName}
-        </h2>
         <h2>
           Bundle Condition 
         </h2>
-        <br/>
-        <h2>
           {bundleCondition}
-        </h2>
+
         <h2>
           Seller Price 
         </h2>
-        <br/>
-        <h2>
-          {sellerPrice}
-        </h2>
+          {sellerPrice} {standardUnit}
+          <br/>
         <button
           onClick={() => {
             this.setState({disabled: false});
@@ -107,8 +94,8 @@ exports.AcceptTerms = class extends React.Component {
     const {disabled} = this.state || {};
     return (
       <div>
-        The terms of the game are:
-        <br /> Wager: {priceCollect} {standardUnit}
+        The price for this bundle:
+        <br /> Price: {priceCollect} {standardUnit}
         <br />
         <button
           // disabled={disabled}
@@ -116,7 +103,7 @@ exports.AcceptTerms = class extends React.Component {
             this.setState({disabled: false});
             parent.termsAccepted();
           }}
-        >Accept terms and pay wager</button>
+        >Accept terms and pay for the bundle</button>
       </div>
     );
   }

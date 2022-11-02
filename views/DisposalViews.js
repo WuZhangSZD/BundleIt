@@ -110,48 +110,38 @@ exports.DisposeDone = class extends React.Component {
   }
 
   render() {
-    const {bundleName,boughtDate,boughtPrice,disposePrice,ctcInfoStr} = this.props;
+    const {bundleName,boughtDate,boughtPrice,disposePrice,ctcInfoStr, standardUnit} = this.props;
     // const {boughtDate} = (this.state || {}).boughtDate || "Nothing";
     // const {boughtPrice} = this.props.boughtPrice;
     // const {disposePrice} = this.props.disposePrice;
     return (
-      <div>
+      <div className='details-card'>
         Your pre-loved have been registered
         <h2>
           Pre-loved Name 
         </h2>
-        <br/>
-        <h2>
           {bundleName}
-        </h2>
         <h2>
           Pre-loved Bought-day 
         </h2>
-        <br/>
-        <h2>
           {boughtDate}
-        </h2>
         <h2>
           Pre-loved bought price 
         </h2>
-        <br/>
-        <h2>
-          {boughtPrice}
-        </h2>
+          {boughtPrice} {standardUnit}
         <h2>
           Pre-loved dispose price 
         </h2>
-        <br/>
-        <h2>
-          {disposePrice}
-        </h2>
+          {disposePrice} {standardUnit}
         <h2>
           ContractNumber (please record) 
         </h2>
-        <br/>
         <pre className='ContractInfo'>
           {ctcInfoStr}
         </pre>
+        <button
+          onClick={(e) => this.copyToClipboard(e.currentTarget)}
+        >Copy to clipboard</button>
       </div>
     )
   }
