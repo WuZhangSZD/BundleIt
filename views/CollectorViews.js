@@ -8,7 +8,7 @@ exports.Wrapper = class extends React.Component {
     const {content} = this.props;
     return (
       <div className="Collector">
-        <h2>Collector (Collector)</h2>
+        <h2>Collector</h2>
         {content}
       </div>
     );
@@ -20,19 +20,21 @@ exports.Attach = class extends React.Component {
     const {parent} = this.props;
     const {ctcInfoStr} = this.state || {};
     return (
-      <div>
-        Please paste the contract info to attach to:
-        <br />
-        <textarea spellCheck="false"
-          className='ContractInfo'
-          onChange={(e) => this.setState({ctcInfoStr: e.currentTarget.value})}
-          placeholder='{}'
-        />
-        <br />
-        <button
-          disabled={!ctcInfoStr}
-          onClick={() => parent.collect(ctcInfoStr)}
-        >Attach</button>
+      <div class="container contract_margin">
+        <div class="backgroundColor1 row m-5 no-gutters shadow-lg">
+          Please paste the contract info to attach to:
+          <br />
+          <textarea spellCheck="false"
+            className='ContractInfo'
+            onChange={(e) => this.setState({ctcInfoStr: e.currentTarget.value})}
+            placeholder='{}'
+          />
+          <br />
+          <button
+            disabled={!ctcInfoStr}
+            onClick={() => parent.collect(ctcInfoStr)}
+          >Attach</button>
+        </div>
       </div>
     );
   }
@@ -103,7 +105,7 @@ exports.CollectDone = class extends React.Component {
   render() {
     const {collectorName,collectorLocation,destinationLocation,collectorPrice,ctcInfoStr} = this.props;
     return (
-      <div>
+      <div className='details-card'>
         Your pre-loved have been collected
         <h2>
           Pre-loved Name 
@@ -141,6 +143,7 @@ exports.CollectDone = class extends React.Component {
           {ctcInfoStr}
         </pre>
       </div>
+      
     )
   }
 }
@@ -161,8 +164,8 @@ exports.AcceptTerms = class extends React.Component {
     const {disabled} = this.state || {};
     return (
       <div>
-        The terms of the game are:
-        <br /> Wager: {priceDispose} {standardUnit}
+        The disposal price is:
+        <br />{priceDispose} {standardUnit}
         <br />
         <button
           // disabled={disabled}
@@ -170,7 +173,7 @@ exports.AcceptTerms = class extends React.Component {
             this.setState({disabled: false});
             parent.termsAccepted();
           }}
-        >Accept terms and pay wager</button>
+        >Accept and Pay</button>
       </div>
     );
   }
@@ -180,8 +183,8 @@ exports.WaitingForTurn = class extends React.Component {
   render() {
     return (
       <div>
-        Waiting for the other player...
-        <br />Think about which move you want to play.
+        Loading, please wait...
+        <br />
       </div>
     );
   }
