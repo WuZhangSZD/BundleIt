@@ -16,23 +16,17 @@ code {
 }
 
 .App-header {
-  background-color: #282c34;
+  background-color: white;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
-  color: white;
 }
 
 .App-link {
   color: #61dafb;
-}
-
-input[type=number] {
-  font-size: calc(10px + 2vmin);
-  width: 4em;
 }
 
 button {
@@ -52,3 +46,38 @@ textarea {
   overflow-x: scroll;
   white-space: pre;
 }
+
+.role-holder
+{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  background-color: #D8C99B;
+}
+.role-title{
+  width: 100%;
+  margin-bottom: 50px;
+}
+.role{
+  flex: 1 0;
+  margin: 20px 10px 20px 10px;
+}
+
+#header{
+  width: 100%;
+  background-color: #fed066;
+  position: absolute;
+  top: -35px;
+}
+
+.Disposal{
+  border-radius: 32px;
+  width: 85%;
+  background: #e6a715;
+}
+
+.input{
+  margin: 20px 10px 20px 10px;
+
+}
+
