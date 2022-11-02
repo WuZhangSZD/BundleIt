@@ -58,36 +58,36 @@ exports.DisposalOrCollectorOrSeller = class extends React.Component {
   render() {
     const {parent} = this.props;
     return (
-      <div className='role-holder'>
-        <div className='role-title'>
-        Please select a role:
-        <br />
-        </div>
-        <div className='role'>
-          <button
-            onClick={() => parent.selectDisposal()}
-          >Disposal</button>
-          <br /> Set the wager, deploy the contract.
-        </div>
-        <div className='role'>
-          <button
-            onClick={() => parent.selectCollector()}
-          >Collector</button>
-          <br /> Attach to the Disposal's contract.
-          
-        </div>
-        <div className='role'>
-          <button
-            onClick={() => parent.selectSeller()}
-          >Seller</button>
-          <br /> Attach to the Collector's contract.
-        </div>
-        <div className='role'>
-          <button
-            onClick={() => parent.selectViewer()}
-          >Viewer</button>
-          <br />View the bundle information.
-          
+      <div className='container'>
+        <div className='joinUs'>
+        <h3 className='role-title'>
+          Please select a role:
+        </h3>
+          <div className='member'>
+            <button
+              onClick={() => parent.selectDisposal()}
+            >Disposal</button>
+            <br /> Set the wager, deploy the contract.
+          </div>
+          <div className='member'>
+            <button
+              onClick={() => parent.selectCollector()}
+            >Collector</button>
+            <br /> Attach to the Disposal's contract.
+            
+          </div>
+          <div className='member'>
+            <button
+              onClick={() => parent.selectSeller()}
+            >Seller</button>
+            <br /> Attach to the Collector's contract.
+          </div>
+          <div className='member'>
+            <button
+              onClick={() => parent.selectViewer()}
+            >Viewer</button>
+            <br />View the bundle information.
+          </div>
         </div>
       </div>
     );
