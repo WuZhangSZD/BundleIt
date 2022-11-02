@@ -8,7 +8,7 @@ exports.Wrapper = class extends React.Component {
     return (
       <div className="App">
         <header className="App-header" id="root">
-          <h1>Rock, Paper, Scissors</h1>
+          <h1 id="header">BundleIt! Best Choice for Vintage</h1>
           {content}
         </header>
       </div>
@@ -58,33 +58,37 @@ exports.DisposalOrCollectorOrSeller = class extends React.Component {
   render() {
     const {parent} = this.props;
     return (
-      <div>
+      <div className='role-holder'>
+        <div className='role-title'>
         Please select a role:
         <br />
-        <p>
+        </div>
+        <div className='role'>
           <button
             onClick={() => parent.selectDisposal()}
           >Disposal</button>
           <br /> Set the wager, deploy the contract.
-        </p>
-        <p>
+        </div>
+        <div className='role'>
           <button
             onClick={() => parent.selectCollector()}
           >Collector</button>
           <br /> Attach to the Disposal's contract.
-        </p>
-        <p>
+          
+        </div>
+        <div className='role'>
           <button
             onClick={() => parent.selectSeller()}
           >Seller</button>
           <br /> Attach to the Collector's contract.
-        </p>
-        <p>
+        </div>
+        <div className='role'>
           <button
             onClick={() => parent.selectViewer()}
           >Viewer</button>
           <br />View the bundle information.
-        </p>
+          
+        </div>
       </div>
     );
   }

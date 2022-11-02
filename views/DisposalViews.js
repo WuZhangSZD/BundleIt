@@ -26,31 +26,52 @@ exports.SetBundleInfo = class extends React.Component {
     const disposePrice = (this.state || {}).disposePrice || 1;
     const price = (this.state || {}).price || 0;
     return (
-      <div>
+      <div className='input-holder'>
+        <div className='input'>
+          <label>Bundle Name:
+            <br/>
         <input
           type='text'
           placeholder= "BundleName"
           onChange={(e) => this.setState({bundleName: e.currentTarget.value})}
-        />
+          />
+          </label>
+        </div>
+        <div className='input'>
+          <label>Bought Date:
+            <br/>
         <input
           type='text'
           placeholder= "boughtDate"
           onChange={(e) => this.setState({boughtDate: e.currentTarget.value})}
-        />
+          />
+          </label>
+        </div>
+        <div className='input'>
+          <label>Bought Price: 
+            <br/>
         <input
           type='number'
           placeholder= "boughtPrice"
           onChange={(e) => this.setState({boughtPrice: e.currentTarget.value})}
-        />
+          />
+        </label>
+        </div>
+        <div className='input'>
+          <label>Disposal Price:
+            <br/>
         <input
           type='number'
           placeholder= "disposePrice"
           onChange={(e) => this.setState({disposePrice: e.currentTarget.value})}
         />
-        <br />
+        </label>
+        </div>
+        <div>
         <button
           onClick={() => parent.setBundle({bundleName:bundleName,boughtDate: boughtDate,boughtPrice: boughtPrice,disposePrice: reach.parseCurrency(disposePrice)})}
         >Set bundle</button>
+        </div>
       </div>
     );
   }
