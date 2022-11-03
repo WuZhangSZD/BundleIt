@@ -47,32 +47,44 @@ exports.SellBundleInfo = class extends React.Component {
     const bundleCondition= (this.state || {}).bundleCondition || "Unknown";
     const sellerPrice = (this.state || {}).sellerPrice || 1;
     return (
-      <div>
-        <input
-          type='text'
-          placeholder= "Seller Name"
-          onChange={(e) => this.setState({sellerName: e.currentTarget.value})}
-        />
-        <input
-          type='text'
-          placeholder= "Seller Location"
-          onChange={(e) => this.setState({sellerLocation: e.currentTarget.value})}
-        />
-        <input
-          type='text'
-          placeholder= "collectDate"
-          onChange={(e) => this.setState({collectDate: e.currentTarget.value})}
-        />
-        <input
-          type='text'
-          placeholder= "bundleCondition"
-          onChange={(e) => this.setState({bundleCondition: e.currentTarget.value})}
-        />
-        <input
-          type='number'
-          placeholder= "seller price"
-          onChange={(e) => this.setState({sellerPrice: e.currentTarget.value})}
-        />
+      <div className='input-holder'>
+        <h4>Bundle Seller Registration</h4>
+        <div className='input'>
+          <input
+            type='text'
+            placeholder= "Seller Name"
+            onChange={(e) => this.setState({sellerName: e.currentTarget.value})}
+          />
+        </div>
+        <div className='input'>
+          <input
+            type='text'
+            placeholder= "Seller Location"
+            onChange={(e) => this.setState({sellerLocation: e.currentTarget.value})}
+          />
+        </div>
+        <div className='input'>
+          <input
+            type='text'
+            placeholder= "Collect Date"
+            onChange={(e) => this.setState({collectDate: e.currentTarget.value})}
+          />
+        </div>
+        <div className='input'>
+          <input
+            type='text'
+            placeholder= "uBndle Condition"
+            onChange={(e) => this.setState({bundleCondition: e.currentTarget.value})}
+          />
+        </div>
+        <div className='input'>
+          <input
+            type='number'
+            placeholder= "Selling Price (in ALGO)"
+            onChange={(e) => this.setState({sellerPrice: e.currentTarget.value})}
+          />
+        </div>
+        
         <br />
         <button
           onClick={() => parent.setBundle({sellerName:sellerName,sellerLocation: sellerLocation,collectDate:collectDate,bundleCondition:bundleCondition,sellerPrice: reach.parseCurrency(sellerPrice)})}
@@ -109,36 +121,24 @@ exports.SellDone = class extends React.Component {
   render() {
     const {sellerName,sellerLocation,collectDate,bundleCondition,sellerPrice,ctcInfoStr} = this.props;
     return (
-      <div>
-        Your pre-loved have been registerd for selling
+      <div className='details-card'>
+        Your bundle have been registerd for selling
         <h2>
           Seller Name
         </h2>
-        <br/>
-        <h2>
           {sellerName}
-        </h2>
         <h2>
           Seller Location 
         </h2>
-        <br/>
-        <h2>
           {sellerLocation}
-        </h2>
         <h2>
           Collect Date 
         </h2>
-        <br/>
-        <h2>
           {collectDate}
-        </h2>
         <h2>
           Bundle Condition 
         </h2>
-        <br/>
-        <h2>
           {bundleCondition}
-        </h2>
         <h2>
           Seller Price 
         </h2>
@@ -147,9 +147,8 @@ exports.SellDone = class extends React.Component {
           {sellerPrice}
         </h2>
         <h2>
-          ContractNumber (please record) 
+          Contract Number (Please record)
         </h2>
-        <br/>
         <pre className='ContractInfo'>
           {ctcInfoStr}
         </pre>
@@ -163,6 +162,8 @@ exports.Attaching = class extends React.Component {
     return (
       <div>
         Attaching, please wait...
+        <br />
+        <br />
       </div>
     );
   }
@@ -174,8 +175,8 @@ exports.AcceptTerms = class extends React.Component {
     const {disabled} = this.state || {};
     return (
       <div>
-        The terms of the game are:
-        <br /> Wager: {priceCollect} {standardUnit}
+        The collection price:
+        <br /> {priceCollect} {standardUnit}
         <br />
         <button
           // disabled={disabled}
@@ -183,7 +184,7 @@ exports.AcceptTerms = class extends React.Component {
             this.setState({disabled: false});
             parent.termsAccepted();
           }}
-        >Accept terms and pay wager</button>
+        >Accept and Pay</button>
       </div>
     );
   }
@@ -193,8 +194,9 @@ exports.WaitingForTurn = class extends React.Component {
   render() {
     return (
       <div>
-        Waiting for the other player...
-        <br />Think about which move you want to play.
+        Loading, please wait...
+        <br />
+        <br />
       </div>
     );
   }

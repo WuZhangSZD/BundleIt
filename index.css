@@ -11,6 +11,7 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
 .App {
   text-align: center;
 }
@@ -29,6 +30,19 @@ code {
   color: #61dafb;
 }
 
+#header{
+  width: 100%;
+  background-color: #fed066;
+  position: absolute;
+  top: -35px;
+}
+
+.logo{
+  margin-top: 50px;
+  height:70px;
+  width: auto;
+}
+
 button {
   font-size: calc(10px + 2vmin);
 }
@@ -39,9 +53,9 @@ textarea {
 
 .ContractInfo {
   font-size: calc(10px + 1vmin);
-  text-align: left;
+  text-align: center;
   height: 7em;
-  padding: 2vw;
+  padding: 5px;
 }
 
 .role-holder
@@ -60,33 +74,38 @@ textarea {
   margin: 20px 10px 20px 10px;
 }
 
-#header{
-  width: 100%;
-  background-color: #fed066;
-  position: absolute;
-  top: -35px;
-}
-
 .Disposal,.Viewer,.Collector, .Seller{
-  margin-top: 40px;
+  margin-top: 100px;
   border-radius: 32px;
   width: 85%;
-  background: #e6a715;
+  background: #fed066;
 }
 
-.input{
-  margin: 20px 10px 20px 10px;
-
+.input input{
+  margin: 10px;
+  width: 50%;
+  height: auto;
+  padding: 10px;
+  font-size: 16px;
+}
+.input input:focus{
+  border-bottom:1px solid #007bff;	
+  box-shadow:none;
+  outline:0;
+  background-color:#ebebeb;	
 }
 
 button{
   background-color: #d46d00; 
   color: white; 
   border-color: #d46d00;
-  margin: 10px;
+  margin: 5px;
+  margin-bottom: 20px;
   padding: 10px;
   border-radius: 12px;
-  font-size: 20px;
+  font-size: 18px;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+
 }
 
 button:hover {
@@ -131,7 +150,29 @@ button:hover {
 .container .joinUs .member p {
   margin: 15px 0;
   font-weight: 400;
-  color: #999;
+  color: rgb(0, 0, 0);
   font-size: 15px;
-  text-align: justify;
+  text-align: center;
 }
+
+
+.details-card {
+  align-items: center;
+  height: auto;
+  width: auto;
+  padding-top: 20px;
+  margin: 20px;
+  border-radius: 15px;
+  background-color: #ffe29d;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+}
+
+.details-card h2{
+  font-size: 16px;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.details-card:hover{
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+
