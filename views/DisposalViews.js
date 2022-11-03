@@ -10,7 +10,7 @@ exports.Wrapper = class extends React.Component {
     const {content} = this.props;
     return (
       <div className="Disposal">
-        <h2>Disposal (Disposal)</h2>
+        <h2>Disposer</h2>
         {content}
       </div>
     );
@@ -27,45 +27,34 @@ exports.SetBundleInfo = class extends React.Component {
     const price = (this.state || {}).price || 0;
     return (
       <div className='input-holder'>
-        <div className='input'>
-          <label>Bundle Name:
-            <br/>
-        <input
-          type='text'
-          placeholder= "BundleName"
-          onChange={(e) => this.setState({bundleName: e.currentTarget.value})}
-          />
-          </label>
+        <h4>Bundle Disposal Registration</h4>
+        <div className='input'>     
+          <input
+            type='text'
+            placeholder= "Bundle Name"
+            onChange={(e) => this.setState({bundleName: e.currentTarget.value})}
+            />
         </div>
         <div className='input'>
-          <label>Bought Date:
-            <br/>
-        <input
-          type='text'
-          placeholder= "boughtDate"
-          onChange={(e) => this.setState({boughtDate: e.currentTarget.value})}
-          />
-          </label>
+          <input
+            type='text'
+            placeholder= "Bought Date"
+            onChange={(e) => this.setState({boughtDate: e.currentTarget.value})}
+            />
         </div>
         <div className='input'>
-          <label>Bought Price: 
-            <br/>
-        <input
-          type='number'
-          placeholder= "boughtPrice"
-          onChange={(e) => this.setState({boughtPrice: e.currentTarget.value})}
-          />
-        </label>
+          <input
+            type='number'
+            placeholder= "Bought Price (in ALGO)"
+            onChange={(e) => this.setState({boughtPrice: e.currentTarget.value})}
+            />
         </div>
         <div className='input'>
-          <label>Disposal Price:
-            <br/>
-        <input
-          type='number'
-          placeholder= "disposePrice"
-          onChange={(e) => this.setState({disposePrice: e.currentTarget.value})}
-        />
-        </label>
+          <input
+            type='number'
+            placeholder= "Dispose Price (in ALGO)"
+            onChange={(e) => this.setState({disposePrice: e.currentTarget.value})}
+          />
         </div>
         <div>
         <button
@@ -81,7 +70,11 @@ exports.SetBundleInfo = class extends React.Component {
 exports.Disposing = class extends React.Component {
   render() {
     return (
-      <div>Disposing... please wait.</div>
+      <div>Disposing... please wait.
+        <br />
+        <br />
+      </div>
+      
     );
   }
 }
@@ -116,25 +109,25 @@ exports.DisposeDone = class extends React.Component {
     // const {disposePrice} = this.props.disposePrice;
     return (
       <div className='details-card'>
-        Your pre-loved have been registered
+        Your bundle have been registered
         <h2>
-          Pre-loved Name 
+          Bundle Name 
         </h2>
           {bundleName}
         <h2>
-          Pre-loved Bought-day 
+          Bundle Bought Date 
         </h2>
           {boughtDate}
         <h2>
-          Pre-loved bought price 
+          Bundle Bought Price 
         </h2>
           {boughtPrice} {standardUnit}
         <h2>
-          Pre-loved dispose price 
+          Bundle Bought Price 
         </h2>
           {disposePrice} {standardUnit}
         <h2>
-          ContractNumber (please record) 
+          Contract Number (Please record)
         </h2>
         <pre className='ContractInfo'>
           {ctcInfoStr}

@@ -48,31 +48,40 @@ exports.CollectBundleInfo = class extends React.Component {
     const destinationLocation= (this.state || {}).destinationLocation || "Unknown";
     const collectorPrice = (this.state || {}).collectorPrice || 1;
     return (
-      <div>
-        <input
-          type='text'
-          placeholder= "Collector Name"
-          onChange={(e) => this.setState({collectorName: e.currentTarget.value})}
-        />
-        <input
-          type='text'
-          placeholder= "Collector Location"
-          onChange={(e) => this.setState({collectorLocation: e.currentTarget.value})}
-        />
-        <input
-          type='text'
-          placeholder= "destinationLocation"
-          onChange={(e) => this.setState({destinationLocation: e.currentTarget.value})}
-        />
-        <input
-          type='number'
-          placeholder= "collecor price"
-          onChange={(e) => this.setState({collectorPrice: e.currentTarget.value})}
-        />
-        <br />
-        <button
-          onClick={() => parent.setBundle({collectorName:collectorName,collectorLocation: collectorLocation,destinationLocation:destinationLocation,collectorPrice: reach.parseCurrency(collectorPrice)})}
-        >Set bundle</button>
+      <div className='input-holder'>
+        <h4>Bundle Collection Registration</h4>
+        <div className='input'>
+          <input
+            type='text'
+            placeholder= "Collector Name"
+            onChange={(e) => this.setState({collectorName: e.currentTarget.value})}
+          />
+        </div>
+        <div className='input'>
+          <input
+            type='text'
+            placeholder= "Collector Location"
+            onChange={(e) => this.setState({collectorLocation: e.currentTarget.value})}
+          />
+        </div>
+        <div className='input'>
+          <input
+            type='text'
+            placeholder= "Destination Location"
+            onChange={(e) => this.setState({destinationLocation: e.currentTarget.value})}
+          />
+        </div>
+        <div className='input'>
+          <input
+            type='number'
+            placeholder= "Collector Price (in ALGO)"
+            onChange={(e) => this.setState({collectorPrice: e.currentTarget.value})}
+          />
+        </div>
+          <br />
+          <button
+            onClick={() => parent.setBundle({collectorName:collectorName,collectorLocation: collectorLocation,destinationLocation:destinationLocation,collectorPrice: reach.parseCurrency(collectorPrice)})}
+          >Set bundle</button>
       </div>
     );
   }
@@ -106,39 +115,26 @@ exports.CollectDone = class extends React.Component {
     const {collectorName,collectorLocation,destinationLocation,collectorPrice,ctcInfoStr} = this.props;
     return (
       <div className='details-card'>
-        Your pre-loved have been collected
+        Your bundle have been collected
         <h2>
-          Pre-loved Name 
+          Collector Name 
         </h2>
-        <br/>
-        <h2>
           {collectorName}
-        </h2>
         <h2>
-          Pre-loved Bought-day 
+          Collector Location
         </h2>
-        <br/>
-        <h2>
           {collectorLocation}
-        </h2>
         <h2>
-          Pre-loved bought price 
+          Destination Location
         </h2>
-        <br/>
-        <h2>
           {destinationLocation}
-        </h2>
         <h2>
-          Pre-loved dispose price 
+          Collector Price
         </h2>
-        <br/>
+          {collectorPrice}{standardUnit}
         <h2>
-          {collectorPrice}
+          Contract Number (Please record) 
         </h2>
-        <h2>
-          ContractNumber (please record) 
-        </h2>
-        <br/>
         <pre className='ContractInfo'>
           {ctcInfoStr}
         </pre>
@@ -164,7 +160,7 @@ exports.AcceptTerms = class extends React.Component {
     const {disabled} = this.state || {};
     return (
       <div>
-        The disposal price is:
+        The disposal price:
         <br />{priceDispose} {standardUnit}
         <br />
         <button
@@ -184,6 +180,7 @@ exports.WaitingForTurn = class extends React.Component {
     return (
       <div>
         Loading, please wait...
+        <br />
         <br />
       </div>
     );

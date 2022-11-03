@@ -1,4 +1,5 @@
 import React from 'react';
+import logo from './logo.png';
 
 const exports = {};
 
@@ -8,7 +9,7 @@ exports.Wrapper = class extends React.Component {
     return (
       <div className="App">
         <header className="App-header" id="root">
-          <h1 id="header">BundleIt! Best Choice for Vintage</h1>
+          <div id='header'><img className='header logo' src={logo} alt="logo" /></div> 
           {content}
         </header>
       </div>
@@ -20,8 +21,11 @@ exports.ConnectAccount = class extends React.Component {
   render() {
     return (
       <div>
-        Please wait while we connect to your account.
-        If this takes more than a few seconds, there may be something wrong.
+        <h3>BundleIt! Best Choice for Vintage</h3>
+        <h5>
+          Please wait while we connect to your account.
+          If this takes more than a few seconds, there may be something wrong.
+        </h5>
       </div>
     )
   }
@@ -67,26 +71,27 @@ exports.DisposalOrCollectorOrSeller = class extends React.Component {
             <button
               onClick={() => parent.selectDisposal()}
             >Disposal</button>
-            <br /> Set the wager, deploy the contract.
+            <p> Set the item details and deploy the contract</p>
           </div>
           <div className='member'>
             <button
               onClick={() => parent.selectCollector()}
             >Collector</button>
-            <br /> Attach to the Disposal's contract.
+            <p> Attach to the Disposal's contract</p>
             
           </div>
           <div className='member'>
             <button
               onClick={() => parent.selectSeller()}
             >Seller</button>
-            <br /> Attach to the Collector's contract.
+            <p> Attach to the Collector's contract</p>
+            
           </div>
           <div className='member'>
             <button
               onClick={() => parent.selectViewer()}
             >Viewer</button>
-            <br />View the bundle information.
+            <p> View the bundle information.</p>
           </div>
         </div>
       </div>
