@@ -78,6 +78,40 @@ exports.ViewDone = class extends React.Component {
   }
 }
 
+exports.BuyingDone = class extends React.Component {
+
+  render() {
+    const {standardUnit,bundleName,collectorName,sellerName,bundleCondition,sellerPrice} = this.props;
+    return (
+      <div>
+        This is the information of the bundle bought
+        <h2>
+          Bundle Name
+        </h2>
+          {bundleName}
+        <h2>
+          CollectorName 
+        </h2>
+          {collectorName}
+        <h2>
+          SellerName
+        </h2>
+          {sellerName}
+        <h2>
+          Bundle Condition 
+        </h2>
+          {bundleCondition}
+        <h2>
+          Amount Paid
+        </h2>
+          {sellerPrice} {standardUnit}
+          <br/>
+          Thank you for buying from {sellerName}. Please come again
+      </div>
+    )
+  }
+}
+
 exports.Attaching = class extends React.Component {
   render() {
     return (
@@ -113,8 +147,8 @@ exports.WaitingForTurn = class extends React.Component {
   render() {
     return (
       <div>
-        Waiting for the other player...
-        <br />Think about which move you want to play.
+        Processing bundle purchase...
+        <br />Please wait for a moment.
       </div>
     );
   }

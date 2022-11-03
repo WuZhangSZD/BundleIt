@@ -119,7 +119,7 @@ exports.SellDone = class extends React.Component {
   }
 
   render() {
-    const {sellerName,sellerLocation,collectDate,bundleCondition,sellerPrice,ctcInfoStr} = this.props;
+    const {sellerName,sellerLocation,collectDate,bundleCondition,sellerPrice,ctcInfoStr, standardUnit} = this.props;
     return (
       <div className='details-card'>
         Your bundle have been registerd for selling
@@ -142,10 +142,7 @@ exports.SellDone = class extends React.Component {
         <h2>
           Seller Price 
         </h2>
-        <br/>
-        <h2>
-          {sellerPrice}
-        </h2>
+          {sellerPrice} {standardUnit}
         <h2>
           Contract Number (Please record)
         </h2>
