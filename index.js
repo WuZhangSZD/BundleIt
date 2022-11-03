@@ -1,11 +1,6 @@
-//this is code from the rock paper scissors, currently I am trying can I use react to display the thing
-//For emma maybe can create a page using html and css only, and then integrated within react
-//For brandon maybe start from rsh and mjs, try to define the input by user and we will look how to pass variable into rsh from react
-
 import React from 'react';
 import {ALGO_MyAlgoConnect as MyAlgoConnect} from '@reach-sh/stdlib';
 
-//Below are the testing page that nich showed
 import AppViews from './views/AppViews';
 import DisposalViews from './views/DisposalViews';
 import CollectorViews from './views/CollectorViews';
@@ -19,8 +14,6 @@ const reach = loadStdlib(process.env);
 reach.setWalletFallback(reach.walletFallback({providerEnv: 'TestNet', MyAlgoConnect}));
 
 //This is variable defining session
-const handToInt = {'ROCK': 0, 'PAPER': 1, 'SCISSORS': 2};
-const intToOutcome = ['Bob wins!', 'Draw!', 'Alice wins!'];
 
 const {standardUnit} = reach;
 const defaults = {defaultFundAmt: '10', defaultWager: '3', standardUnit};
@@ -37,7 +30,6 @@ class App extends React.Component {
       const balAtomic = await reach.balanceOf(acc);
       const bal = reach.formatCurrency(balAtomic, 4);
       this.setState({acc, bal});
-      //not sure what is the definition of canFundFromFaucent
       if (await reach.canFundFromFaucet()) {
         //this is the code to fund the user account
         this.setState({view: 'FundAccount'});
@@ -194,7 +186,11 @@ class Viewer extends BundleFunction {
     this.state.resolveAcceptedP();
     this.setState({view: 'WaitingForTurn'});
   }
-  showViewer(bundleName,collectorName,sellerName,bundleCondition,sellerPrice) {
+  async buyingDone(bundleName,collectorName,sellerName,bundleCondition,priceAtomic) { // Fun([UInt], Null)
+    console.log("Shown viewer");
+    const priceSeller= reach.formatCurrency(priceAtomic, 4);
+    console.log(priceAtomic)
+    this.setState({view: 'BuyingDone', bundleName: bundleName.replace(/\0/g, ''),collectorName:collectorName.replace(/\0/g, ''),sellerName:sellerName.replace(/\0/g, ''),bundleCondition:bundleCondition.replace(/\0/g, ''),sellerPrice:priceSeller});
   }
   render() { return renderView(this, ViewerViews); }
 }

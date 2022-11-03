@@ -44,6 +44,7 @@ export const main = Reach.App(() => {//This is one contract
   });
   const Viewer = Participant('Viewer', {
     acceptPrice: Fun([Bytes(256),Bytes(100),Bytes(100),Bytes(256),UInt], Null),
+    buyingDone: Fun([Bytes(256),Bytes(100),Bytes(100),Bytes(256),UInt],Null)
   });
   
   init();
@@ -104,7 +105,9 @@ export const main = Reach.App(() => {//This is one contract
   Viewer.pay(bundleSeller.sellerPrice);  
   transfer(bundleSeller.sellerPrice).to(Seller);
   commit();
-
+  Viewer.only(() => {
+    interact.buyingDone(bundleDisposal.bundleName,bundleCollector.collectorName,bundleSeller.sellerName,bundleSeller.bundleCondition,bundleSeller.sellerPrice);
+  });
   exit();
 });
 
