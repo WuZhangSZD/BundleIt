@@ -73,7 +73,7 @@ exports.SellBundleInfo = class extends React.Component {
         <div className='input'>
           <input
             type='text'
-            placeholder= "uBndle Condition"
+            placeholder= "Bundle Condition"
             onChange={(e) => this.setState({bundleCondition: e.currentTarget.value})}
           />
         </div>

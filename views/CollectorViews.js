@@ -112,7 +112,7 @@ exports.CollectDone = class extends React.Component {
   }
 
   render() {
-    const {collectorName,collectorLocation,destinationLocation,collectorPrice,ctcInfoStr} = this.props;
+    const {collectorName,collectorLocation,destinationLocation,collectorPrice,ctcInfoStr,standardUnit} = this.props;
     return (
       <div className='details-card'>
         Your bundle have been collected
@@ -131,7 +131,7 @@ exports.CollectDone = class extends React.Component {
         <h2>
           Collector Price
         </h2>
-          {collectorPrice}{standardUnit}
+          {collectorPrice} {standardUnit}
         <h2>
           Contract Number (Please record) 
         </h2>
