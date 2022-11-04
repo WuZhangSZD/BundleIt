@@ -34,12 +34,12 @@ export const main = Reach.App(() => {//This is one contract
   });
   const Collector = Participant('Collector', {
     collectBundle: Fun([],BundleCollector),
-    showCollector: Fun([Bytes(100),Bytes(256),Bytes(256),UInt],Null),
+    showCollector: Fun([Bytes(100),Bytes(256),Bytes(256),UInt,Bytes(256)],Null),
     acceptPrice: Fun([UInt], Null),
   });
   const Seller = Participant('Seller', {
     sellBundle: Fun([],BundleSeller),
-    showSeller: Fun([Bytes(100),Bytes(256),Bytes(100),Bytes(256),UInt],Null),
+    showSeller: Fun([Bytes(100),Bytes(256),Bytes(100),Bytes(256),UInt,Bytes(256)],Null),
     acceptPrice: Fun([UInt], Null),
   });
   const Viewer = Participant('Viewer', {
@@ -79,7 +79,7 @@ export const main = Reach.App(() => {//This is one contract
   Collector.publish(bundleCollector)
   commit();
   each([Collector],()=>{
-    interact.showCollector(bundleCollector.collectorName,bundleCollector.collectorLocation,bundleCollector.destinationLocation,bundleCollector.collectorPrice)
+    interact.showCollector(bundleCollector.collectorName,bundleCollector.collectorLocation,bundleCollector.destinationLocation,bundleCollector.collectorPrice,bundleDisposal.bundleName)
   })
 
   Seller.only(() => {
@@ -95,7 +95,7 @@ export const main = Reach.App(() => {//This is one contract
   Seller.publish(bundleSeller)
   commit();
   each([Seller],()=>{
-    interact.showSeller(bundleSeller.sellerName,bundleSeller.sellerLocation,bundleSeller.collectDate,bundleSeller.bundleCondition,bundleSeller.sellerPrice)
+    interact.showSeller(bundleSeller.sellerName,bundleSeller.sellerLocation,bundleSeller.collectDate,bundleSeller.bundleCondition,bundleSeller.sellerPrice,bundleDisposal.bundleName)
   })
 
 

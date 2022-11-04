@@ -9,7 +9,12 @@ exports.Wrapper = class extends React.Component {
     return (
       <div className="App">
         <header className="App-header" id="root">
-          <div id='header'><img className='header logo' src={logo} alt="logo" /></div> 
+          <div id='header'>
+            <p class="logo" id="logo">BundleIt</p>
+            {/* <img className='header logo' src={logo} alt="logo" /> */}
+            <p class="headerEle" id="JoinUs">Join Us</p>
+            <p class="headerEle" id="AboutUs">About Us</p>
+          </div> 
           {content}
         </header>
       </div>
@@ -64,35 +69,33 @@ exports.DisposalOrCollectorOrSeller = class extends React.Component {
     return (
       <div className='container'>
         <div className='joinUs'>
-        <h3 className='role-title'>
-          Please select a role:
-        </h3>
           <div className='member'>
+            <p class="member-header">Disposal</p>
+            <p class="member-description">If you have a pre-loved and would like to find a new master for it, this role is perfect for you!</p>
             <button
               onClick={() => parent.selectDisposal()}
-            >Disposal</button>
-            <p> Set the item details and deploy the contract</p>
+            >Join</button>
           </div>
           <div className='member'>
+            <p class="member-header">Collector</p>
+            <p class="member-description">If you are a collector that would like collect pre-loved from disposal, this role is perfect for you!</p>
             <button
               onClick={() => parent.selectCollector()}
-            >Collector</button>
-            <p> Attach to the Disposal's contract</p>
-            
+            >Join</button>
           </div>
           <div className='member'>
+            <p class="member-header">Seller</p>
+            <p class="member-description">If you are planning to sell your pre-loved stock directly to customer, this role is perfect for you!</p>
             <button
               onClick={() => parent.selectSeller()}
-            >Seller</button>
-            <p> Attach to the Collector's contract</p>
-            
+            >Join</button>
           </div>
-          <div className='member'>
+          {/* <div className='member'>
             <button
               onClick={() => parent.selectViewer()}
             >Viewer</button>
             <p> View the bundle information.</p>
-          </div>
+          </div> */}
         </div>
       </div>
     );

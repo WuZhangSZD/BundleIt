@@ -8,6 +8,18 @@ import SellerViews from './views/SellerViews';
 import ViewerViews from './views/ViewerView';
 import {renderDOM, renderView} from './views/render';
 import './index.css';
+import './input.css';
+import './attach.css';
+import './result.css';
+import './role.css';
+import './css/bootstrap-grid.css';
+import './css/bootstrap-grid.css.map';
+import './css/bootstrap-grid.min.css';
+import './css/bootstrap-grid.min.css.map';
+import './css/bootstrap-reboot.css';
+import './css/bootstrap-reboot.css.map';
+import './css/bootstrap-reboot.min.css';
+import './css/bootstrap-reboot.min.css.map';
 import * as backend from './build/index.main.mjs';
 import { loadStdlib } from '@reach-sh/stdlib';
 const reach = loadStdlib(process.env);
@@ -65,7 +77,6 @@ class Disposal extends BundleFunction {
   constructor(props) {
     super(props);
     this.state = {view: 'StartDispose'};
-    console.log("Comming to diposal")
   }
   async dispose() {
     const ctc = this.props.acc.contract(backend);
@@ -121,8 +132,8 @@ class Collector extends BundleFunction {
     console.log(bundleInfo);
     return bundleInfo;
   }
-  showCollector(collectorName,collectorLocation,destinationLocation,collectorPrice) {
-    this.setState({view: 'CollectDone', collectorName: collectorName.replace(/\0/g, ''),collectorLocation:collectorLocation.replace(/\0/g, ''),destinationLocation:destinationLocation.replace(/\0/g, ''),collectorPrice:reach.formatCurrency(JSON.parse(collectorPrice))});
+  showCollector(collectorName,collectorLocation,destinationLocation,collectorPrice,bundleName) {
+    this.setState({view: 'CollectDone', collectorName: collectorName.replace(/\0/g, ''),collectorLocation:collectorLocation.replace(/\0/g, ''),destinationLocation:destinationLocation.replace(/\0/g, ''),collectorPrice:reach.formatCurrency(JSON.parse(collectorPrice)),bundleName: bundleName.replace(/\0/g, '')});
   }
   render() { return renderView(this, CollectorViews); }
 }
@@ -157,8 +168,8 @@ class Seller extends BundleFunction {
     console.log(bundleInfo);
     return bundleInfo;
   }
-  showSeller(sellerName,sellerLocation,collectDate,bundleCondition,sellerPrice) {
-    this.setState({view: 'SellDone', sellerName: sellerName.replace(/\0/g, ''),sellerLocation:sellerLocation.replace(/\0/g, ''),collectDate:collectDate.replace(/\0/g, ''),bundleCondition:bundleCondition.replace(/\0/g, ''),sellerPrice:reach.formatCurrency(JSON.parse(sellerPrice))});
+  showSeller(sellerName,sellerLocation,collectDate,bundleCondition,sellerPrice,bundleName) {
+    this.setState({view: 'SellDone', sellerName: sellerName.replace(/\0/g, ''),sellerLocation:sellerLocation.replace(/\0/g, ''),collectDate:collectDate.replace(/\0/g, ''),bundleCondition:bundleCondition.replace(/\0/g, ''),sellerPrice:reach.formatCurrency(JSON.parse(sellerPrice)),bundleName: bundleName.replace(/\0/g, '')});
   }
   render() { return renderView(this, SellerViews); }
 }

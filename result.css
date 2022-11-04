@@ -1,0 +1,63 @@
+.details-card {
+    margin:10% 0 10% 0%;
+    background-color: var(--primary-color);
+    border-radius: 1em;
+    display:flex;
+    flex: 1 1 0px;
+    width:70vw;
+    height:auto;
+    flex-direction:row;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    font-family: 'Raleway',sans-serif;
+    color:var(--text-primary);
+    text-align:left;
+}
+
+#NameArea{
+    margin: 5% 5% 10% 5%;
+    font-size:var(--font1-size);
+    flex-grow: 1;
+    flex-basis: 0;
+    border-right:2px solid yellow;
+    box-shadow: 15px 0 15px -16px var(--tertiary-color);
+}
+.bundleName{
+    margin:0;
+    color: #a9a9a9;
+}
+.bundleName-variable{
+    color: var(--text-primary);
+    margin:0;
+}
+.reminder{
+    font-size:var(--font4-size);
+    color: #a9a9a9;
+    padding:60% 0 2% 0;
+}
+#RemainArea{
+    padding: 5% 5% 5% 0%;
+    flex-grow: 1;
+    flex-basis: 0;
+}
+.Remain-Info{
+    font-size:var(--font2-size);
+    margin-bottom:0;
+    padding-bottom:0;
+}
+.details-card button {
+    margin:5% 0 5% 0;
+    text-decoration: none;
+    color: var(--text-primary);
+    border:0px solid black;
+    border-radius: 0.4em;
+    background: var(--tertiary-color);
+    padding: 10px 40px;
+    font-size:var(--font2-size);
+    transition: all 0.2s ease-in-out;
+}
+.details-card button:hover {
+    color: rgba(255, 255, 255, 1);
+    box-shadow: 0 5px 15px var(--tertiary-color);
+}
+  
+  

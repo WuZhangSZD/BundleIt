@@ -1,5 +1,6 @@
 import React from 'react';
 import PlayerViews from './PlayerViews';
+import wallpaper from './wallpaper3.jpg';
 
 const exports = {...PlayerViews};
 
@@ -8,7 +9,6 @@ exports.Wrapper = class extends React.Component {
     const {content} = this.props;
     return (
       <div className="Seller">
-        <h2>Seller</h2>
         {content}
       </div>
     );
@@ -20,20 +20,19 @@ exports.Attach = class extends React.Component {
     const {parent} = this.props;
     const {ctcInfoStr} = this.state || {};
     return (
-      <div>
-        Please paste the contract info to attach to:
-        <br />
-        <textarea spellCheck="false"
-          className='ContractInfo'
-          onChange={(e) => this.setState({ctcInfoStr: e.currentTarget.value})}
-          placeholder='{}'
-        />
-        <br />
-        <button
-          disabled={!ctcInfoStr}
-          onClick={() => parent.sell(ctcInfoStr)}
+      <div class="attach">
+      <p>Please paste the contract info to attach to:</p>
+      <textarea spellCheck="false"
+        className='ContractInfo'
+        onChange={(e) => this.setState({ctcInfoStr: e.currentTarget.value})}
+        placeholder='{}'
+      />
+      <br />
+      <button
+        disabled={!ctcInfoStr}
+        onClick={() => parent.sell(ctcInfoStr)}
         >Attach</button>
-      </div>
+    </div>
     );
   }
 }
@@ -48,6 +47,60 @@ exports.SellBundleInfo = class extends React.Component {
     const sellerPrice = (this.state || {}).sellerPrice || 1;
     return (
       <div className='input-holder'>
+        <div class="input-column">
+          <div class="input-form">
+            <p class="input-title">Bundle Seller Registration</p>
+            <p class="input-description">Sell pre-loved</p>
+            <div className='input'>
+          <input
+            type='text'
+            placeholder= "Seller Name"
+            onChange={(e) => this.setState({sellerName: e.currentTarget.value})}
+          />
+        </div>
+        <div className='input'>
+          <input
+            type='text'
+            placeholder= "Seller Location"
+            onChange={(e) => this.setState({sellerLocation: e.currentTarget.value})}
+          />
+        </div>
+        <div className='input'>
+          <input
+            type='date'
+            placeholder= "Collect Date"
+            onChange={(e) => this.setState({collectDate: e.currentTarget.value})}
+          />
+        </div>
+        <div className='input'>
+          <input
+            type='text'
+            placeholder= "Bundle Condition"
+            onChange={(e) => this.setState({bundleCondition: e.currentTarget.value})}
+          />
+        </div>
+        <div className='input'>
+          <input
+            type='number'
+            placeholder= "Selling Price (in ALGO)"
+            onChange={(e) => this.setState({sellerPrice: e.currentTarget.value})}
+          />
+        </div>
+            <div>
+            <button
+          onClick={() => parent.setBundle({sellerName:sellerName,sellerLocation: sellerLocation,collectDate:collectDate,bundleCondition:bundleCondition,sellerPrice: reach.parseCurrency(sellerPrice)})}
+        >Sell bundle</button>
+            </div>
+          </div>
+        </div>
+        <div class="input-column">
+          <img className='wallpaper' src={wallpaper}  alt="wallpaper1"/>
+        </div>
+      </div>
+      );
+  }
+}
+      {/* <div className='input-holder'>
         <h4>Bundle Seller Registration</h4>
         <div className='input'>
           <input
@@ -89,23 +142,9 @@ exports.SellBundleInfo = class extends React.Component {
         <button
           onClick={() => parent.setBundle({sellerName:sellerName,sellerLocation: sellerLocation,collectDate:collectDate,bundleCondition:bundleCondition,sellerPrice: reach.parseCurrency(sellerPrice)})}
         >Sell bundle</button>
-      </div>
-    );
-  }
-}
+      </div> */}
 
-exports.StartSell = class extends React.Component {
-  render() {
-    const {parent, bundleName, bundleLocation, standardUnit} = this.props;
-    return (
-      <div>
-        <button
-          onClick={() => parent.collect()}
-        >Start collect</button>
-      </div>
-    );
-  }
-}
+
 exports.SellDone = class extends React.Component {
   async copyToClipboard(button) {
     const {ctcInfoStr} = this.props;
@@ -119,37 +158,67 @@ exports.SellDone = class extends React.Component {
   }
 
   render() {
-    const {sellerName,sellerLocation,collectDate,bundleCondition,sellerPrice,ctcInfoStr, standardUnit} = this.props;
+    const {sellerName,sellerLocation,collectDate,bundleCondition,sellerPrice,bundleName,ctcInfoStr, standardUnit} = this.props;
     return (
       <div className='details-card'>
-        Your bundle have been registerd for selling
-        <h2>
-          Seller Name
-        </h2>
-          {sellerName}
-        <h2>
-          Seller Location 
-        </h2>
-          {sellerLocation}
-        <h2>
-          Collect Date 
-        </h2>
-          {collectDate}
-        <h2>
-          Bundle Condition 
-        </h2>
-          {bundleCondition}
-        <h2>
-          Seller Price 
-        </h2>
-          {sellerPrice} {standardUnit}
-        <h2>
-          Contract Number (Please record)
-        </h2>
-        <pre className='ContractInfo'>
-          {ctcInfoStr}
-        </pre>
+      <div id="NameArea">
+        <p class="bundleName">Your </p>
+        <p class="bundleName-variable">{bundleName}</p>
+        <p class="bundleName"> have been collected</p>
+        <p class="reminder">*copy the contract number and pass to seller to prove your bundle valid</p>
       </div>
+      <div id="RemainArea">
+        <p class="Remain-Info">Your Name</p>
+        <p class="Remain-Info-Import">{sellerName}</p>
+
+        <p class="Remain-Info">Your location</p>
+        <p class="Remain-Info-Import">{sellerLocation}</p>
+
+        <p class="Remain-Info">Collect Date</p>
+        <p class="Remain-Info-Import">{collectDate}</p>
+
+        <p class="Remain-Info">Bundle Condition</p>
+        <p class="Remain-Info-Import">{bundleCondition}</p>
+
+        <p class="Remain-Info">Sell Price</p>
+        <p class="Remain-Info-Import">{sellerPrice} {standardUnit}</p>
+
+        <p class="Remain-Info">Contract Number*</p>
+        <pre class='Remain-Info-Import'>
+          {ctcInfoStr}
+        </pre>  
+        <button onClick={(e) => this.copyToClipboard(e.currentTarget)}>Copy to clipboard</button>
+      </div>
+    </div>    
+      // <div className='details-card'>
+      //   Your bundle have been registerd for selling
+      //   <h2>
+      //     Seller Name
+      //   </h2>
+      //     {sellerName}
+      //   <h2>
+      //     Seller Location 
+      //   </h2>
+      //     {sellerLocation}
+      //   <h2>
+      //     Collect Date 
+      //   </h2>
+      //     {collectDate}
+      //   <h2>
+      //     Bundle Condition 
+      //   </h2>
+      //     {bundleCondition}
+      //   <h2>
+      //     Seller Price 
+      //   </h2>
+      //     {sellerPrice} {standardUnit}
+      //   <h2>
+      //     Contract Number (Please record)
+      //   </h2>
+      //   <pre className='ContractInfo'>
+      //     {ctcInfoStr}
+      //   </pre>
+      // </div>
     )
   }
 }
@@ -171,7 +240,7 @@ exports.AcceptTerms = class extends React.Component {
     const {priceCollect, standardUnit, parent} = this.props;
     const {disabled} = this.state || {};
     return (
-      <div>
+      <div class="accept-term">
         The collection price:
         <br /> {priceCollect} {standardUnit}
         <br />
