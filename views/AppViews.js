@@ -5,7 +5,7 @@ const exports = {};
 
 exports.Wrapper = class extends React.Component {
   render() {
-    const {content} = this.props;
+    const {content,parent} = this.props;
     return (
       <div className="App">
         <header className="App-header" id="root">
@@ -90,6 +90,13 @@ exports.DisposalOrCollectorOrSeller = class extends React.Component {
               onClick={() => parent.selectSeller()}
             >Join</button>
           </div>
+          <div className='member'>
+            <p class="member-header">Viewer</p>
+            <p class="member-description">If you are planning to sell your pre-loved stock directly to customer, this role is perfect for you!</p>
+            <button
+              onClick={() => parent.selectViewer()}
+            >Join</button>
+          </div>
           {/* <div className='member'>
             <button
               onClick={() => parent.selectViewer()}
@@ -97,30 +104,6 @@ exports.DisposalOrCollectorOrSeller = class extends React.Component {
             <p> View the bundle information.</p>
           </div> */}
         </div>
-      </div>
-    );
-  }
-}
-
-exports.DeployerOrAttacher = class extends React.Component {
-  render() {
-    const {parent} = this.props;
-    return (
-      <div>
-        Please select a role:
-        <br />
-        <p>
-          <button
-            onClick={() => parent.selectDeployer()}
-          >Deployer</button>
-          <br /> Set the wager, deploy the contract.
-        </p>
-        <p>
-          <button
-            onClick={() => parent.selectAttacher()}
-          >Attacher</button>
-          <br /> Attach to the Deployer's contract.
-        </p>
       </div>
     );
   }

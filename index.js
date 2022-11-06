@@ -11,6 +11,7 @@ import './index.css';
 import './input.css';
 import './attach.css';
 import './result.css';
+import './viewer.css';
 import './role.css';
 import './css/bootstrap-grid.css';
 import './css/bootstrap-grid.css.map';

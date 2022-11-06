@@ -100,49 +100,6 @@ exports.SellBundleInfo = class extends React.Component {
       );
   }
 }
-      {/* <div className='input-holder'>
-        <h4>Bundle Seller Registration</h4>
-        <div className='input'>
-          <input
-            type='text'
-            placeholder= "Seller Name"
-            onChange={(e) => this.setState({sellerName: e.currentTarget.value})}
-          />
-        </div>
-        <div className='input'>
-          <input
-            type='text'
-            placeholder= "Seller Location"
-            onChange={(e) => this.setState({sellerLocation: e.currentTarget.value})}
-          />
-        </div>
-        <div className='input'>
-          <input
-            type='text'
-            placeholder= "Collect Date"
-            onChange={(e) => this.setState({collectDate: e.currentTarget.value})}
-          />
-        </div>
-        <div className='input'>
-          <input
-            type='text'
-            placeholder= "Bundle Condition"
-            onChange={(e) => this.setState({bundleCondition: e.currentTarget.value})}
-          />
-        </div>
-        <div className='input'>
-          <input
-            type='number'
-            placeholder= "Selling Price (in ALGO)"
-            onChange={(e) => this.setState({sellerPrice: e.currentTarget.value})}
-          />
-        </div>
-        
-        <br />
-        <button
-          onClick={() => parent.setBundle({sellerName:sellerName,sellerLocation: sellerLocation,collectDate:collectDate,bundleCondition:bundleCondition,sellerPrice: reach.parseCurrency(sellerPrice)})}
-        >Sell bundle</button>
-      </div> */}
 
 
 exports.SellDone = class extends React.Component {
@@ -190,35 +147,6 @@ exports.SellDone = class extends React.Component {
         <button onClick={(e) => this.copyToClipboard(e.currentTarget)}>Copy to clipboard</button>
       </div>
     </div>    
-      // <div className='details-card'>
-      //   Your bundle have been registerd for selling
-      //   <h2>
-      //     Seller Name
-      //   </h2>
-      //     {sellerName}
-      //   <h2>
-      //     Seller Location 
-      //   </h2>
-      //     {sellerLocation}
-      //   <h2>
-      //     Collect Date 
-      //   </h2>
-      //     {collectDate}
-      //   <h2>
-      //     Bundle Condition 
-      //   </h2>
-      //     {bundleCondition}
-      //   <h2>
-      //     Seller Price 
-      //   </h2>
-      //     {sellerPrice} {standardUnit}
-      //   <h2>
-      //     Contract Number (Please record)
-      //   </h2>
-      //   <pre className='ContractInfo'>
-      //     {ctcInfoStr}
-      //   </pre>
-      // </div>
     )
   }
 }

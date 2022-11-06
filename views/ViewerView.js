@@ -21,6 +21,65 @@ exports.Attach = class extends React.Component {
     const {ctcInfoStr} = this.state || {};
     return (
       <div className='attach'>
+        <div className='bundle-container'>
+          <div className='bundleList'>
+            <div className='bundle'>
+              <p class="bundle-header">Bundle1</p>
+              <p class="bundle-description">This bundle have the best view in the world</p>
+              <pre class='Remain-Info-Import'>
+                  "type": "BigNumber",
+                  "hex": "0x07343afb"
+              </pre>  
+              <button
+                onClick={() => parent.view(contractInfo)}
+              >View</button>
+            </div>
+            <div className='bundle'>
+              <p class="bundle-header">Bundle2</p>
+              <p class="bundle-description">This bundle have the best view in the world</p>
+              <pre class='Remain-Info-Import'>
+                  "type": "BigNumber",
+                  "hex": "0x07343afb"
+              </pre>  
+              <button
+                onClick={() => parent.view(contractInfo)}
+              >View</button>
+            </div>
+            <div className='bundle'>
+              <p class="bundle-header">Bundle3</p>
+              <p class="bundle-description">This bundle have the best view in the world</p>
+              <pre class='Remain-Info-Import'>
+                    "type": "BigNumber",
+                    "hex": "0x07343afb"
+              </pre>  
+              <button
+                onClick={() => parent.view(contractInfo)}
+              >View</button>
+            </div>
+            <div className='bundle'>
+              <p class="bundle-header">Bundle4</p>
+              <p class="bundle-description">This bundle have the best view in the world</p>
+              <pre class='Remain-Info-Import'>
+                    "type": "BigNumber",
+                    "hex": "0x07343afb"
+              </pre>  
+              <button
+                onClick={() => parent.view(contractInfo)}
+              >View</button>
+            </div>
+            <div className='bundle'>
+              <p class="bundle-header">Bundle5</p>
+              <p class="bundle-description">This bundle have the best view in the world</p>
+              <pre class='Remain-Info-Import'>
+                    "type": "BigNumber",
+                    "hex": "0x07343afb"
+              </pre>  
+              <button
+                onClick={() => parent.view(contractInfo)}
+              >View</button>
+            </div>
+          </div>
+        </div>
         Please paste the contract info to attach to:
         <br />
         <textarea spellCheck="false"
