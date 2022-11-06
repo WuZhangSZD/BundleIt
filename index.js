@@ -7,27 +7,18 @@ import CollectorViews from './views/CollectorViews';
 import SellerViews from './views/SellerViews';
 import ViewerViews from './views/ViewerView';
 import {renderDOM, renderView} from './views/render';
-import './index.css';
-import './input.css';
-import './attach.css';
-import './result.css';
-import './viewer.css';
-import './role.css';
-import './css/bootstrap-grid.css';
-import './css/bootstrap-grid.css.map';
-import './css/bootstrap-grid.min.css';
-import './css/bootstrap-grid.min.css.map';
-import './css/bootstrap-reboot.css';
-import './css/bootstrap-reboot.css.map';
-import './css/bootstrap-reboot.min.css';
-import './css/bootstrap-reboot.min.css.map';
+import './css/index.css';
+import './css/input.css';
+import './css/attach.css';
+import './css/result.css';
+import './css/viewer.css';
+import './css/role.css';
 import * as backend from './build/index.main.mjs';
 import { loadStdlib } from '@reach-sh/stdlib';
 const reach = loadStdlib(process.env);
 reach.setWalletFallback(reach.walletFallback({providerEnv: 'TestNet', MyAlgoConnect}));
 
 //This is variable defining session
-
 const {standardUnit} = reach;
 const defaults = {defaultFundAmt: '10', defaultWager: '3', standardUnit};
 
@@ -35,7 +26,6 @@ class App extends React.Component {
     constructor(props) {
       super(props);
       //set default display to simple connecting account state
-    console.log("Comming to here")
     this.state = {view: 'ConnectAccount', ...defaults};
     }
     async componentDidMount() {
@@ -43,27 +33,8 @@ class App extends React.Component {
       const balAtomic = await reach.balanceOf(acc);
       const bal = reach.formatCurrency(balAtomic, 4);
       this.setState({acc, bal});
-      if (await reach.canFundFromFaucet()) {
-        //this is the code to fund the user account
-        this.setState({view: 'FundAccount'});
-      } else {
-        //this is the code to choose the user stype
-        //this is the code that we going to use
-        // this.setState({view: 'DisposalOrCollector'});
-
-        this.setState({view: 'DisposalOrCollectorOrSeller'});
-      }
-    }
-    //refered by appView in FundAccount
-    async fundAccount(fundAmount) {
-      await reach.fundFromFaucet(this.state.acc, reach.parseCurrency(fundAmount));
-        //this is the code to choose the user stype
-        //this is the code that we going to use
-        // this.setState({view: 'DisposalOrCollectorOrSeller'});
       this.setState({view: 'DisposalOrCollectorOrSeller'});
     }
-    //refered by appView in FundAccount
-    async skipFundAccount() { this.setState({view: 'DisposalOrCollectorOrSeller'}); }
     selectDisposal() { this.setState({view: 'Wrapper', ContentView: Disposal}); }
     selectCollector() { this.setState({view: 'Wrapper', ContentView: Collector}); }
     selectSeller() { this.setState({view: 'Wrapper', ContentView: Seller}); }
@@ -71,10 +42,7 @@ class App extends React.Component {
     render() { return renderView(this, AppViews); }
 }
   
-class BundleFunction extends React.Component {
-
-}
-class Disposal extends BundleFunction {
+class Disposal extends React.Component {
   constructor(props) {
     super(props);
     this.state = {view: 'StartDispose'};
@@ -82,11 +50,8 @@ class Disposal extends BundleFunction {
   async dispose() {
     const ctc = this.props.acc.contract(backend);
     this.setState({view: 'Disposing', ctc});
-    this.deadline = {ETH: 10, ALGO: 100, CFX: 1000}[reach.connector]; // UInt
-    console.log(this)
     backend.Disposal(ctc, this);
     const ctcInfoStr = JSON.stringify(await ctc.getInfo(), null, 2);
-    console.log("after ctcinfo")
     this.setState({view: 'Disposing', ctcInfoStr});
   }
   setBundle(bundle) { this.state.resolveBundleDisposal(bundle); }
@@ -94,7 +59,6 @@ class Disposal extends BundleFunction {
     const bundleInfo = await new Promise(resolveBundleDisposal => {
       this.setState({view: 'SetBundleInfo', playable:true, resolveBundleDisposal});
     });
-    console.log(bundleInfo);
     return bundleInfo;
   }
   showDisposal(bundleName,boughtDate,boughtPrice,disposePrice) {
@@ -102,7 +66,7 @@ class Disposal extends BundleFunction {
   }
   render() { return renderView(this, DisposalViews); }
 }
-class Collector extends BundleFunction {
+class Collector extends React.Component {
   constructor(props) {
     super(props);
     this.state = {view: 'Attach'};
@@ -115,22 +79,19 @@ class Collector extends BundleFunction {
   
   async acceptPrice(priceAtomic) { // Fun([UInt], Null)
     const priceDispose= reach.formatCurrency(priceAtomic, 4);
-    console.log(priceDispose)
-    console.log(priceAtomic)
     return await new Promise(resolveAcceptedP => {
       this.setState({view: 'AcceptTerms', priceDispose, resolveAcceptedP});
     });
   }
   termsAccepted() {
     this.state.resolveAcceptedP();
-    this.setState({view: 'WaitingForTurn'});
+    this.setState({view: 'Waiting'});
   }
   setBundle(bundle) { this.state.resolveBundleCollector(bundle); }
   async collectBundle() { //Fun([UInt,Bytes(256),Bytes(256),Bytes(256)],Null)
     const bundleInfo = await new Promise(resolveBundleCollector => {
       this.setState({view: 'CollectBundleInfo', playable:true, resolveBundleCollector});
     });
-    console.log(bundleInfo);
     return bundleInfo;
   }
   showCollector(collectorName,collectorLocation,destinationLocation,collectorPrice,bundleName) {
@@ -139,7 +100,7 @@ class Collector extends BundleFunction {
   render() { return renderView(this, CollectorViews); }
 }
 
-class Seller extends BundleFunction {
+class Seller extends React.Component {
   constructor(props) {
     super(props);
     this.state = {view: 'Attach'};
@@ -152,21 +113,19 @@ class Seller extends BundleFunction {
   
   async acceptPrice(priceAtomic) { // Fun([UInt], Null)
     const priceCollect= reach.formatCurrency(priceAtomic, 4);
-    console.log(priceAtomic)
     return await new Promise(resolveAcceptedP => {
       this.setState({view: 'AcceptTerms', priceCollect, resolveAcceptedP});
     });
   }
   termsAccepted() {
     this.state.resolveAcceptedP();
-    this.setState({view: 'WaitingForTurn'});
+    this.setState({view: 'Waiting'});
   }
   setBundle(bundle) { this.state.resolveBundleSeller(bundle); }
   async sellBundle() { //Fun([UInt,Bytes(256),Bytes(256),Bytes(256)],Null)
     const bundleInfo = await new Promise(resolveBundleSeller => {
       this.setState({view: 'SellBundleInfo', playable:true, resolveBundleSeller});
     });
-    console.log(bundleInfo);
     return bundleInfo;
   }
   showSeller(sellerName,sellerLocation,collectDate,bundleCondition,sellerPrice,bundleName) {
@@ -175,7 +134,7 @@ class Seller extends BundleFunction {
   render() { return renderView(this, SellerViews); }
 }
 
-class Viewer extends BundleFunction {
+class Viewer extends React.Component {
   constructor(props) {
     super(props);
     this.state = {view: 'Attach'};
@@ -187,21 +146,17 @@ class Viewer extends BundleFunction {
   }
   
   async acceptPrice(bundleName,collectorName,sellerName,bundleCondition,priceAtomic) { // Fun([UInt], Null)
-    console.log("Shown viewer");
     const priceSeller= reach.formatCurrency(priceAtomic, 4);
-    console.log(priceAtomic)
     return await new Promise(resolveAcceptedP => {
       this.setState({view: 'ViewDone', bundleName: bundleName.replace(/\0/g, ''),collectorName:collectorName.replace(/\0/g, ''),sellerName:sellerName.replace(/\0/g, ''),bundleCondition:bundleCondition.replace(/\0/g, ''),sellerPrice:priceSeller, resolveAcceptedP});
     });
   }
   termsAccepted() {
     this.state.resolveAcceptedP();
-    this.setState({view: 'WaitingForTurn'});
+    this.setState({view: 'Waiting'});
   }
   async buyingDone(bundleName,collectorName,sellerName,bundleCondition,priceAtomic) { // Fun([UInt], Null)
-    console.log("Shown viewer");
     const priceSeller= reach.formatCurrency(priceAtomic, 4);
-    console.log(priceAtomic)
     this.setState({view: 'BuyingDone', bundleName: bundleName.replace(/\0/g, ''),collectorName:collectorName.replace(/\0/g, ''),sellerName:sellerName.replace(/\0/g, ''),bundleCondition:bundleCondition.replace(/\0/g, ''),sellerPrice:priceSeller});
   }
   render() { return renderView(this, ViewerViews); }

@@ -1,0 +1,56 @@
+[
+    {
+        "id":"1",
+        "name":"Nike",
+        "status":"Available",
+        "contract":
+        {
+            "type": "BigNumber",
+            "hex": "0x0734c254"
+        }
+            
+    },
+    {
+        "id":"2",
+        "name":"Adidas",
+        "status":"Available",
+        "contract":
+        {
+            "type": "BigNumber",
+            "hex": "0x0734cc1f"
+        }
+             
+    },
+    {
+        "id":"3",
+        "name":"Denim",
+        "status":"Available",
+        "contract":
+        {
+            "type": "BigNumber",
+            "hex": "0x0734d04a"
+        }
+                
+    },
+    {
+        "id":"4",
+        "name":"Elie Saab",
+        "status":"Available",
+        "contract":
+        {
+            "type": "BigNumber",
+            "hex": "0x0734d65d"
+        }
+                
+    },
+    {
+        "id":"5",
+        "name":"Puma",
+        "status":"SOLD",
+        "contract":
+        {
+            "type": "BigNumber",
+            "hex": "0x0734d9ee"
+        }
+    }
+]

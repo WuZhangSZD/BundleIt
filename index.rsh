@@ -30,7 +30,6 @@ export const main = Reach.App(() => {//This is one contract
   const Disposal = Participant('Disposal', {
     registerBundle: Fun([],BundleDisposal),
     showDisposal: Fun([Bytes(256),Bytes(100),UInt,UInt],Null),
-    deadline : UInt,
   });
   const Collector = Participant('Collector', {
     collectBundle: Fun([],BundleCollector),
@@ -48,23 +47,16 @@ export const main = Reach.App(() => {//This is one contract
   });
   
   init();
-
-  const informTimeout = () =>{
-    each ([Disposal,Collector,Seller,Viewer],() => {
-      interact.informTimeout();
-    })
-  }
-
   Disposal.only(() => {
     const bundleDisposal=declassify(interact.registerBundle())
-    const deadline = declassify(interact.deadline);
   });
-  Disposal.publish(bundleDisposal,deadline);
+  Disposal.publish(bundleDisposal);
 
   commit();
   each([Disposal],()=>{
     interact.showDisposal(bundleDisposal.bundleName,bundleDisposal.boughtDate,bundleDisposal.boughtPrice,bundleDisposal.disposePrice )
   })
+  
   
   Collector.only(() => {
     interact.acceptPrice(bundleDisposal.disposePrice);
@@ -81,6 +73,7 @@ export const main = Reach.App(() => {//This is one contract
   each([Collector],()=>{
     interact.showCollector(bundleCollector.collectorName,bundleCollector.collectorLocation,bundleCollector.destinationLocation,bundleCollector.collectorPrice,bundleDisposal.bundleName)
   })
+
 
   Seller.only(() => {
     interact.acceptPrice(bundleCollector.collectorPrice);
