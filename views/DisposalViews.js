@@ -1,7 +1,6 @@
 import React from 'react';
-import PlayerViews from './PlayerViews';
 import wallpaper from './wallpaper1.jpg';
-const exports = {...PlayerViews};
+const exports = {};
 
 const sleep = (milliseconds) => new Promise(resolve => setTimeout(resolve, milliseconds));
 
@@ -26,10 +25,10 @@ exports.SetBundleInfo = class extends React.Component {
     const price = (this.state || {}).price || 0;
     return (
       <div className='input-holder'>
-        <div class="input-column">
-          <div class="input-form">
-            <p class="input-title">Bundle Disposal Registration</p>
-            <p class="input-description">Let your pre-loved be loved again!</p>
+        <div className="input-column">
+          <div className="input-form">
+            <p className="input-title">Bundle Disposal Registration</p>
+            <p className="input-description">Let your pre-loved be loved again!</p>
             <div className='input'>     
               <input
                 type='text'
@@ -65,7 +64,7 @@ exports.SetBundleInfo = class extends React.Component {
           </div>
           </div>
         </div>
-        <div class="input-column">
+        <div className="input-column">
           <img className='wallpaper' src={wallpaper}  alt="wallpaper1"/>
         </div>
       </div>
@@ -89,7 +88,7 @@ exports.StartDispose = class extends React.Component {
   render() {
     const {parent, bundleName, bundleLocation, standardUnit} = this.props;
     return (
-      <div class="attach">
+      <div className="attach">
         <button
           onClick={() => parent.dispose()}
         >Start dispose</button>
@@ -117,23 +116,23 @@ exports.DisposeDone = class extends React.Component {
     return (
       <div className='details-card'>
         <div id="NameArea">
-          <p class="bundleName">Your </p>
-          <p class="bundleName-variable">{bundleName}</p>
-          <p class="bundleName"> have been registered</p>
-          <p class="reminder">*copy the contract number and pass to collector to prove your bundle valid</p>
+          <p className="bundleName">Your </p>
+          <p className="bundleName-variable">{bundleName}</p>
+          <p className="bundleName"> have been registered</p>
+          <p className="reminder">*copy the contract number and pass to collector to prove your bundle valid</p>
         </div>
         <div id="RemainArea">
-          <p class="Remain-Info">Bundle Bought Date</p>
-          <p class="Remain-Info-Import">{boughtDate}</p>
+          <p className="Remain-Info">Bundle Bought Date</p>
+          <p className="Remain-Info-Import">{boughtDate}</p>
 
-          <p class="Remain-Info">Bundle Bought Price</p>
-          <p class="Remain-Info-Import">{boughtPrice} {standardUnit}</p>
+          <p className="Remain-Info">Bundle Bought Price</p>
+          <p className="Remain-Info-Import">{boughtPrice} {standardUnit}</p>
 
-          <p class="Remain-Info">Bundle Dispose Price</p>
-          <p class="Remain-Info-Import">{disposePrice} {standardUnit}</p>
+          <p className="Remain-Info">Bundle Dispose Price</p>
+          <p className="Remain-Info-Import">{disposePrice} {standardUnit}</p>
 
-          <p class="Remain-Info">Contract Number*</p>
-          <pre class='Remain-Info-Import'>
+          <p className="Remain-Info">Contract Number*</p>
+          <pre className='Remain-Info-Import'>
             {ctcInfoStr}
           </pre>  
           <button onClick={(e) => this.copyToClipboard(e.currentTarget)}>Copy to clipboard</button>

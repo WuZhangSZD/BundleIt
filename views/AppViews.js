@@ -10,10 +10,8 @@ exports.Wrapper = class extends React.Component {
       <div className="App">
         <header className="App-header" id="root">
           <div id='header'>
-            <p class="logo" id="logo">BundleIt</p>
-            {/* <img className='header logo' src={logo} alt="logo" /> */}
-            <p class="headerEle" id="JoinUs" onClick={() => parent.selectViewer()}>Join Us</p>
-            <p class="headerEle" id="AboutUs" onClick={() => parent.selectDisposal()}>About Us</p>
+            <p className="logo" id="logo">BundleIt</p>
+            <img className='header logo' src={logo} alt="logo" />
           </div> 
           {content}
         </header>
@@ -25,7 +23,7 @@ exports.Wrapper = class extends React.Component {
 exports.ConnectAccount = class extends React.Component {
   render() {
     return (
-      <div>
+      <div id="loading">
         <h3>BundleIt! Best Choice for Vintage</h3>
         <h5>
           Please wait while we connect to your account.
@@ -70,52 +68,34 @@ exports.DisposalOrCollectorOrSeller = class extends React.Component {
       <div className='container'>
         <div className='joinUs'>
           <div className='member'>
-            <p class="member-header">Disposal</p>
-            <p class="member-description">If you have a pre-loved and would like to find a new master for it, this role is perfect for you!</p>
+            <p className="member-header">Disposal</p>
+            <p className="member-description">If you have a pre-loved and would like to find a new master for it, this role is perfect for you!</p>
             <button
               onClick={() => parent.selectDisposal()}
             >Join</button>
           </div>
           <div className='member'>
-            <p class="member-header">Collector</p>
-            <p class="member-description">If you are a collector that would like collect pre-loved from disposal, this role is perfect for you!</p>
+            <p className="member-header">Collector</p>
+            <p className="member-description">If you are a collector that would like collect pre-loved from disposal, this role is perfect for you!</p>
             <button
               onClick={() => parent.selectCollector()}
             >Join</button>
           </div>
           <div className='member'>
-            <p class="member-header">Seller</p>
-            <p class="member-description">If you are planning to sell your pre-loved stock directly to customer, this role is perfect for you!</p>
+            <p className="member-header">Seller</p>
+            <p className="member-description">If you are planning to sell your pre-loved stock directly to customer, this role is perfect for you!</p>
             <button
               onClick={() => parent.selectSeller()}
             >Join</button>
           </div>
           <div className='member'>
-            <p class="member-header">Viewer</p>
-            <p class="member-description">If you are planning to sell your pre-loved stock directly to customer, this role is perfect for you!</p>
+            <p className="member-header">Viewer</p>
+            <p className="member-description">If you are planning to buy and love another's pre-loved, this role is perfect for you!</p>
             <button
               onClick={() => parent.selectViewer()}
             >Join</button>
           </div>
-          {/* <div className='member'>
-            <button
-              onClick={() => parent.selectViewer()}
-            >Viewer</button>
-            <p> View the bundle information.</p>
-          </div> */}
         </div>
-      </div>
-    );
-  }
-}
-exports.AboutUs = class extends React.Component {
-  render() {
-    const {parent} = this.props;
-    return (
-      <div className='container'>
-        <h1>Tai Wen Jun</h1>
-        <h1>Brandon Liew</h1>
-        <h1>Emma</h1>
       </div>
     );
   }

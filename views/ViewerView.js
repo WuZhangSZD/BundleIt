@@ -1,7 +1,7 @@
 import React from 'react';
-import PlayerViews from './PlayerViews';
+import Bundles from '../db.json';
 
-const exports = {...PlayerViews};
+const exports = {};
 
 exports.Wrapper = class extends React.Component {
   render() {
@@ -23,61 +23,20 @@ exports.Attach = class extends React.Component {
       <div className='attach'>
         <div className='bundle-container'>
           <div className='bundleList'>
-            <div className='bundle'>
-              <p class="bundle-header">Bundle1</p>
-              <p class="bundle-description">This bundle have the best view in the world</p>
-              <pre class='Remain-Info-Import'>
-                  "type": "BigNumber",
-                  "hex": "0x07343afb"
-              </pre>  
-              <button
-                onClick={() => parent.view(contractInfo)}
-              >View</button>
-            </div>
-            <div className='bundle'>
-              <p class="bundle-header">Bundle2</p>
-              <p class="bundle-description">This bundle have the best view in the world</p>
-              <pre class='Remain-Info-Import'>
-                  "type": "BigNumber",
-                  "hex": "0x07343afb"
-              </pre>  
-              <button
-                onClick={() => parent.view(contractInfo)}
-              >View</button>
-            </div>
-            <div className='bundle'>
-              <p class="bundle-header">Bundle3</p>
-              <p class="bundle-description">This bundle have the best view in the world</p>
-              <pre class='Remain-Info-Import'>
-                    "type": "BigNumber",
-                    "hex": "0x07343afb"
-              </pre>  
-              <button
-                onClick={() => parent.view(contractInfo)}
-              >View</button>
-            </div>
-            <div className='bundle'>
-              <p class="bundle-header">Bundle4</p>
-              <p class="bundle-description">This bundle have the best view in the world</p>
-              <pre class='Remain-Info-Import'>
-                    "type": "BigNumber",
-                    "hex": "0x07343afb"
-              </pre>  
-              <button
-                onClick={() => parent.view(contractInfo)}
-              >View</button>
-            </div>
-            <div className='bundle'>
-              <p class="bundle-header">Bundle5</p>
-              <p class="bundle-description">This bundle have the best view in the world</p>
-              <pre class='Remain-Info-Import'>
-                    "type": "BigNumber",
-                    "hex": "0x07343afb"
-              </pre>  
-              <button
-                onClick={() => parent.view(contractInfo)}
-              >View</button>
-            </div>
+          {Bundles && Bundles.map(bundle=>{
+              return(
+                <div className='bundle' key={bundle.id}>
+                <p className="bundle-header">{bundle.name}</p>
+                <p className="bundle-description">Bundle status: {bundle.status}</p>
+                <pre className='Remain-Info-Import'>
+                    {JSON.stringify(bundle.contract)}            
+                </pre>  
+                <button className={bundle.status=="SOLD" ? "disabled" : ""} disabled={bundle.status=="SOLD"}
+                onClick={() => parent.view(JSON.stringify(bundle.contract))}
+                >View</button>
+              </div>
+              )
+            })}
           </div>
         </div>
         Please paste the contract info to attach to:
@@ -102,36 +61,33 @@ exports.ViewDone = class extends React.Component {
   render() {
     const {priceCollect, standardUnit, parent,bundleName,collectorName,sellerName,bundleCondition,sellerPrice,ctcInfoStr} = this.props;
     return (
-      <div>
-        This is the information of bundle
-        <h2>
-          Bundle Name
-        </h2>
-          {bundleName}
-        <h2>
-          CollectorName 
-        </h2>
-          {collectorName}
-        <h2>
-          SellerName
-        </h2>
-          {sellerName}
-        <h2>
-          Bundle Condition 
-        </h2>
-          {bundleCondition}
+      <div className='details-card'>
+        <div id="NameArea">
+          <p className="bundleName">The information for bundle </p>
+          <p className="bundleName-variable">{bundleName}</p>
+          <p className="bundleName"> is shown here.</p>
+        </div>
+        <div id="RemainArea">
+          <p className="Remain-Info">Bundle Name</p>
+          <p className="Remain-Info-Import">{bundleName}</p>
 
-        <h2>
-          Seller Price 
-        </h2>
-          {sellerPrice} {standardUnit}
-          <br/>
-        <button
+          <p className="Remain-Info">Collector Name</p>
+          <p className="Remain-Info-Import">{collectorName}</p>
+
+          <p className="Remain-Info">Bundle Condition</p>
+          <p className="Remain-Info-Import">{bundleCondition}</p>
+
+          <p className="Remain-Info">Seller Price</p>
+          <pre className='Remain-Info-Import'>
+            {sellerPrice} {standardUnit}
+          </pre>  
+          <button
           onClick={() => {
             this.setState({disabled: false});
             parent.termsAccepted();
           }}
         >Buy the bundle</button>
+        </div>
       </div>
     )
   }
@@ -142,31 +98,29 @@ exports.BuyingDone = class extends React.Component {
   render() {
     const {standardUnit,bundleName,collectorName,sellerName,bundleCondition,sellerPrice} = this.props;
     return (
-      <div>
-        This is the information of the bundle bought
-        <h2>
-          Bundle Name
-        </h2>
-          {bundleName}
-        <h2>
-          CollectorName 
-        </h2>
-          {collectorName}
-        <h2>
-          SellerName
-        </h2>
-          {sellerName}
-        <h2>
-          Bundle Condition 
-        </h2>
-          {bundleCondition}
-        <h2>
-          Amount Paid
-        </h2>
-          {sellerPrice} {standardUnit}
-          <br/>
-          Thank you for buying from {sellerName}. Please come again
+      <div className='details-card'>
+      <div id="NameArea">
+        <p className="bundleName">The information for bundle bought </p>
+        <p className="bundleName-variable">{bundleName}</p>
+        <p className="bundleName"> is shown here.</p>
       </div>
+      <div id="RemainArea">
+        <p className="Remain-Info">Bundle Name</p>
+        <p className="Remain-Info-Import">{bundleName}</p>
+
+        <p className="Remain-Info">Collector Name</p>
+        <p className="Remain-Info-Import">{collectorName}</p>
+
+        <p className="Remain-Info">Bundle Condition</p>
+        <p className="Remain-Info-Import">{bundleCondition}</p>
+
+        <p className="Remain-Info">Amount Paid</p>
+        <pre className='Remain-Info-Import'>
+          {sellerPrice} {standardUnit}
+        </pre>  
+        Thank you for buying from {sellerName}. Please come again!
+      </div>
+    </div>
     )
   }
 }
@@ -202,7 +156,7 @@ exports.AcceptTerms = class extends React.Component {
   }
 }
 
-exports.WaitingForTurn = class extends React.Component {
+exports.Waiting = class extends React.Component {
   render() {
     return (
       <div>

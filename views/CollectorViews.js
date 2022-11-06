@@ -1,8 +1,7 @@
 import React from 'react';
-import PlayerViews from './PlayerViews';
 import wallpaper from './wallpaper2.jpg';
 
-const exports = {...PlayerViews};
+const exports = {};
 
 exports.Wrapper = class extends React.Component {
   render() {
@@ -20,7 +19,7 @@ exports.Attach = class extends React.Component {
     const {parent} = this.props;
     const {ctcInfoStr} = this.state || {};
     return (
-      <div class="attach">
+      <div className="attach">
         <p>Please paste the contract info to attach to:</p>
         <textarea spellCheck="false"
           className='ContractInfo'
@@ -46,10 +45,10 @@ exports.CollectBundleInfo = class extends React.Component {
     const collectorPrice = (this.state || {}).collectorPrice || 1;
     return (
       <div className='input-holder'>
-        <div class="input-column">
-          <div class="input-form">
-            <p class="input-title">Bundle Collection Registration</p>
-            <p class="input-description">Collect pre-loved</p>
+        <div className="input-column">
+          <div className="input-form">
+            <p className="input-title">Bundle Collection Registration</p>
+            <p className="input-description">Collect pre-loved</p>
             <div className='input'>
               <input
                 type='text'
@@ -85,7 +84,7 @@ exports.CollectBundleInfo = class extends React.Component {
             </div>
           </div>
         </div>
-        <div class="input-column">
+        <div className="input-column">
           <img className='wallpaper' src={wallpaper}  alt="wallpaper1"/>
         </div>
       </div>
@@ -122,26 +121,26 @@ exports.CollectDone = class extends React.Component {
     return (
       <div className='details-card'>
         <div id="NameArea">
-          <p class="bundleName">Your </p>
-          <p class="bundleName-variable">{bundleName}</p>
-          <p class="bundleName"> have been collected</p>
-          <p class="reminder">*copy the contract number and pass to seller to prove your bundle valid</p>
+          <p className="bundleName">Your </p>
+          <p className="bundleName-variable">{bundleName}</p>
+          <p className="bundleName"> have been collected</p>
+          <p className="reminder">*copy the contract number and pass to seller to prove your bundle valid</p>
         </div>
         <div id="RemainArea">
-          <p class="Remain-Info">Your Name</p>
-          <p class="Remain-Info-Import">{collectorName}</p>
+          <p className="Remain-Info">Your Name</p>
+          <p className="Remain-Info-Import">{collectorName}</p>
 
-          <p class="Remain-Info">Your location</p>
-          <p class="Remain-Info-Import">{collectorLocation}</p>
+          <p className="Remain-Info">Your location</p>
+          <p className="Remain-Info-Import">{collectorLocation}</p>
 
-          <p class="Remain-Info">Bundle Destination</p>
-          <p class="Remain-Info-Import">{destinationLocation}</p>
+          <p className="Remain-Info">Bundle Destination</p>
+          <p className="Remain-Info-Import">{destinationLocation}</p>
 
-          <p class="Remain-Info">Bundle Collect Price</p>
-          <p class="Remain-Info-Import">{collectorPrice} {standardUnit}</p>
+          <p className="Remain-Info">Bundle Collect Price</p>
+          <p className="Remain-Info-Import">{collectorPrice} {standardUnit}</p>
 
-          <p class="Remain-Info">Contract Number*</p>
-          <pre class='Remain-Info-Import'>
+          <p className="Remain-Info">Contract Number*</p>
+          <pre className='Remain-Info-Import'>
             {ctcInfoStr}
           </pre>  
           <button onClick={(e) => this.copyToClipboard(e.currentTarget)}>Copy to clipboard</button>
@@ -166,7 +165,7 @@ exports.AcceptTerms = class extends React.Component {
     const {priceDispose, standardUnit, parent} = this.props;
     const {disabled} = this.state || {};
     return (
-      <div class="accept-term">
+      <div className="accept-term">
         The disposal price:
         <br />{priceDispose} {standardUnit}
         <br />
@@ -182,7 +181,7 @@ exports.AcceptTerms = class extends React.Component {
   }
 }
 
-exports.WaitingForTurn = class extends React.Component {
+exports.Waiting = class extends React.Component {
   render() {
     return (
       <div>
