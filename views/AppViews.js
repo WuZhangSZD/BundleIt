@@ -12,8 +12,8 @@ exports.Wrapper = class extends React.Component {
           <div id='header'>
             <p class="logo" id="logo">BundleIt</p>
             {/* <img className='header logo' src={logo} alt="logo" /> */}
-            <p class="headerEle" id="JoinUs">Join Us</p>
-            <p class="headerEle" id="AboutUs">About Us</p>
+            <p class="headerEle" id="JoinUs" onClick={() => parent.selectViewer()}>Join Us</p>
+            <p class="headerEle" id="AboutUs" onClick={() => parent.selectDisposal()}>About Us</p>
           </div> 
           {content}
         </header>
@@ -108,5 +108,16 @@ exports.DisposalOrCollectorOrSeller = class extends React.Component {
     );
   }
 }
-
+exports.AboutUs = class extends React.Component {
+  render() {
+    const {parent} = this.props;
+    return (
+      <div className='container'>
+        <h1>Tai Wen Jun</h1>
+        <h1>Brandon Liew</h1>
+        <h1>Emma</h1>
+      </div>
+    );
+  }
+}
 export default exports;
