@@ -78,9 +78,7 @@ exports.ViewDone = class extends React.Component {
           <p className="Remain-Info-Import">{bundleCondition}</p>
 
           <p className="Remain-Info">Seller Price</p>
-          <pre className='Remain-Info-Import'>
-            {sellerPrice} {standardUnit}
-          </pre>  
+          <p className="Remain-Info-Import">{sellerPrice} {standardUnit}</p>
           <button
           onClick={() => {
             this.setState({disabled: false});
@@ -115,9 +113,7 @@ exports.BuyingDone = class extends React.Component {
         <p className="Remain-Info-Import">{bundleCondition}</p>
 
         <p className="Remain-Info">Amount Paid</p>
-        <pre className='Remain-Info-Import'>
-          {sellerPrice} {standardUnit}
-        </pre>  
+        <p className="Remain-Info-Import">{sellerPrice} {standardUnit}</p>
         Thank you for buying from {sellerName}. Please come again!
       </div>
     </div>
