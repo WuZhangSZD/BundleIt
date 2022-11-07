@@ -29,32 +29,34 @@ exports.SetBundleInfo = class extends React.Component {
           <div className="input-form">
             <p className="input-title">Bundle Disposal Registration</p>
             <p className="input-description">Let your pre-loved be loved again!</p>
-            <div className='input'>     
+            <div className='input tooltip' data-tooltip="e.g: Nike Air Jordan Low"> 
               <input
                 type='text'
                 placeholder= "Bundle Name"
                 onChange={(e) => this.setState({bundleName: e.currentTarget.value})}
                 />
             </div>
-            <div className='input'>
+            <div className='input tooltip' data-tooltip="e.g: 23/3/2012"> 
               <input
                 type='date'
                 placeholder= "Bought Date"
                 onChange={(e) => this.setState({boughtDate: e.currentTarget.value})}
                 />
             </div>
-            <div className='input'>
+            <div className='input tooltip' data-tooltip="e.g: 5">
               <input
                 type='number'
                 placeholder= "Bought Price (in ALGO)"
                 onChange={(e) => this.setState({boughtPrice: e.currentTarget.value})}
+                min='0'
                 />
             </div>
-            <div className='input'>
+            <div className='input tooltip' data-tooltip="e.g: 1">
               <input
                 type='number'
                 placeholder= "Dispose Price (in ALGO)"
                 onChange={(e) => this.setState({disposePrice: e.currentTarget.value})}
+                min='0'
               />
             </div>
           <div>

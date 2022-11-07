@@ -19,7 +19,7 @@ exports.Attach = class extends React.Component {
     const {parent} = this.props;
     const {ctcInfoStr} = this.state || {};
     return (
-      <div className="attach">
+      <div className='attach'>
         <p>Please paste the contract info to attach to:</p>
         <textarea spellCheck="false"
           className='ContractInfo'
@@ -49,32 +49,33 @@ exports.CollectBundleInfo = class extends React.Component {
           <div className="input-form">
             <p className="input-title">Bundle Collection Registration</p>
             <p className="input-description">Collect pre-loved</p>
-            <div className='input'>
+            <div className='input tooltip' data-tooltip="e.g: John Doe">
               <input
                 type='text'
                 placeholder= "Collector Name"
                 onChange={(e) => this.setState({collectorName: e.currentTarget.value})}
               />
             </div>
-            <div className='input'>
+            <div className='input tooltip' data-tooltip="e.g: Tokyo, Japan">
               <input
                 type='text'
                 placeholder= "Collector Location"
                 onChange={(e) => this.setState({collectorLocation: e.currentTarget.value})}
               />
             </div>
-            <div className='input'>
+            <div className='input tooltip' data-tooltip="e.g: Kuala Lumpur, Malaysia">
               <input
                 type='text'
                 placeholder= "Destination Location"
                 onChange={(e) => this.setState({destinationLocation: e.currentTarget.value})}
               />
             </div>
-            <div className='input'>
+            <div className='input tooltip' data-tooltip="e.g: 1">
               <input
                 type='number'
                 placeholder= "Collector Price (in ALGO)"
                 onChange={(e) => this.setState({collectorPrice: e.currentTarget.value})}
+                min='0'
               />
             </div>
             <div>

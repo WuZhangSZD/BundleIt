@@ -50,39 +50,40 @@ exports.SellBundleInfo = class extends React.Component {
           <div className="input-form">
             <p className="input-title">Bundle Seller Registration</p>
             <p className="input-description">Sell pre-loved</p>
-            <div className='input'>
+            <div className='input tooltip' data-tooltip="e.g: John Doe">
           <input
             type='text'
             placeholder= "Seller Name"
             onChange={(e) => this.setState({sellerName: e.currentTarget.value})}
           />
         </div>
-        <div className='input'>
+        <div className='input tooltip' data-tooltip="e.g: Perak, Malaysia"> 
           <input
             type='text'
             placeholder= "Seller Location"
             onChange={(e) => this.setState({sellerLocation: e.currentTarget.value})}
           />
         </div>
-        <div className='input'>
+        <div className='input tooltip' data-tooltip="e.g: 23/3/2012"> 
           <input
             type='date'
             placeholder= "Collect Date"
             onChange={(e) => this.setState({collectDate: e.currentTarget.value})}
           />
         </div>
-        <div className='input'>
+        <div className='input tooltip' data-tooltip="e.g: Good condition"> 
           <input
             type='text'
             placeholder= "Bundle Condition"
             onChange={(e) => this.setState({bundleCondition: e.currentTarget.value})}
           />
         </div>
-        <div className='input'>
+        <div className='input tooltip' data-tooltip="e.g: 3"> 
           <input
             type='number'
             placeholder= "Selling Price (in ALGO)"
             onChange={(e) => this.setState({sellerPrice: e.currentTarget.value})}
+            min='0'
           />
         </div>
             <div>
