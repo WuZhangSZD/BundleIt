@@ -64,7 +64,7 @@ exports.SellBundleInfo = class extends React.Component {
             onChange={(e) => this.setState({sellerLocation: e.currentTarget.value})}
           />
         </div>
-        <div className='input tooltip' data-tooltip="e.g: 23/3/2012"> 
+        <div className='input tooltip' data-tooltip="Item collection date (e.g: 23/3/2012)"> 
           <input
             type='date'
             placeholder= "Collect Date"
