@@ -36,7 +36,7 @@ exports.SetBundleInfo = class extends React.Component {
                 onChange={(e) => this.setState({bundleName: e.currentTarget.value})}
                 />
             </div>
-            <div className='input tooltip' data-tooltip="e.g: 23/3/2012"> 
+            <div className='input tooltip' data-tooltip="Item bought date(e.g: 23/3/2012)"> 
               <input
                 type='date'
                 placeholder= "Bought Date"
